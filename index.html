@@ -16,11 +16,11 @@
             background-color: var(--bg-color); color: var(--ink-color);
             font-family: 'Manrope', sans-serif;
             display: flex; justify-content: center; align-items: center;
-            height: 100vh; height: 100dvh; /* Full màn hình mobile */
+            height: 100vh; height: 100dvh; /* Đảm bảo full màn hình trên mobile */
             margin: 0; overflow: hidden; position: relative;
         }
 
-        /* --- BACKGROUND --- */
+        /* --- BACKGROUND & HIỆU ỨNG --- */
         .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.15) 100%); }
         .grain {
             position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
@@ -29,53 +29,51 @@
         }
         @keyframes grainMove { 0%, 100% { transform: translate(0, 0); } 90% { transform: translate(-1%, 7%); } }
 
-        /* --- BỐ CỤC CHÍNH (GRID SYSTEM) --- */
+        /* --- BỐ CỤC CHÍNH (ĐÃ ĐIỀU CHỈNH) --- */
         .container {
             width: 100%; max-width: 480px; height: 100%; 
-            /* Dùng space-between để chia đều khoảng cách Đỉnh - Giữa - Đáy */
             display: flex; flex-direction: column; 
             justify-content: space-between; 
             align-items: center; z-index: 2; 
-            padding-bottom: env(safe-area-inset-bottom); /* Fix cho iPhone đời mới */
+            /* THAY ĐỔI QUAN TRỌNG Ở ĐÂY: */
+            /* Giảm padding-top từ 4vh xuống còn 1.5vh để đẩy logo lên cao */
+            padding: 1.5vh 20px calc(20px + env(safe-area-inset-bottom));
         }
 
-        /* --- 1. LOGO: TO VÀ NẰM SÁT TRÊN CÙNG --- */
+        /* --- 1. PHẦN TRÊN: LOGO --- */
         .logo-wrapper {
             width: 100%;
             display: flex; justify-content: center; align-items: flex-start;
-            padding-top: 5vh; /* Cách đỉnh một chút */
-            flex-shrink: 0; 
-            z-index: 10; /* Nổi lên trên */
+            flex-shrink: 0;
         }
 
         .logo-img { 
-            width: 90%; /* Chiếm 90% chiều ngang */
-            max-width: 400px; 
+            width: 90%; 
+            max-width: 380px; 
             height: auto; 
             object-fit: contain; 
-            /* Bóng đổ nhẹ tạo khối */
             filter: contrast(1.3) drop-shadow(0 8px 12px rgba(0,0,0,0.15)); 
         }
 
-        /* --- 2. KHỐI GIỮA: ĐĨA THAN + CHỮ --- */
+        /* --- 2. PHẦN GIỮA: ĐĨA THAN + THÔNG TIN --- */
         .center-content {
-            flex-grow: 1; /* Chiếm toàn bộ khoảng trống ở giữa */
+            flex-grow: 1; 
             display: flex; flex-direction: column; 
-            justify-content: center; /* Căn giữa dọc */
+            justify-content: center; 
             align-items: center;
             width: 100%;
-            /* Dùng margin âm để kéo khối này lên gần logo hơn, tránh bị dính đáy */
-            margin-top: -20px; 
+            /* Vì logo đã lên cao, ta có thể giảm margin âm ở đây một chút cho thoáng */
+            margin-top: -5px; 
         }
 
+        /* Đĩa than */
         .vinyl-container {
             position: relative;
-            /* Giảm kích thước đĩa một xíu (55vmin) để vừa vặn hơn */
             width: 55vmin; height: 55vmin; 
             max-width: 260px; max-height: 260px;
             display: flex; justify-content: center; align-items: center;
             transition: transform 0.1s;
-            margin-bottom: 25px; /* Khoảng cách với chữ */
+            margin-bottom: 25px;
         }
         .vinyl-container:active { transform: scale(0.97); }
 
@@ -107,10 +105,9 @@
         }
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
 
-        /* --- TEXT: CĂN CHỈNH LẠI --- */
+        /* Thông tin bài hát (Chữ) */
         .message-area { 
             width: 100%; text-align: center; padding: 0 15px;
-            /* Đảm bảo chữ không bị dính sát đĩa than */
             display: flex; flex-direction: column; gap: 5px;
         }
         
@@ -131,11 +128,11 @@
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
         .glitch { animation: glitch-anim 0.3s both; color: #000; }
 
-        /* --- 4. PLAYER: LUÔN Ở ĐÁY --- */
+        /* --- 3. PHẦN DƯỚI: THANH ĐIỀU KHIỂN (PLAYER) --- */
         .player-wrapper { 
             width: 100%; 
-            padding: 0 20px 30px 20px; /* Padding dưới nhiều hơn để an toàn */
             flex-shrink: 0;
+            padding-top: 10px;
         }
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
@@ -147,16 +144,13 @@
         .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 10px; display: flex; gap: 5px; justify-content: center; }
         #busuanzi_container_site_pv { display: none; }
 
-        /* --- MOBILE OPTIMIZATION --- */
-        @media (max-width: 600px) {
-            .logo-img { width: 92%; } /* Logo to trên mobile */
-            
-            /* Điều chỉnh lại đĩa than nếu màn hình quá ngắn */
-            @media (max-height: 700px) {
-                .vinyl-container { width: 45vmin; height: 45vmin; margin-bottom: 15px; }
-                .logo-wrapper { padding-top: 3vh; }
-                .wishes-text { font-size: 14px; }
-            }
+        /* --- TỐI ƯU CHO MÀN HÌNH NHỎ --- */
+        @media (max-width: 380px) or (max-height: 700px) {
+            .logo-img { width: 85%; }
+            .vinyl-container { width: 50vmin; height: 50vmin; margin-bottom: 20px; }
+            .wishes-text { font-size: 14px; }
+            /* Màn hình ngắn thì cho sát lên trên nữa */
+            .container { padding-top: 1vh; } 
         }
     </style>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
