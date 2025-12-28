@@ -6,7 +6,7 @@
     <title>PHOTONOIR - 2026</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root { --bg-color: #E0E0E0; --ink-color: #000; --accent-color: #960018; }
@@ -23,7 +23,7 @@
             scroll-behavior: smooth;
         }
 
-        /* --- BACKGROUND & EFFECTS --- */
+        /* --- BACKGROUND --- */
         .film-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; overflow: hidden; opacity: 0.5; }
         .grain { position: absolute; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.2'/%3E%3C/svg%3E"); animation: grainFlicker 0.2s steps(2) infinite; }
         .scratches { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(0,0,0,0.05) 3px, transparent 4px); animation: scratchJump 0.3s steps(1) infinite; opacity: 0.3; }
@@ -32,7 +32,8 @@
 
         /* --- MÀN HÌNH 1: PLAYER --- */
         .screen-hero {
-            width: 100%; max-width: 480px; height: 100dvh; 
+            width: 100%; max-width: 480px; 
+            min-height: 100dvh; 
             margin: 0 auto; 
             display: flex; flex-direction: column; 
             justify-content: center; align-items: center; 
@@ -40,7 +41,9 @@
         }
 
         .header-group { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 25px; z-index: 10; }
+        /* Logo đen */
         .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 0; }
+        /* Chữ đỏ to đậm */
         .sub-logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); }
 
         .center-content { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; position: relative; z-index: 5; margin-bottom: 20px; }
@@ -60,14 +63,20 @@
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         .glitch { animation: glitch-anim 0.3s both; color: var(--accent-color) !important; } 
 
-        .player-wrapper { width: 100%; padding: 0 20px; flex-shrink: 0; margin-bottom: 40px; }
+        .player-wrapper { width: 100%; padding: 0 20px; flex-shrink: 0; margin-bottom: 30px; }
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
         .progress-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px; overflow: hidden; }
         .progress-bar-fill { width: 0%; height: 100%; background: var(--accent-color); transition: width 0.1s linear; }
         .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #000; font-family: monospace; }
-        .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 10px; display: flex; gap: 5px; justify-content: center; }
-        #busuanzi_container_site_pv { display: none; }
+        
+        /* TOTAL PLAYS - Đảm bảo hiển thị */
+        .visitor-counter { 
+            font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; 
+            font-weight: 700; margin-top: 12px; 
+            display: flex; gap: 5px; justify-content: center; align-items: center;
+        }
+        #busuanzi_container_site_pv { display: inline-block !important; }
 
         .scroll-hint {
             position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center;
@@ -77,14 +86,13 @@
         .show-scroll { opacity: 0.6 !important; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 
-        /* --- MÀN HÌNH 2: PHÂN TÍCH (NEW) --- */
+        /* --- MÀN HÌNH 2: PHÂN TÍCH --- */
         .screen-analysis {
-            display: none; /* Ẩn mặc định */
+            display: none; 
             width: 100%; max-width: 480px; margin: 0 auto;
             position: relative; z-index: 2;
             padding: 60px 30px;
-            background: #EAEAEA; /* Màu nền hơi khác một chút để phân biệt */
-            border-top: 1px solid rgba(0,0,0,0.1);
+            background: #EAEAEA; 
             animation: fadeIn 1s ease-in-out;
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -93,22 +101,26 @@
             border: 2px solid #000;
             padding: 30px 20px;
             background: #F2F2F2;
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.1);
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.1);
         }
 
         .analysis-label {
             font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 2px;
             text-transform: uppercase; color: #555; margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px;
-            display: flex; justify-content: space-between;
         }
 
+        /* Tiêu đề phân tích: BỎ NGHIÊNG, CHỮ ĐỨNG */
         .analysis-title {
-            font-family: 'Playfair Display', serif; font-weight: 700; font-size: 20px; font-style: italic;
-            color: var(--accent-color); margin-bottom: 20px; line-height: 1.3;
+            font-family: 'Playfair Display', serif; 
+            font-weight: 700; 
+            font-size: 22px; 
+            font-style: normal; /* Không nghiêng */
+            color: var(--accent-color); 
+            margin-bottom: 20px; line-height: 1.3;
         }
 
         .analysis-content {
-            font-family: 'Manrope', sans-serif; font-size: 14px; line-height: 1.7; color: #333; text-align: justify;
+            font-family: 'Manrope', sans-serif; font-size: 15px; line-height: 1.7; color: #333; text-align: justify;
         }
 
         /* --- MÀN HÌNH 3: THƯ CẢM ƠN --- */
@@ -119,8 +131,21 @@
             background: linear-gradient(180deg, rgba(224,224,224,0) 0%, rgba(245,245,245,0.95) 15%, #F5F5F5 100%);
         }
         .letter-container { border-left: 2px solid var(--accent-color); padding-left: 25px; }
-        .letter-header { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; color: var(--accent-color); opacity: 0.8; }
-        .letter-body { font-family: 'Playfair Display', serif; font-size: 18px; line-height: 1.8; color: #111; font-weight: 400; }
+        
+        .letter-header { 
+            font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; 
+            text-transform: uppercase; margin-bottom: 30px; 
+            color: var(--accent-color); opacity: 0.8; 
+        }
+        
+        /* Nội dung thư: BỎ NGHIÊNG, CHỮ ĐỨNG */
+        .letter-body { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 18px; line-height: 1.8; 
+            color: #111; 
+            font-weight: 400; 
+            font-style: normal; /* Không nghiêng */
+        }
         .letter-body p { margin-bottom: 25px; }
         .letter-body p:first-child::first-letter { font-size: 3.5em; float: left; line-height: 0.8; margin-right: 10px; font-weight: 600; color: var(--accent-color); }
         .letter-sign { margin-top: 50px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-top: 1px solid #ccc; display: inline-block; padding-top: 10px; }
@@ -168,7 +193,13 @@
                     <span id="totalTime">--:--</span>
                 </div>
             </div>
-            <div class="visitor-counter"><span>TOTAL PLAYS:</span><span id="busuanzi_container_site_pv" style="display: inline;"><span id="busuanzi_value_site_pv">...</span></span></div>
+            
+            <div class="visitor-counter">
+                <span>TOTAL PLAYS:</span>
+                <span id="busuanzi_container_site_pv">
+                    <span id="busuanzi_value_site_pv">...</span>
+                </span>
+            </div>
         </div>
 
         <div class="scroll-hint" id="scrollHint" onclick="scrollToNext()">
@@ -180,7 +211,6 @@
         <div class="analysis-box">
             <div class="analysis-label">
                 <span>FREQUENCY REPORT</span>
-                <span>2026</span>
             </div>
             <div class="analysis-title" id="analysisTitle">Why this track?</div>
             <div class="analysis-content" id="analysisContent">
@@ -216,7 +246,6 @@
         const analysisTitle = document.getElementById('analysisTitle');
         const analysisContent = document.getElementById('analysisContent');
 
-        // DATA: Thêm trường 'analysis' cho mỗi track
         const tracks = [
             { 
                 id: 1, 
@@ -347,7 +376,6 @@
             userTrack = tracks[randomIndex];
             localStorage.setItem(STORAGE_KEY, randomIndex);
             
-            // UI & Audio
             audio.src = userTrack.file;
             audio.play().catch(e => console.log("Interaction needed"));
             if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
@@ -365,9 +393,8 @@
             displayText.classList.add('glitch');
             document.querySelector('.player-controls').parentElement.classList.add('has-played');
             
-            // HIỂN THỊ PHẦN PHÂN TÍCH & SCROLL HINT
             analysisSection.style.display = 'block';
-            analysisTitle.innerText = "Tại sao là bài hát này?";
+            analysisTitle.innerText = "Why this track?";
             analysisContent.innerText = track.analysis;
             scrollHint.classList.add('show-scroll');
         }
@@ -378,16 +405,13 @@
         }
 
         function scrollToNext() {
-            // Cuộn xuống phần phân tích trước
             analysisSection.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Fading Volume Script
         window.addEventListener('scroll', () => {
             if (!isPlaying) return;
             const letterTop = document.querySelector('.screen-letter').getBoundingClientRect().top;
             const windowHeight = window.innerHeight;
-            // Khi bắt đầu đọc thư (qua khỏi phần phân tích) thì nhỏ nhạc
             if (letterTop < windowHeight * 0.8) {
                 if (audio.volume > 0.2) audio.volume -= 0.05;
             } else {
