@@ -10,9 +10,8 @@
     
     <style>
         :root {
-            --bg-color: #ECECEC; /* Màu xám xi măng nhạt - Sang hơn trắng tinh */
-            --ink-color: #050505; /* Đen tuyền */
-            --accent-color: #333;
+            --bg-color: #ECECEC;
+            --ink-color: #111;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -30,130 +29,98 @@
             position: relative;
         }
 
-        /* --- HIỆU ỨNG FILM GRAIN (HẠT NHIỄU) --- */
+        /* FILM GRAIN */
         body::before {
-            content: "";
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-            animation: grain 8s steps(10) infinite;
-            pointer-events: none;
-            z-index: 999;
+            animation: grain 8s steps(10) infinite; pointer-events: none; z-index: 999;
         }
-        @keyframes grain { 0%, 100% { transform: translate(0, 0); } 10% { transform: translate(-5%, -10%); } 30% { transform: translate(3%, -15%); } 50% { transform: translate(12%, 9%); } 70% { transform: translate(9%, 4%); } 90% { transform: translate(-1%, 7%); } }
+        @keyframes grain { 0%, 100% { transform: translate(0, 0); } 10% { transform: translate(-5%, -10%); } 50% { transform: translate(12%, 9%); } 90% { transform: translate(-1%, 7%); } }
 
         .container {
-            width: 100%;
-            max-width: 380px;
-            padding: 30px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 1;
+            width: 100%; max-width: 380px; padding: 20px 30px;
+            text-align: center; display: flex; flex-direction: column; align-items: center; z-index: 1;
         }
 
-        /* --- LOGO --- */
         .brand-name {
-            font-family: 'Anton', sans-serif;
-            font-size: 56px; /* To hơn nữa */
-            letter-spacing: 4px;
-            color: var(--ink-color);
-            margin-bottom: 50px;
-            line-height: 0.8;
-            text-transform: uppercase;
+            font-family: 'Anton', sans-serif; font-size: 56px; letter-spacing: 4px;
+            color: var(--ink-color); margin-bottom: 30px; line-height: 0.8; text-transform: uppercase;
         }
 
-        /* --- ĐĨA THAN ABSTRACT (Tối giản hóa) --- */
+        /* --- ĐĨA THAN --- */
         .vinyl-wrapper {
-            position: relative;
-            width: 220px;
-            height: 220px;
-            margin-bottom: 40px;
+            position: relative; width: 240px; height: 240px; margin-bottom: 30px;
+            border-radius: 50%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+            cursor: pointer;
+            transition: transform 0.2s;
         }
+
+        .vinyl-wrapper:active { transform: scale(0.98); }
 
         .vinyl-record {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background-color: var(--ink-color);
-            /* Bỏ vân gradient rẻ tiền, dùng bóng đổ nhẹ */
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%; height: 100%; border-radius: 50%;
+            background-color: #1a1a1a;
+            background-image: repeating-radial-gradient(#1a1a1a 0, #1a1a1a 2px, #2a2a2a 3px, #2a2a2a 4px);
+            display: flex; justify-content: center; align-items: center;
+            position: relative; overflow: hidden;
         }
 
-        /* Tâm đĩa trắng - Tương phản cao */
+        /* Bóng phản quang */
+        .vinyl-record::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%, rgba(255,255,255,0.05) 100%);
+            pointer-events: none;
+        }
+
         .vinyl-label {
-            width: 80px;
-            height: 80px;
-            background-color: var(--bg-color);
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
+            width: 80px; height: 80px; background-color: #f0f0f0; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; border: 1px solid #ddd; z-index: 2;
         }
         
-        .vinyl-dot {
-            width: 12px; height: 12px;
-            background-color: var(--ink-color);
-            border-radius: 50%;
+        /* Icon Play nhỏ ở tâm */
+        .vinyl-center-icon {
+            width: 0; height: 0;
+            border-top: 6px solid transparent; border-bottom: 6px solid transparent;
+            border-left: 10px solid #111; margin-left: 2px;
+            transition: all 0.3s;
         }
 
-        .spinning { animation: spin 1.5s linear infinite; }
+        .spinning .vinyl-center-icon { opacity: 0; }
+        .spinning { animation: spin 4s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- TYPOGRAPHY CHO CÂU CHÚC --- */
+        /* --- THÔNG TIN --- */
         .message-area {
-            min-height: 100px;
-            display: flex; flex-direction: column; justify-content: center;
-            margin-bottom: 30px;
+            min-height: 90px; display: flex; flex-direction: column; justify-content: center; margin-bottom: 20px; width: 100%;
         }
 
         .wishes-text {
-            font-size: 15px;
-            font-weight: 600;
-            line-height: 1.6;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 15px; font-weight: 600; line-height: 1.5; text-transform: uppercase; letter-spacing: 1px;
+            min-height: 48px; transition: opacity 0.3s;
         }
 
         .meta-text {
-            font-size: 10px;
-            color: #777;
-            letter-spacing: 3px;
-            margin-top: 15px;
-            font-weight: 400;
-            border-top: 1px solid #ccc;
-            padding-top: 10px;
-            display: inline-block;
-            width: 50px; /* Đường gạch ngắn minimal */
-            margin-left: auto; margin-right: auto;
+            font-size: 10px; color: #777; letter-spacing: 2px; margin-top: 10px; font-weight: 700;
         }
 
-        /* --- NÚT BẤM --- */
-        .btn-control {
-            width: 64px; height: 64px;
-            border-radius: 50%;
-            background: transparent;
-            border: 2px solid var(--ink-color);
-            color: var(--ink-color);
-            cursor: pointer;
-            display: flex; justify-content: center; align-items: center;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-control:active { background: var(--ink-color); color: var(--bg-color); transform: scale(0.9); }
-        
-        .icon-play {
-            width: 0; height: 0;
-            border-top: 8px solid transparent; border-bottom: 8px solid transparent;
-            border-left: 14px solid currentColor;
-            margin-left: 4px;
+        /* --- PLAYER HUB (TIME) --- */
+        .player-controls {
+            width: 100%; margin-top: 20px;
         }
 
-        .hidden { opacity: 0; pointer-events: none; transition: opacity 0.5s; }
-        .blur-text { filter: blur(4px); opacity: 0.7; } /* Hiệu ứng chữ chạy mờ */
+        .progress-bar-bg {
+            width: 100%; height: 4px; background: #ccc; border-radius: 2px; overflow: hidden; position: relative;
+        }
+
+        .progress-bar-fill {
+            width: 0%; height: 100%; background: var(--ink-color); transition: width 0.2s linear;
+        }
+
+        .time-display {
+            display: flex; justify-content: space-between; margin-top: 8px;
+            font-size: 11px; font-family: 'Manrope', monospace; font-weight: 600; color: #555;
+        }
 
     </style>
 </head>
@@ -162,22 +129,28 @@
     <div class="container">
         <div class="brand-name">PHOTONOIR</div>
 
-        <div class="vinyl-wrapper">
-            <div class="vinyl-record" id="vinyl">
+        <div class="vinyl-wrapper" id="vinyl" onclick="togglePlay()">
+            <div class="vinyl-record">
                 <div class="vinyl-label">
-                    <div class="vinyl-dot"></div>
+                    <div class="vinyl-center-icon" id="centerIcon"></div>
                 </div>
             </div>
         </div>
 
         <div class="message-area">
-            <div class="wishes-text" id="display-text">TAP PLAY TO START</div>
-            <div class="meta-text" id="meta-text">2026</div>
+            <div class="wishes-text" id="display-text">TAP RECORD TO PLAY</div>
+            <div class="meta-text" id="meta-text">ALBUM: 2026 COLLECTION</div>
         </div>
 
-        <button class="btn-control" id="playBtn" onclick="runSequence()">
-            <div class="icon-play"></div>
-        </button>
+        <div class="player-controls">
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
+            <div class="time-display">
+                <span id="currentTime">0:00</span>
+                <span id="totalTime">--:--</span>
+            </div>
+        </div>
     </div>
 
     <audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3"></audio>
@@ -185,78 +158,143 @@
     <script>
         const audio = document.getElementById('bgMusic');
         const vinyl = document.getElementById('vinyl');
-        const playBtn = document.getElementById('playBtn');
         const displayText = document.getElementById('display-text');
         const metaText = document.getElementById('meta-text');
+        const progressFill = document.getElementById('progressFill');
+        const currentTimeEl = document.getElementById('currentTime');
+        const totalTimeEl = document.getElementById('totalTime');
 
-        // DANH SÁCH CÂU CHÚC (Đã biên tập lại cho ngắn gọn, chất Noir)
+        // Danh sách câu chúc
         const wishes = [
-            "FRAME 01: Một khởi đầu rực rỡ và đầy kiêu hãnh.",
-            "SCENE 2026: Sống trọn từng khoảnh khắc điện ảnh.",
-            "FOCUS: Lấy nét vào những điều làm bạn hạnh phúc.",
-            "CUT: Bỏ lại nỗi buồn. Chỉ giữ lại niềm vui.",
-            "ACTION: Dám làm những điều chưa từng dám.",
-            "FLASH: Tỏa sáng theo cách riêng của bạn.",
-            "ZOOM IN: Tìm thấy những kết nối chân thật nhất.",
-            "SPECIAL GIFT: Voucher 20% - Chụp màn hình ngay!",
-            "SOUNDTRACK: Năm nay sẽ là bản nhạc hay nhất đời bạn."
+            "TRACK 01: Khởi đầu rực rỡ & đầy kiêu hãnh.",
+            "TRACK 02: Sống trọn từng khoảnh khắc điện ảnh.",
+            "TRACK 03: Out nét nỗi buồn, lấy nét niềm vui.",
+            "TRACK 04: Dám làm những điều chưa từng dám.",
+            "TRACK 05: Tỏa sáng theo cách riêng của bạn.",
+            "TRACK 06: Tìm thấy kết nối chân thật nhất.",
+            "BONUS TRACK: Voucher 20% (Chụp màn hình ngay!)",
+            "TRACK 08: Bản nhạc hay nhất đời bạn.",
+            "TRACK 09: Yêu bản thân nhiều hơn một chút."
         ];
 
+        // Tên khóa lưu trữ (Thay đổi tên này nếu muốn reset tất cả khách hàng cũ)
+        const STORAGE_KEY = 'photonoir_one_wish_only_v1';
+        
+        let isPlaying = false;
+        let shuffleInterval = null;
+        let userWish = null; // Biến lưu trữ câu chúc của người dùng
+
+        // Định dạng thời gian
+        function formatTime(seconds) {
+            if(isNaN(seconds)) return "0:00";
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min}:${sec < 10 ? '0' + sec : sec}`;
+        }
+
+        // Khi tải trang: Kiểm tra xem khách đã có câu chúc chưa
         window.onload = function() {
-            // Thay đổi key version 4
-            const savedWish = localStorage.getItem('photonoir_v4');
-            if (savedWish) {
-                showFinal(savedWish);
+            // Lấy dữ liệu từ bộ nhớ máy
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            
+            if (savedData) {
+                userWish = savedData;
+                // Nếu đã có, hiển thị luôn (nhưng chưa phát nhạc)
+                displayText.innerText = userWish;
+                metaText.innerText = "YOUR EXCLUSIVE TRACK";
             }
         };
 
-        function runSequence() {
-            // 1. Kích hoạt
-            audio.play().catch(e => console.log("Cần tương tác user để play nhạc"));
-            vinyl.classList.add('spinning');
-            playBtn.classList.add('hidden');
-            metaText.innerText = "SHUFFLING";
-            
-            // 2. Hiệu ứng chữ chạy (Slot Machine Effect)
-            let count = 0;
-            const maxRun = 25; // Số lần nhảy chữ
-            const speed = 80;  // Tốc độ nhảy (ms)
+        audio.onloadedmetadata = function() {
+            totalTimeEl.innerText = formatTime(audio.duration);
+        };
 
-            const interval = setInterval(() => {
-                // Hiển thị chữ ngẫu nhiên + Hiệu ứng mờ
-                displayText.innerText = wishes[Math.floor(Math.random() * wishes.length)];
-                displayText.style.opacity = 0.5; 
-                
-                count++;
-                if (count >= maxRun) {
-                    clearInterval(interval);
-                    finishSequence();
-                }
-            }, speed);
+        // Hàm xử lý khi bấm vào đĩa
+        function togglePlay() {
+            if (isPlaying) {
+                pauseTrack();
+            } else {
+                playTrack();
+            }
         }
 
-        function finishSequence() {
-            // Chọn kết quả thật
-            const finalResult = wishes[Math.floor(Math.random() * wishes.length)];
-            localStorage.setItem('photonoir_v4', finalResult);
+        function playTrack() {
+            audio.play();
+            vinyl.classList.add('spinning');
+            isPlaying = true;
 
-            // Hiển thị kết quả chốt
+            // KIỂM TRA QUAN TRỌNG:
+            if (userWish) {
+                // TRƯỜNG HỢP 1: Đã có câu chúc rồi -> Chỉ phát nhạc, không trộn nữa
+                displayText.innerText = userWish;
+                metaText.innerText = "NOW PLAYING (REPLAY)";
+                displayText.style.opacity = 1;
+            } else {
+                // TRƯỜNG HỢP 2: Chưa có câu chúc -> Bắt đầu Shuffle tìm vận mệnh
+                startShuffleEffect();
+            }
+        }
+
+        function pauseTrack() {
+            audio.pause();
+            vinyl.classList.remove('spinning');
+            isPlaying = false;
+            // Nếu đang trộn dở mà pause thì dừng trộn luôn
+            if (shuffleInterval) clearInterval(shuffleInterval);
+        }
+
+        function startShuffleEffect() {
+            metaText.innerText = "SHUFFLING...";
+            let count = 0;
+            const maxRun = 30; // Chạy lâu một chút cho hồi hộp
+            
+            shuffleInterval = setInterval(() => {
+                displayText.innerText = wishes[Math.floor(Math.random() * wishes.length)];
+                displayText.style.opacity = 0.5;
+                count++;
+                
+                if (count >= maxRun) {
+                    clearInterval(shuffleInterval);
+                    finalizeResult();
+                }
+            }, 100);
+        }
+
+        function finalizeResult() {
+            // Chốt kết quả ngẫu nhiên
+            const finalResult = wishes[Math.floor(Math.random() * wishes.length)];
+            
+            // LƯU VĨNH VIỄN VÀO MÁY KHÁCH
+            localStorage.setItem(STORAGE_KEY, finalResult);
+            userWish = finalResult; // Cập nhật biến toàn cục
+
+            // Hiển thị
             displayText.innerText = finalResult;
             displayText.style.opacity = 1;
-            displayText.style.transform = "scale(1.05)"; // Phóng to nhẹ
-            displayText.style.transition = "all 0.5s ease";
+            displayText.style.transform = "scale(1.05)";
+            setTimeout(() => displayText.style.transform = "scale(1)", 200);
             
             metaText.innerText = "NOW PLAYING";
-            
-            // Rung nhẹ
-            if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+            if (navigator.vibrate) navigator.vibrate(50);
         }
 
-        function showFinal(text) {
-            displayText.innerText = text;
-            metaText.innerText = "SAVED TRACK";
-            playBtn.classList.add('hidden');
-        }
+        // Cập nhật thanh thời gian
+        audio.ontimeupdate = function() {
+            if (audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = percent + '%';
+                currentTimeEl.innerText = formatTime(audio.currentTime);
+            }
+        };
+
+        audio.onended = function() {
+            isPlaying = false;
+            vinyl.classList.remove('spinning');
+            progressFill.style.width = '0%';
+            currentTimeEl.innerText = "0:00";
+            metaText.innerText = "FINISHED";
+        };
+
     </script>
 </body>
 </html>
