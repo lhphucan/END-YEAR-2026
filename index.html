@@ -33,12 +33,11 @@
         .container {
             width: 100%; max-width: 480px; height: 100%; 
             display: flex; flex-direction: column; 
-            /* Dồn tất cả lên trên */
             justify-content: flex-start; 
             align-items: center; z-index: 2; 
             
-            /* Padding trên nhỏ để Logo sát đỉnh */
-            padding: calc(10px + env(safe-area-inset-top)) 20px 20px;
+            /* THAY ĐỔI 1: Padding trên tối thiểu để đẩy logo sát đỉnh */
+            padding: env(safe-area-inset-top) 20px 20px;
         }
 
         /* --- 1. LOGO --- */
@@ -46,8 +45,8 @@
             width: 100%;
             display: flex; justify-content: center; align-items: flex-start;
             flex-shrink: 0;
-            /* Giảm khoảng cách dưới logo để kéo đĩa lên */
-            margin-bottom: 5px; 
+            /* THAY ĐỔI 2: Loại bỏ khoảng cách dưới để đĩa than sát vào */
+            margin-bottom: 0px; 
             z-index: 10;
         }
 
@@ -61,18 +60,19 @@
             display: flex; flex-direction: column; 
             justify-content: flex-start; align-items: center;
             width: 100%;
-            /* Kéo khối này lên cao, sát vào logo hơn nữa */
-            margin-top: -10px; 
+            /* THAY ĐỔI 3: Tăng margin âm để kéo khối này lên cao hơn nữa */
+            margin-top: -25px; 
         }
 
         .vinyl-container {
             position: relative;
-            width: 55vmin; height: 55vmin; 
-            max-width: 260px; max-height: 260px;
+            /* THAY ĐỔI 4: Tăng kích thước đĩa than (to hơn) */
+            width: 64vmin; height: 64vmin; 
+            max-width: 300px; max-height: 300px;
             display: flex; justify-content: center; align-items: center;
             transition: transform 0.1s;
             /* Khoảng cách giữa Đĩa và Chữ */
-            margin-bottom: 20px; 
+            margin-bottom: 25px; 
         }
         .vinyl-container:active { transform: scale(0.97); }
 
@@ -130,10 +130,6 @@
             width: 100%; 
             padding: 0 20px;
             flex-shrink: 0;
-            
-            /* THAY ĐỔI LỚN: */
-            /* Thay vì dùng margin-top: auto (đẩy xuống đáy), ta dùng số cố định */
-            /* Để nó bám sát theo phần Text bên trên */
             margin-top: 35px; 
         }
         
@@ -150,8 +146,8 @@
         /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 380px) or (max-height: 700px) {
             .logo-img { width: 90%; }
-            /* Màn hình nhỏ thì thu đĩa lại xíu để vừa */
-            .vinyl-container { width: 48vmin; height: 48vmin; margin-bottom: 15px; }
+            /* Cập nhật kích thước đĩa cho màn nhỏ cũng to hơn chút */
+            .vinyl-container { width: 55vmin; height: 55vmin; margin-bottom: 15px; }
             .wishes-text { font-size: 14px; }
             .player-wrapper { margin-top: 25px; }
         }
