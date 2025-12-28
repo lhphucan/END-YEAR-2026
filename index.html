@@ -43,12 +43,13 @@
         /* HEADER GROUP */
         .header-group { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 25px; z-index: 10; }
         
+        /* Logo */
         .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 10px; }
         
-        /* COUNTDOWN TIMER */
+        /* Countdown Timer */
         .countdown-timer {
             font-family: 'Manrope', sans-serif;
-            font-size: 32px; font-weight: 800;
+            font-size: 32px; font-weight: 800; /* To và Đậm */
             color: var(--accent-color);
             letter-spacing: 2px;
             margin-bottom: 5px; 
@@ -57,13 +58,14 @@
             text-shadow: 0 2px 0 rgba(255,255,255,0.5);
         }
 
-        /* SUBTITLE */
+        /* Subtitle */
         .sub-logo-text { 
             font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; 
             color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; 
             text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); transition: all 0.5s ease; 
         }
 
+        /* Vinyl Area */
         .center-content { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; position: relative; z-index: 5; margin-bottom: 20px; }
         .vinyl-container { position: relative; width: 60vmin; height: 60vmin; max-width: 300px; max-height: 300px; display: flex; justify-content: center; align-items: center; transition: transform 0.1s; margin-bottom: 20px; }
         .vinyl-container:active { transform: scale(0.97); }
@@ -72,18 +74,18 @@
         .spinning-anim { animation: spin 8s linear infinite !important; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        /* CSS LABEL ĐÃ SỬA ĐỂ CHỈ ĐỔI MÀU */
+        /* Nhãn đĩa đổi màu */
         .vinyl-label { 
             position: absolute; top: 34%; left: 34%; width: 32%; height: 32%; 
-            background-color: #f0f0f0; /* Màu mặc định ban đầu */
-            border-radius: 50%; 
+            background-color: #f0f0f0; border-radius: 50%; 
             display: flex; justify-content: center; align-items: center; 
             border: 1px solid #aaa; z-index: 5; 
             box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
-            transition: background-color 0.5s ease; /* Hiệu ứng chuyển màu mượt */
+            transition: background-color 0.5s ease;
         }
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
 
+        /* Message */
         .message-area { width: 100%; text-align: center; padding: 0 10px; display: flex; flex-direction: column; gap: 5px; height: 80px; justify-content: center; flex-shrink: 0; }
         .wishes-text { font-size: 15px; font-weight: 800; line-height: 1.35; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0px; transition: opacity 0.3s; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 1px rgba(255,255,255,0.2); }
         .meta-text { font-size: 10px; color: #555; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
@@ -91,29 +93,35 @@
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         .glitch { animation: glitch-anim 0.3s both; color: var(--accent-color) !important; } 
 
+        /* Player Controls */
         .player-wrapper { width: 100%; padding: 0 20px; flex-shrink: 0; margin-bottom: 30px; }
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
         .progress-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px; overflow: hidden; }
         .progress-bar-fill { width: 0%; height: 100%; background: var(--accent-color); transition: width 0.1s linear; }
         .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #000; font-family: monospace; }
-        .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 12px; display: flex; gap: 5px; justify-content: center; align-items: center; }
+        
+        .visitor-counter { 
+            font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; 
+            font-weight: 700; margin-top: 12px; 
+            display: flex; gap: 5px; justify-content: center; align-items: center;
+        }
         #busuanzi_container_site_pv { display: inline-block !important; }
 
         .scroll-hint { position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0; animation: float 2s infinite; cursor: pointer; z-index: 20; transition: opacity 1s; }
         .show-scroll { opacity: 0.6 !important; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 
-        /* --- SCREEN ANALYSIS & SHARE --- */
+        /* --- SCREEN ANALYSIS --- */
         .screen-analysis { display: none; width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 60px 30px; background: #EAEAEA; animation: fadeIn 1s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .analysis-box { border: 2px solid #000; padding: 30px 20px; background: #F2F2F2; box-shadow: 8px 8px 0px rgba(0,0,0,0.1); text-align: center; }
         .analysis-label { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px; text-align: left; }
+        /* Title: Không nghiêng */
         .analysis-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 22px; font-style: normal; color: var(--accent-color); margin-bottom: 20px; line-height: 1.3; text-align: left; }
         .analysis-content { font-family: 'Manrope', sans-serif; font-size: 15px; line-height: 1.7; color: #333; text-align: justify; margin-bottom: 25px; }
 
-        /* NÚT SHARE */
         .share-btn {
             background-color: var(--accent-color); color: white;
             font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1px;
@@ -128,6 +136,7 @@
         .screen-letter { width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 80px 30px 120px; background: linear-gradient(180deg, rgba(224,224,224,0) 0%, rgba(245,245,245,0.95) 15%, #F5F5F5 100%); }
         .letter-container { border-left: 2px solid var(--accent-color); padding-left: 25px; }
         .letter-header { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; color: var(--accent-color); opacity: 0.8; }
+        /* Body: Không nghiêng */
         .letter-body { font-family: 'Playfair Display', serif; font-size: 18px; line-height: 1.8; color: #111; font-weight: 400; font-style: normal; }
         .letter-body p { margin-bottom: 25px; }
         .letter-body p:first-child::first-letter { font-size: 3.5em; float: left; line-height: 0.8; margin-right: 10px; font-weight: 600; color: var(--accent-color); }
@@ -256,7 +265,7 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // --- DATA TRACKS (ĐÃ BỎ COVER, THÊM MÀU SẮC) ---
+        // --- DATA 15 TRACKS (14 BÀI THƯỜNG + 1 BÀI VOUCHER) ---
         const tracks = [
             { id: 1, wish: "TRACK 01: KHỞI ĐẦU RỰC RỠ & ĐẦY KIÊU HÃNH.", song: "Sunroof - Nicky Youre", file: "track1.mp3", color: "#FFD700", analysis: "Vũ trụ gửi tín hiệu này vì bạn đã sẵn sàng để 'mở nóc' tâm hồn mình. Năm 2026 không phải lúc để trốn trong bóng tối. Sự lạc quan và năng lượng của bạn sẽ là nam châm thu hút những cơ hội bất ngờ." },
             { id: 2, wish: "TRACK 02: SỐNG TRỌN TỪNG KHOẢNH KHẮC ĐIỆN ẢNH.", song: "Golden Hour - JVKE", file: "track2.mp3", color: "#FFA500", analysis: "Có vẻ như bạn đang tìm kiếm vẻ đẹp trong những điều bình dị. Bản nhạc này chọn bạn để nhắc nhở: Bạn chính là nhân vật chính (Main Character) trong thước phim đời mình. Hãy tỏa sáng, ngay cả khi không có ánh đèn sân khấu." },
@@ -264,12 +273,22 @@
             { id: 4, wish: "TRACK 04: DÁM LÀM NHỮNG ĐIỀU CHƯA TỪNG DÁM.", song: "The Nights - Avicii", file: "track4.mp3", color: "#4B0082", analysis: "Có những giấc mơ bạn đã ấp ủ quá lâu. Đây là tín hiệu: 'Bây giờ hoặc không bao giờ'. Năm 2026, hãy đi con đường bạn sợ hãi, vì đó là nơi kho báu đang chờ đợi." },
             { id: 5, wish: "TRACK 05: TỎA SÁNG THEO CÁCH RIÊNG CỦA BẠN.", song: "Diamonds - Rihanna", file: "track5.mp3", color: "#C0C0C0", analysis: "Áp lực tạo nên kim cương. Những thử thách vừa qua chỉ đang mài giũa bạn sáng hơn mà thôi. Đừng ngại khác biệt, vì sự độc bản của bạn chính là thứ đắt giá nhất." },
             { id: 6, wish: "TRACK 06: TÌM THẤY KẾT NỐI CHÂN THẬT NHẤT.", song: "Until I Found You", file: "track6.mp3", color: "#DC143C", analysis: "Bạn đang ở tần số của tình yêu và sự kết nối sâu sắc. Có thể là một tri kỷ, một người bạn tâm giao, hoặc đơn giản là tìm lại sự kết nối với chính bản thân mình. Hãy mở lòng." },
-            { id: 7, wish: "BONUS TRACK: VOUCHER 20% (CHỤP MÀN HÌNH NGAY!)", song: "Money - Lisa", file: "track7.mp3", color: "#006400", analysis: "Thần tài gõ cửa! Sự may mắn về tài chính và công việc đang hướng về phía bạn. Đừng quên nắm bắt cơ hội (và cả chiếc voucher này nữa) nhé!" },
+            
+            // --- TRACK 7: VOUCHER (LOGIC SỐ 26) ---
+            { id: 7, wish: "BONUS TRACK: VOUCHER GIẢM 20K (CHỤP MÀN HÌNH NGAY!)", song: "Money - Lisa", file: "track7.mp3", color: "#006400", analysis: "Thần tài gõ cửa! Sự may mắn về tài chính và công việc đang hướng về phía bạn. Đừng quên nắm bắt cơ hội (và cả chiếc voucher này nữa) nhé!" },
+            
             { id: 8, wish: "TRACK 08: BẢN NHẠC HAY NHẤT ĐỜI BẠN.", song: "Best Day Of My Life", file: "track8.mp3", color: "#87CEEB", analysis: "Năng lượng tích cực cực đại! Bạn đang thu hút những ngày tuyệt vời phía trước. Hãy thức dậy mỗi ngày với suy nghĩ rằng điều kỳ diệu sắp xảy ra, và nó sẽ đến." },
-            { id: 9, wish: "TRACK 09: YÊU BẢN THÂN NHIỀU HƠN MỘT CHÚT.", song: "Flowers - Miley Cyrus", file: "track9.mp3", color: "#960018", analysis: "Độc lập, tự do và kiêu hãnh. Tần số này nhắc bạn rằng không ai có thể yêu thương bạn tốt hơn chính bạn. Hãy tự mua hoa cho mình, tự tạo niềm vui cho mình." }
+            { id: 9, wish: "TRACK 09: YÊU BẢN THÂN NHIỀU HƠN MỘT CHÚT.", song: "Flowers - Miley Cyrus", file: "track9.mp3", color: "#960018", analysis: "Độc lập, tự do và kiêu hãnh. Tần số này nhắc bạn rằng không ai có thể yêu thương bạn tốt hơn chính bạn. Hãy tự mua hoa cho mình, tự tạo niềm vui cho mình." },
+            { id: 10, wish: "TRACK 10: CHỮA LÀNH NHỮNG TỔN THƯƠNG.", song: "Heal The World - MJ", file: "track10.mp3", color: "#2E8B57", analysis: "Một trái tim ấm áp là liều thuốc tốt nhất. Năm 2026, hãy dành thời gian chăm sóc sức khỏe tinh thần của mình và lan tỏa sự tử tế. Thế giới của bạn sẽ trở nên dịu dàng hơn bao giờ hết." },
+            { id: 11, wish: "TRACK 11: BỨT PHÁ MỌI GIỚI HẠN.", song: "Unstoppable - Sia", file: "track11.mp3", color: "#FF4500", analysis: "Bạn đang sở hữu một nguồn năng lượng tiềm ẩn cực lớn. Đừng để bất kỳ ai nói rằng bạn không thể. Hãy giữ vững niềm tin, đạp đổ mọi rào cản và chứng minh cho cả thế giới thấy bản lĩnh của bạn." },
+            { id: 12, wish: "TRACK 12: MỌI CHUYỆN RỒI SẼ ỔN THÔI.", song: "Three Little Birds - Bob Marley", file: "track12.mp3", color: "#3CB371", analysis: "'Don't worry about a thing...' - Vũ trụ muốn nhắn nhủ bạn rằng đừng quá lo lắng về tương lai. Hãy thả lỏng, tin tưởng vào dòng chảy cuộc đời. Mọi khó khăn hiện tại chỉ là tạm thời, và bình minh rực rỡ đang chờ đón bạn." },
+            { id: 13, wish: "TRACK 13: SỐNG KHÔNG HỐI TIẾC & CHÁY HẾT MÌNH.", song: "Counting Stars - OneRepublic", file: "track13.mp3", color: "#800080", analysis: "Đừng chỉ ngồi đó và đếm sao, hãy vươn tay hái lấy chúng. Tần số này báo hiệu một năm bạn sẽ dám nghĩ, dám làm và dám theo đuổi đam mê đến cùng. Tiền bạc sẽ tự đến khi bạn làm điều mình yêu." },
+            { id: 14, wish: "TRACK 14: TÌM THẤY ĐỒNG ĐỘI & SỰ HẬU THUẪN.", song: "Count On Me - Bruno Mars", file: "track14.mp3", color: "#FF7F50", analysis: "Bạn không cần phải gồng gánh cả thế giới một mình. Năm nay, những người bạn chân thành, những đối tác tin cậy sẽ xuất hiện để sát cánh cùng bạn. Hãy trân trọng những mối quan hệ chất lượng." },
+            { id: 15, wish: "TRACK 15: GHI TÊN MÌNH LÊN BẢNG VÀNG.", song: "Hall of Fame - The Script", file: "track15.mp3", color: "#B8860B", analysis: "Vinh quang đang chờ đợi ở phía cuối con đường. Mọi nỗ lực bền bỉ của bạn sẽ được đền đáp xứng đáng. Hãy kiên trì, vì bạn sinh ra là để trở thành một nhà vô địch trong lĩnh vực của mình." }
         ];
 
         const STORAGE_KEY = 'photonoir_tracklist_v15';
+        const SPIN_COUNT_KEY = 'photonoir_spin_count';
         let isPlaying = false;
         let userTrack = null;
 
@@ -308,12 +327,14 @@
         function startShuffle() {
             displayText.classList.remove('breathing');
             metaText.innerText = "SCANNING FREQUENCY...";
-            // Reset về màu mặc định khi quay
             label.style.backgroundColor = '#f0f0f0'; 
             
             let count = 0; let speed = 50; let maxCount = 40;
+            // Filter out Voucher for visual shuffling
+            const randomPool = tracks.filter(t => t.id !== 7);
+
             function step() {
-                const randomItem = tracks[Math.floor(Math.random() * tracks.length)];
+                const randomItem = randomPool[Math.floor(Math.random() * randomPool.length)];
                 displayText.innerText = randomItem.wish;
                 displayText.style.opacity = 0.6;
                 count++;
@@ -328,9 +349,26 @@
         }
 
         function finalizeResult() {
-            const randomIndex = Math.floor(Math.random() * tracks.length);
-            userTrack = tracks[randomIndex];
-            localStorage.setItem(STORAGE_KEY, randomIndex);
+            // TĂNG SỐ LƯỢT CHƠI
+            let spinCount = parseInt(localStorage.getItem(SPIN_COUNT_KEY)) || 0;
+            spinCount++;
+            localStorage.setItem(SPIN_COUNT_KEY, spinCount);
+
+            let selectedTrack;
+
+            // LOGIC SỐ 26: Nếu chia hết cho 26 thì ra Voucher (Track ID 7)
+            if (spinCount > 0 && spinCount % 26 === 0) {
+                selectedTrack = tracks.find(t => t.id === 7); 
+            } else {
+                // Nếu không thì random trong 14 bài còn lại (trừ Voucher)
+                const normalTracks = tracks.filter(t => t.id !== 7);
+                selectedTrack = normalTracks[Math.floor(Math.random() * normalTracks.length)];
+            }
+
+            // Lưu kết quả theo index của mảng gốc
+            const originalIndex = tracks.indexOf(selectedTrack);
+            userTrack = selectedTrack;
+            localStorage.setItem(STORAGE_KEY, originalIndex);
             
             audio.src = userTrack.file;
             audio.play().catch(e => console.log("Interaction needed"));
@@ -349,7 +387,7 @@
             displayText.classList.add('glitch');
             document.querySelector('.player-controls').parentElement.classList.add('has-played');
             
-            // CẬP NHẬT MÀU NHÃN ĐĨA
+            // ĐỔI MÀU NHÃN
             label.style.backgroundColor = track.color;
             
             analysisSection.style.display = 'block';
@@ -367,7 +405,6 @@
             analysisSection.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // CHỨC NĂNG SHARE
         function shareResult() {
             if (!userTrack) return;
             const text = `Tần số 2026 của tôi: "${userTrack.song}" - ${userTrack.wish}. Xem thông điệp vũ trụ của bạn tại: ${window.location.href}`;
