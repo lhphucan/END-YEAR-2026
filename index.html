@@ -45,11 +45,10 @@
         
         .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 10px; }
         
-        /* COUNTDOWN TIMER - ĐÃ TĂNG KÍCH THƯỚC */
+        /* COUNTDOWN TIMER */
         .countdown-timer {
             font-family: 'Manrope', sans-serif;
-            font-size: 32px; /* To hơn hẳn */
-            font-weight: 800; /* Rất đậm */
+            font-size: 32px; font-weight: 800;
             color: var(--accent-color);
             letter-spacing: 2px;
             margin-bottom: 5px; 
@@ -58,7 +57,12 @@
             text-shadow: 0 2px 0 rgba(255,255,255,0.5);
         }
 
-        .sub-logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); transition: all 0.5s ease; }
+        /* SUBTITLE - ĐÃ ĐỔI THÀNH ALBUM */
+        .sub-logo-text { 
+            font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; 
+            color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; 
+            text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); transition: all 0.5s ease; 
+        }
 
         .center-content { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; position: relative; z-index: 5; margin-bottom: 20px; }
         .vinyl-container { position: relative; width: 60vmin; height: 60vmin; max-width: 300px; max-height: 300px; display: flex; justify-content: center; align-items: center; transition: transform 0.1s; margin-bottom: 20px; }
@@ -153,7 +157,7 @@
         @media (max-width: 380px) or (max-height: 700px) {
             .logo-img { width: 80%; }
             .sub-logo-text { font-size: 32px; }
-            .countdown-timer { font-size: 26px; } /* Mobile thì bé hơn một xíu cho cân đối */
+            .countdown-timer { font-size: 26px; } 
             .vinyl-container { width: 55vmin; height: 55vmin; }
             .wishes-text { font-size: 14px; }
         }
@@ -173,7 +177,7 @@
             
             <div id="countdown" class="countdown-timer">00:00:00:00</div>
             
-            <h2 class="sub-logo-text" id="mainTitle">end OF The YEAR</h2>
+            <h2 class="sub-logo-text" id="mainTitle">Album OF The YEAR</h2>
         </div>
 
         <div class="center-content">
