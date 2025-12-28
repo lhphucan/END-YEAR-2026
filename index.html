@@ -3,60 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 The Next Scene</title>
+    <title>PHOTONOIR - 2026 Soundtrack</title>
     <style>
-        body { background: #000; color: #00ff00; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .monitor { border: 2px solid #333; padding: 30px; position: relative; width: 80%; max-width: 400px; background: rgba(10,10,10,0.9); box-shadow: 0 0 20px rgba(0,255,0,0.2); }
-        .corner { position: absolute; width: 15px; height: 15px; border: 2px solid #fff; }
-        .tl { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
-        .tr { top: -2px; right: -2px; border-left: 0; border-bottom: 0; }
-        .bl { bottom: -2px; left: -2px; border-right: 0; border-top: 0; }
-        .br { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
-        .rec { color: red; animation: blink 1s infinite; font-weight: bold; }
-        @keyframes blink { 50% { opacity: 0; } }
-        #text { font-size: 20px; min-height: 80px; margin-top: 20px; line-height: 1.4; color: #fff; }
-        button { background: none; border: 1px solid #00ff00; color: #00ff00; padding: 10px 20px; cursor: pointer; margin-top: 20px; font-family: inherit; }
-        button:hover { background: #00ff00; color: #000; }
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            letter-spacing: 0.05em;
+        }
+
+        .player-card {
+            width: 300px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 0.3em;
+            margin-bottom: 60px;
+            text-transform: uppercase;
+        }
+
+        .album-art {
+            width: 200px;
+            height: 200px;
+            background-color: #000;
+            margin: 0 auto 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Hiệu ứng đĩa quay nhẹ khi đang phát nhạc */
+        .album-art.playing {
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        .album-art::after {
+            content: "";
+            width: 40px;
+            height: 40px;
+            background-color: #fff;
+            border-radius: 50%;
+        }
+
+        .track-info {
+            margin-bottom: 30px;
+        }
+
+        .track-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            min-height: 48px;
+        }
+
+        .artist {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 2px;
+            background-color: #eee;
+            margin-bottom: 40px;
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #000;
+            transition: width 0.1s linear;
+        }
+
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #000;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background: none;
+            outline: none;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 14px solid #000;
+            margin-left: 4px;
+        }
+
+        .pause-icon {
+            display: none;
+            width: 14px;
+            height: 18px;
+            border-left: 4px solid #000;
+            border-right: 4px solid #000;
+        }
+
+        .playing .triangle { display: none; }
+        .playing .pause-icon { display: block; }
     </style>
 </head>
 <body>
-    <div class="monitor">
-        <div class="corner tl"></div><div class="corner tr"></div>
-        <div class="corner bl"></div><div class="corner br"></div>
-        <div style="font-size: 12px; display: flex; justify-content: space-between;">
-            <span>ISO 400</span>
-            <span class="rec">● REC</span>
-            <span>4K 60FPS</span>
+
+    <div class="player-card">
+        <div class="logo">PHOTONOIR</div>
+
+        <div class="album-art" id="album"></div>
+
+        <div class="track-info">
+            <div class="track-name" id="display-text">Nhấn để nghe thông điệp...</div>
+            <div class="artist">Soul of 2026</div>
         </div>
-        <div id="text"></div>
-        <button onclick="generate()">XEM QUẺ KHÁC</button>
+
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+
+        <div class="controls">
+            <button class="play-btn" id="playBtn" onclick="togglePlay()">
+                <div class="triangle"></div>
+                <div class="pause-icon"></div>
+            </button>
+        </div>
     </div>
 
+    <audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3"></audio>
+
     <script>
+        const audio = document.getElementById('bgMusic');
+        const playBtn = document.getElementById('playBtn');
+        const album = document.getElementById('album');
+        const progressBar = document.getElementById('progress-bar');
+        const textElement = document.getElementById('display-text');
+
         const wishes = [
-            "2026: Đạo diễn cuộc đời mình thật rực rỡ nhé!",
-            "Cắt! 2025 kết thúc rồi. 2026 là một thước phim bom tấn!",
-            "Tình duyên 2026: Không cần Filter vẫn lung linh.",
-            "Tiền tài 2026: Zoom-in liên tục, không điểm dừng.",
-            "Out nét nỗi buồn, lấy nét thành công trong năm mới!",
-            "CHÚC MỪNG! Bạn nhận được Voucher giảm 20% cho lần chụp tới. (Chụp màn hình lại nhé)"
+            "Bắt đầu hành trình mới với thật nhiều khoảnh khắc đáng giá.",
+            "Hãy sống trọn từng khung hình của năm 2026 nhé.",
+            "Mong mọi cảnh quay đều rực rỡ và tràn đầy niềm vui.",
+            "Chạm tới những ước mơ lớn, từng bước một.",
+            "Tìm thấy những kết nối ý nghĩa và chân thật.",
+            "Tạm biệt những điều cũ, mở ra chương mới đầy hứng khởi.",
+            "Chúc bạn luôn giữ vững phong độ và khí chất của riêng mình.",
+            "CHÚC MỪNG! Bạn nhận được Voucher 20% cho lần tới. Chụp màn hình nhé!",
+            "Mỗi ngày là một cảnh quay đẹp, một trải nghiệm quý giá.",
+            "An yên và hạnh phúc đồng hành cùng bạn suốt năm mới."
         ];
 
-        function generate() {
-            const textElement = document.getElementById('text');
-            const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
-            textElement.innerText = '';
-            let i = 0;
-            function type() {
-                if (i < randomWish.length) {
-                    textElement.innerText += randomWish.charAt(i);
-                    i++;
-                    setTimeout(type, 50);
-                }
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                document.body.classList.add('playing');
+                album.classList.add('playing');
+                nextWish();
+            } else {
+                audio.pause();
+                document.body.classList.remove('playing');
+                album.classList.remove('playing');
             }
-            type();
         }
-        window.onload = generate;
+
+        function nextWish() {
+            const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+            textElement.innerText = randomWish;
+        }
+
+        // Cập nhật thanh progress theo thời gian nhạc chạy
+        audio.ontimeupdate = function() {
+            const percentage = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = percentage + "%";
+        };
+
+        // Khi nhạc hết thì quay lại từ đầu
+        audio.onended = function() {
+            document.body.classList.remove('playing');
+            album.classList.remove('playing');
+            progressBar.style.width = "0%";
+        };
     </script>
 </body>
 </html>
