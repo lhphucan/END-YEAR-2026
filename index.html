@@ -33,46 +33,49 @@
         .container {
             width: 100%; max-width: 480px; height: 100%; 
             display: flex; flex-direction: column; 
-            justify-content: flex-start; 
+            justify-content: flex-start; /* Dồn lên trên */
             align-items: center; z-index: 2; 
             
-            /* THAY ĐỔI 1: Padding trên tối thiểu để đẩy logo sát đỉnh */
+            /* THAY ĐỔI 1: Padding trên chỉ lấy đúng phần tai thỏ, bỏ hết khoảng trắng thừa */
             padding: env(safe-area-inset-top) 20px 20px;
         }
 
-        /* --- 1. LOGO --- */
+        /* --- 1. LOGO: SÁT ĐỈNH --- */
         .logo-wrapper {
             width: 100%;
             display: flex; justify-content: center; align-items: flex-start;
             flex-shrink: 0;
-            /* THAY ĐỔI 2: Loại bỏ khoảng cách dưới để đĩa than sát vào */
             margin-bottom: 0px; 
             z-index: 10;
+            /* Đẩy nhẹ lên trên một chút nữa nếu ảnh logo có khoảng trắng thừa */
+            margin-top: 1vh; 
         }
 
         .logo-img { 
-            width: 92%; max-width: 400px; height: auto; object-fit: contain; 
+            width: 95%; /* Logo cực to */
+            max-width: 420px; 
+            height: auto; 
+            object-fit: contain; 
             filter: contrast(1.3) drop-shadow(0 8px 12px rgba(0,0,0,0.15)); 
         }
 
-        /* --- 2. KHỐI GIỮA (ĐĨA + CHỮ) --- */
+        /* --- 2. KHỐI GIỮA: KÉO CAO LÊN --- */
         .center-content {
             display: flex; flex-direction: column; 
             justify-content: flex-start; align-items: center;
             width: 100%;
-            /* THAY ĐỔI 3: Tăng margin âm để kéo khối này lên cao hơn nữa */
-            margin-top: -25px; 
+            /* THAY ĐỔI 2: Margin âm cực lớn để kéo đĩa than lên sát logo */
+            margin-top: -40px; 
         }
 
         .vinyl-container {
             position: relative;
-            /* THAY ĐỔI 4: Tăng kích thước đĩa than (to hơn) */
-            width: 64vmin; height: 64vmin; 
-            max-width: 300px; max-height: 300px;
+            /* Đĩa than to */
+            width: 65vmin; height: 65vmin; 
+            max-width: 320px; max-height: 320px;
             display: flex; justify-content: center; align-items: center;
             transition: transform 0.1s;
-            /* Khoảng cách giữa Đĩa và Chữ */
-            margin-bottom: 25px; 
+            margin-bottom: 20px; 
         }
         .vinyl-container:active { transform: scale(0.97); }
 
@@ -106,8 +109,10 @@
 
         /* --- TEXT --- */
         .message-area { 
-            width: 100%; text-align: center; padding: 0 15px;
+            width: 100%; text-align: center; padding: 0 10px;
             display: flex; flex-direction: column; gap: 5px; 
+            /* Kéo phần chữ sát lên đĩa than hơn chút nữa */
+            margin-top: -5px;
         }
         
         .wishes-text { 
@@ -125,12 +130,12 @@
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
         .glitch { animation: glitch-anim 0.3s both; color: #000; }
 
-        /* --- 3. PLAYER: KÉO LÊN CAO --- */
+        /* --- 3. PLAYER: CÁCH MỘT KHOẢNG NHẸ --- */
         .player-wrapper { 
             width: 100%; 
             padding: 0 20px;
             flex-shrink: 0;
-            margin-top: 35px; 
+            margin-top: 30px; 
         }
         
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
@@ -145,11 +150,11 @@
 
         /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 380px) or (max-height: 700px) {
-            .logo-img { width: 90%; }
-            /* Cập nhật kích thước đĩa cho màn nhỏ cũng to hơn chút */
-            .vinyl-container { width: 55vmin; height: 55vmin; margin-bottom: 15px; }
+            .logo-img { width: 95%; }
+            .vinyl-container { width: 58vmin; height: 58vmin; margin-bottom: 15px; }
             .wishes-text { font-size: 14px; }
-            .player-wrapper { margin-top: 25px; }
+            .player-wrapper { margin-top: 20px; }
+            .container { padding-top: 2px; } /* Màn nhỏ cho sát nóc luôn */
         }
     </style>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
