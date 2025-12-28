@@ -12,97 +12,90 @@
         :root { --bg-color: #E0E0E0; --ink-color: #000; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        body {
+        html, body {
+            margin: 0; padding: 0;
             background-color: var(--bg-color); color: var(--ink-color);
             font-family: 'Manrope', sans-serif;
-            display: flex; justify-content: center; align-items: flex-start;
-            height: 100vh; height: 100dvh; 
-            margin: 0; overflow: hidden; position: relative;
+            
+            /* --- SỬA LỖI LAYOUT BỊ CHIA ĐÔI --- */
+            /* Thay vì display: flex, ta dùng block bình thường để các khối tự xuống dòng */
+            display: block; 
+            min-height: 100vh;
+            overflow-x: hidden; 
+            overflow-y: auto; 
+            scroll-behavior: smooth;
         }
 
         /* --- BACKGROUND --- */
         .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.15) 100%); }
         
-        /* Hiệu ứng Film xước & Nhiễu hạt */
+        /* Hiệu ứng Film */
         .film-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; overflow: hidden; opacity: 0.5; }
         .grain { position: absolute; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.2'/%3E%3C/svg%3E"); animation: grainFlicker 0.2s steps(2) infinite; }
         .scratches { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(0,0,0,0.05) 3px, transparent 4px); animation: scratchJump 0.3s steps(1) infinite; opacity: 0.3; }
         @keyframes grainFlicker { 0% { transform: translate(0,0); } 100% { transform: translate(2px, 2px); } }
         @keyframes scratchJump { 0% { transform: translateX(0); } 50% { transform: translateX(10%); } 100% { transform: translateX(-5%); } }
 
-        /* --- BỐ CỤC CHÍNH --- */
-        .container {
-            width: 100%; max-width: 480px; height: 100%; 
+        /* --- MÀN HÌNH 1: PLAYER --- */
+        .screen-hero {
+            width: 100%; 
+            /* Đảm bảo chiếm trọn màn hình nhưng không quá rộng trên PC */
+            max-width: 480px; 
+            min-height: 100vh;
+            margin: 0 auto; /* Căn giữa màn hình desktop */
+            
             display: flex; flex-direction: column; 
             justify-content: flex-start; /* Dồn lên trên */
-            align-items: center; z-index: 2; 
+            align-items: center; 
+            position: relative; z-index: 2; 
             padding: env(safe-area-inset-top) 20px 20px;
         }
 
-        /* --- 1. LOGO --- */
+        /* LOGO */
         .logo-wrapper {
             width: 100%;
             display: flex; justify-content: center; align-items: flex-start;
             flex-shrink: 0;
             z-index: 10;
-            margin-top: -5px; 
-            margin-bottom: 0;
+            margin-top: -5px; margin-bottom: 0;
         }
-
         .logo-img { 
             width: 95%; max-width: 420px; height: auto; object-fit: contain; 
             filter: contrast(1.3) drop-shadow(0 8px 12px rgba(0,0,0,0.15)); 
         }
 
-        /* --- 2. KHỐI GIỮA (ĐĨA + CHỮ) --- */
+        /* KHỐI GIỮA (ĐĨA + CHỮ) */
         .center-content {
             display: flex; flex-direction: column; 
             justify-content: flex-start; align-items: center;
             width: 100%;
-            /* Kéo sát lên trên */
-            margin-top: -70px; 
+            margin-top: -70px; /* Kéo sát lên logo */
             position: relative; z-index: 5;
         }
 
+        /* ĐĨA THAN (Đã fix texture) */
         .vinyl-container {
-            position: relative;
-            width: 65vmin; height: 65vmin; 
+            position: relative; width: 65vmin; height: 65vmin; 
             max-width: 320px; max-height: 320px;
             display: flex; justify-content: center; align-items: center;
-            transition: transform 0.1s;
-            margin-bottom: 15px; 
+            transition: transform 0.1s; margin-bottom: 15px; 
         }
         .vinyl-container:active { transform: scale(0.97); }
 
-        /* --- SỬA LẠI TEXTURE ĐĨA THAN --- */
         .vinyl-record {
-            width: 100%; height: 100%;
-            border-radius: 50%;
+            width: 100%; height: 100%; border-radius: 50%;
             background-color: #101010;
             box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            /* Tăng độ tương phản của vân đĩa để rõ nét hơn */
-            background: repeating-radial-gradient(
-                #050505 0, 
-                #050505 2px, 
-                #333 3px, 
-                #050505 4px
-            );
+            /* Texture vân đĩa rõ nét */
+            background: repeating-radial-gradient(#050505 0, #050505 2px, #333 3px, #050505 4px);
             position: relative;
         }
-        
-        /* Hiệu ứng bóng sáng phản chiếu (Glossy) */
         .vinyl-record::after {
             content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
-            /* Tạo vệt sáng chéo nhẹ nhàng, không che mất vân đĩa */
-            background: linear-gradient(135deg, 
-                rgba(255,255,255,0) 30%, 
-                rgba(255,255,255,0.1) 50%, 
-                rgba(255,255,255,0) 70%
-            );
+            background: linear-gradient(135deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 70%);
             pointer-events: none;
         }
 
-        /* Class xoay đĩa - Dùng !important để ưu tiên */
         .spinning-anim { animation: spin 8s linear infinite !important; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
@@ -115,34 +108,25 @@
         }
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
 
-        /* --- TEXT --- */
+        /* TEXT */
         .message-area { 
             width: 100%; text-align: center; padding: 0 10px;
             display: flex; flex-direction: column; gap: 5px; 
             height: 85px; justify-content: flex-start; flex-shrink: 0;
         }
-        
         .wishes-text { 
             font-size: 15px; font-weight: 800; line-height: 1.35; 
             color: #000; text-transform: uppercase; letter-spacing: 0px; 
             transition: opacity 0.3s;
             display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
         }
-
-        .meta-text { 
-            font-size: 10px; color: #555; letter-spacing: 2px; 
-            font-weight: 700; text-transform: uppercase; opacity: 0.7;
-        }
-        
+        .meta-text { font-size: 10px; color: #555; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
         .breathing { animation: breathe 3s ease-in-out infinite; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
         .glitch { animation: glitch-anim 0.3s both; color: #000; }
 
-        /* --- 3. PLAYER --- */
-        .player-wrapper { 
-            width: 100%; padding: 0 20px; flex-shrink: 0;
-            margin-top: 15px; 
-        }
+        /* PLAYER */
+        .player-wrapper { width: 100%; padding: 0 20px; flex-shrink: 0; margin-top: 15px; }
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
         .progress-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px; overflow: hidden; }
@@ -151,11 +135,11 @@
         .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 10px; display: flex; gap: 5px; justify-content: center; }
         #busuanzi_container_site_pv { display: none; }
 
-        /* Mũi tên chỉ dẫn */
+        /* Scroll Hint */
         .scroll-hint {
             position: absolute; bottom: 20px; width: 100%; text-align: center;
             font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5;
-            animation: float 2s infinite; cursor: pointer;
+            animation: float 2s infinite; cursor: pointer; left: 0;
         }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 
@@ -330,8 +314,14 @@
             displayText.style.opacity = 1;
             displayText.classList.add('glitch');
             document.querySelector('.player-controls').parentElement.classList.add('has-played');
+            
             audio.src = userTrack.file;
             audio.play().catch(e => console.log("Interaction needed"));
+            
+            record.classList.add('spinning-anim');
+            label.classList.add('spinning-anim');
+            isPlaying = true;
+
             if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
         }
 
@@ -344,7 +334,6 @@
             letterSection.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Fading Volume Script
         window.addEventListener('scroll', () => {
             if (!isPlaying) return;
             const letterTop = letterSection.getBoundingClientRect().top;
