@@ -23,7 +23,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* QUAN TRỌNG: Dùng dvh để tránh thanh địa chỉ che mất */
             height: 100vh; 
             height: 100dvh; 
             margin: 0;
@@ -39,32 +38,31 @@
         }
         @keyframes grainMove { 0%, 100% { transform: translate(0, 0); } 90% { transform: translate(-1%, 7%); } }
 
-        /* BỐ CỤC LINH HOẠT (FLEX) */
+        /* BỐ CỤC MOBILE */
         .container {
             width: 100%; max-width: 400px; 
-            height: 100%; /* Chiếm toàn bộ chiều cao màn hình */
+            height: 100%;
             padding: 20px;
             display: flex; 
             flex-direction: column; 
-            justify-content: space-evenly; /* Chia đều khoảng cách các phần tử */
+            justify-content: space-evenly;
             align-items: center; 
             z-index: 2;
-            padding-bottom: 40px; /* Đẩy nội dung lên cao tránh đáy màn hình */
+            padding-bottom: 30px; 
         }
 
-        /* 1. LOGO - Thu nhỏ lại chút */
+        /* LOGO */
         .logo-img {
-            width: 160px; /* Giảm từ 220px xuống 160px */
+            width: 150px; 
             height: auto;
             object-fit: contain;
+            margin-top: 10px;
             filter: contrast(1.2);
-            margin-top: 20px;
         }
 
-        /* 2. ĐĨA THAN - Thu nhỏ lại */
+        /* ĐĨA THAN */
         .vinyl-container {
             position: relative;
-            /* Dùng đơn vị vmin để đĩa luôn vừa vặn mọi màn hình */
             width: 65vmin; height: 65vmin; 
             max-width: 260px; max-height: 260px;
             display: flex; justify-content: center; align-items: center;
@@ -87,7 +85,7 @@
         }
 
         .vinyl-label {
-            position: absolute; width: 32%; height: 32%; /* Tỉ lệ theo đĩa */
+            position: absolute; width: 32%; height: 32%;
             background-color: #f5f5f5; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
             border: 1px solid #ccc; z-index: 5;
@@ -103,18 +101,18 @@
             50% { margin-left: 0px; margin-top: 2px; }
         }
 
-        /* 3. PHẦN CHỮ - Tinh chỉnh font size */
+        /* TEXT */
         .message-area {
             width: 100%;
             display: flex; flex-direction: column; justify-content: center;
             text-align: center;
-            min-height: 80px; /* Cố định chiều cao tối thiểu */
+            min-height: 90px;
         }
 
         .wishes-text {
-            font-size: 14px; /* Giảm nhẹ font size */
+            font-size: 14px; 
             font-weight: 800; line-height: 1.5;
-            text-transform: uppercase; letter-spacing: 1px;
+            text-transform: uppercase; letter-spacing: 0.5px;
             transition: opacity 0.3s;
         }
 
@@ -128,15 +126,27 @@
         .breathing { animation: breathe 2s ease-in-out infinite; color: #444; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        /* 4. PLAYER BAR - Luôn nằm gọn gàng */
-        .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 10px; }
+        /* PLAYER BAR */
+        .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
 
         .progress-bar-bg { width: 100%; height: 4px; background: #ccc; border-radius: 2px; overflow: hidden; }
         .progress-bar-fill { width: 0%; height: 100%; background: #111; transition: width 0.1s linear; }
         .time-display { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; font-weight: 600; color: #666; }
 
+        /* --- BỘ ĐẾM SỐ NGƯỜI (COUNTER) --- */
+        .visitor-counter {
+            font-size: 9px; color: #888; letter-spacing: 1.5px;
+            text-transform: uppercase; font-weight: 600;
+            margin-top: 10px; opacity: 0.8;
+            display: flex; gap: 5px; justify-content: center;
+        }
+        /* Ẩn bộ đếm khi chưa load xong để đỡ bị giật */
+        #busuanzi_container_site_pv { display: none; } 
+
     </style>
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </head>
 <body>
 
@@ -157,11 +167,20 @@
             <div class="meta-text" id="meta-text">2026 COLLECTION</div>
         </div>
 
-        <div class="player-controls">
-            <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
-            <div class="time-display">
-                <span id="currentTime">0:00</span>
-                <span id="totalTime">--:--</span>
+        <div style="width: 100%;">
+            <div class="player-controls">
+                <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+                <div class="time-display">
+                    <span id="currentTime">0:00</span>
+                    <span id="totalTime">--:--</span>
+                </div>
+            </div>
+
+            <div class="visitor-counter">
+                <span>TOTAL PLAYS:</span>
+                <span id="busuanzi_container_site_pv" style="display: inline;">
+                    <span id="busuanzi_value_site_pv">...</span>
+                </span>
             </div>
         </div>
     </div>
@@ -178,20 +197,19 @@
         const totalTimeEl = document.getElementById('totalTime');
         const mainContainer = document.getElementById('mainContainer');
 
-        // DANH SÁCH NHẠC (Đảm bảo bạn đã up file đúng tên)
         const tracks = [
-            { id: 1, wish: "Khởi đầu rực rỡ & đầy kiêu hãnh.", song: "Sunroof - Nicky Youre", file: "track1.mp3" },
-            { id: 2, wish: "Sống trọn từng khoảnh khắc điện ảnh.", song: "Golden Hour - JVKE", file: "track2.mp3" },
-            { id: 3, wish: "Out nét nỗi buồn, lấy nét niềm vui.", song: "Shake It Off - Taylor Swift", file: "track3.mp3" },
-            { id: 4, wish: "Dám làm những điều chưa từng dám.", song: "The Nights - Avicii", file: "track4.mp3" },
-            { id: 5, wish: "Tỏa sáng theo cách riêng của bạn.", song: "Diamonds - Rihanna", file: "track5.mp3" },
-            { id: 6, wish: "Tìm thấy kết nối chân thật nhất.", song: "Until I Found You", file: "track6.mp3" },
-            { id: 7, wish: "Voucher 20% (Chụp màn hình ngay!)", song: "Money - Lisa", file: "track7.mp3" },
-            { id: 8, wish: "Bản nhạc hay nhất đời bạn.", song: "Best Day Of My Life", file: "track8.mp3" },
-            { id: 9, wish: "Yêu bản thân nhiều hơn một chút.", song: "Flowers - Miley Cyrus", file: "track9.mp3" }
+            { id: 1, wish: "TRACK 01: KHỞI ĐẦU RỰC RỠ & ĐẦY KIÊU HÃNH.", song: "Sunroof - Nicky Youre", file: "track1.mp3" },
+            { id: 2, wish: "TRACK 02: SỐNG TRỌN TỪNG KHOẢNH KHẮC ĐIỆN ẢNH.", song: "Golden Hour - JVKE", file: "track2.mp3" },
+            { id: 3, wish: "TRACK 03: OUT NÉT NỖI BUỒN, LẤY NÉT NIỀM VUI.", song: "Shake It Off - Taylor Swift", file: "track3.mp3" },
+            { id: 4, wish: "TRACK 04: DÁM LÀM NHỮNG ĐIỀU CHƯA TỪNG DÁM.", song: "The Nights - Avicii", file: "track4.mp3" },
+            { id: 5, wish: "TRACK 05: TỎA SÁNG THEO CÁCH RIÊNG CỦA BẠN.", song: "Diamonds - Rihanna", file: "track5.mp3" },
+            { id: 6, wish: "TRACK 06: TÌM THẤY KẾT NỐI CHÂN THẬT NHẤT.", song: "Until I Found You", file: "track6.mp3" },
+            { id: 7, wish: "BONUS TRACK: VOUCHER 20% (CHỤP MÀN HÌNH NGAY!)", song: "Money - Lisa", file: "track7.mp3" },
+            { id: 8, wish: "TRACK 08: BẢN NHẠC HAY NHẤT ĐỜI BẠN.", song: "Best Day Of My Life", file: "track8.mp3" },
+            { id: 9, wish: "TRACK 09: YÊU BẢN THÂN NHIỀU HƠN MỘT CHÚT.", song: "Flowers - Miley Cyrus", file: "track9.mp3" }
         ];
 
-        const STORAGE_KEY = 'photonoir_saved_track_2026';
+        const STORAGE_KEY = 'photonoir_tracklist_v13';
         let isPlaying = false;
         let shuffleInterval = null;
         let userTrack = null;
@@ -236,17 +254,13 @@
 
         function startShuffle() {
             displayText.classList.remove('breathing');
-            metaText.innerText = "TUNING...";
-            
-            let count = 0;
-            let speed = 50;
-            let maxCount = 40;
+            metaText.innerText = "SCANNING TRACKS...";
+            let count = 0; let speed = 50; let maxCount = 40;
 
             function step() {
                 const randomItem = tracks[Math.floor(Math.random() * tracks.length)];
                 displayText.innerText = randomItem.wish;
                 displayText.style.opacity = 0.6;
-
                 count++;
                 if (count < maxCount) {
                     speed += (count > 30) ? 15 : 2;
@@ -262,14 +276,11 @@
             const randomIndex = Math.floor(Math.random() * tracks.length);
             userTrack = tracks[randomIndex];
             localStorage.setItem(STORAGE_KEY, randomIndex);
-
             setTrackInfo(userTrack);
             displayText.style.opacity = 1;
             mainContainer.classList.add('has-played');
-
             audio.src = userTrack.file;
-            audio.play().catch(e => console.log("User interact needed"));
-            
+            audio.play().catch(e => console.log("Interaction needed"));
             if (navigator.vibrate) navigator.vibrate([50, 50]);
         }
 
