@@ -33,14 +33,22 @@
             display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; z-index: 2; padding-bottom: 30px;
         }
 
-        .logo-img { width: 240px; max-width: 80%; height: auto; object-fit: contain; margin-top: 10px; filter: contrast(1.2); }
+        /* LOGO MẶC ĐỊNH */
+        .logo-img { 
+            width: 240px; 
+            max-width: 80%; 
+            height: auto; 
+            object-fit: contain; 
+            margin-top: 10px; 
+            filter: contrast(1.2); 
+            transition: all 0.3s ease;
+        }
 
-        /* --- ĐĨA THAN (ĐÃ SỬA ĐỂ QUAY RÕ HƠN) --- */
+        /* --- ĐĨA THAN --- */
         .vinyl-container {
             position: relative;
             width: 65vmin; height: 65vmin; max-width: 260px; max-height: 260px;
             display: flex; justify-content: center; align-items: center;
-            /* Khi bấm vào sẽ nhún nhẹ */
             transition: transform 0.1s;
         }
         .vinyl-container:active { transform: scale(0.95); }
@@ -51,31 +59,22 @@
             background-color: #101010;
             position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            
-            /* TẠO VÂN ĐĨA: Kết hợp vân tròn và vân chéo nhẹ để khi quay mắt thấy được chuyển động */
             background: 
-                repeating-radial-gradient(#111 0, #111 2px, #222 3px, #181818 4px), /* Vân tròn */
-                conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.03) 90deg, transparent 180deg); /* Vân bóng mờ */
-            
+                repeating-radial-gradient(#111 0, #111 2px, #222 3px, #181818 4px), 
+                conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.03) 90deg, transparent 180deg);
             background-blend-mode: screen;
         }
 
-        /* VỆT SÁNG PHẢN CHIẾU (GLARE) - QUAN TRỌNG: GẮN VÀO ĐĨA ĐỂ QUAY CÙNG */
+        /* VỆT SÁNG PHẢN CHIẾU */
         .vinyl-record::after {
             content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
-            /* Vệt sáng chéo rõ ràng */
-            background: linear-gradient(135deg, 
-                rgba(255,255,255,0) 40%, 
-                rgba(255,255,255,0.1) 50%, 
-                rgba(255,255,255,0) 60%
-            );
+            background: linear-gradient(135deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 60%);
             pointer-events: none;
         }
 
-        /* --- ANIMATION QUAY --- */
-        /* Class này sẽ được JS thêm vào khi nhạc chạy */
+        /* --- ANIMATION QUAY (ĐÃ CHỈNH CHẬM LẠI: 12s) --- */
         .spinning-anim {
-            animation: spin 3s linear infinite !important;
+            animation: spin 12s linear infinite !important; /* 12s để quay chậm, chill hơn */
         }
 
         @keyframes spin {
@@ -83,7 +82,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Nhãn đĩa ở giữa (Quay cùng đĩa) */
         .vinyl-label {
             position: absolute; top: 34%; left: 34%; width: 32%; height: 32%;
             background-color: #f5f5f5; border-radius: 50%;
@@ -91,15 +89,23 @@
             border: 1px solid #999; z-index: 5;
             box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
         }
-        
-        /* Ảnh logo trong nhãn (nếu có) */
         .vinyl-label img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; opacity: 0.9; }
-
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; border: 1px solid #333; }
 
         /* --- TEXT & CONTROLS --- */
-        .message-area { width: 100%; display: flex; flex-direction: column; justify-content: center; text-align: center; min-height: 90px; }
-        .wishes-text { font-size: 14px; font-weight: 800; line-height: 1.5; text-transform: uppercase; letter-spacing: 0.5px; transition: opacity 0.3s; }
+        .message-area { width: 100%; display: flex; flex-direction: column; justify-content: center; text-align: center; min-height: 100px; }
+        
+        /* CHỮ TIÊU ĐỀ/LỜI CHÚC */
+        .wishes-text { 
+            font-size: 15px; 
+            font-weight: 800; 
+            line-height: 1.5; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            transition: opacity 0.3s;
+            padding: 0 10px; /* Thêm lề để không bị sát mép */
+        }
+
         .meta-text { font-size: 10px; color: #666; letter-spacing: 2px; margin-top: 8px; font-weight: 600; text-transform: uppercase; border-top: 1px solid #ccc; padding-top: 8px; display: inline-block; margin: 8px auto 0; }
         .breathing { animation: breathe 2s ease-in-out infinite; color: #444; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
@@ -114,6 +120,34 @@
         .time-display { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; font-weight: 600; color: #666; }
         .visitor-counter { font-size: 9px; color: #888; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; margin-top: 10px; opacity: 0.8; display: flex; gap: 5px; justify-content: center; }
         #busuanzi_container_site_pv { display: none; }
+
+        /* --- TÙY CHỈNH RIÊNG CHO ĐIỆN THOẠI (MOBILE) --- */
+        @media (max-width: 600px) {
+            /* 1. Logo to hơn & nổi bật hơn */
+            .logo-img {
+                width: 75%; /* Chiếm 75% chiều rộng màn hình */
+                max-width: 300px; 
+                /* Tạo bóng đổ để nổi khối */
+                filter: contrast(1.2) drop-shadow(0 4px 6px rgba(0,0,0,0.2)); 
+                margin-bottom: 20px;
+            }
+
+            /* 2. Đĩa than cân đối lại một chút */
+            .vinyl-container {
+                width: 70vmin;
+                height: 70vmin;
+                margin-bottom: 15px;
+            }
+
+            /* 3. Tiêu đề to và ấn tượng hơn */
+            .wishes-text {
+                font-size: 18px; /* Chữ to hơn */
+                line-height: 1.4;
+                letter-spacing: 1px;
+                /* Bóng chữ nhẹ tạo cảm giác in ấn */
+                text-shadow: 0 1px 1px rgba(255,255,255,0.8);
+            }
+        }
     </style>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </head>
@@ -125,10 +159,7 @@
         <img src="logo.png" alt="PHOTONOIR" class="logo-img">
 
         <div class="vinyl-container" onclick="handleInteraction()">
-            
-            <div class="vinyl-record" id="record">
-                </div>
-            
+            <div class="vinyl-record" id="record"></div>
             <div class="vinyl-label" id="label">
                 <div class="spindle"></div>
             </div>
@@ -162,7 +193,7 @@
     <script>
         const audio = document.getElementById('bgMusic');
         const record = document.getElementById('record');
-        const label = document.getElementById('label'); // Lấy thêm cái nhãn
+        const label = document.getElementById('label');
         const displayText = document.getElementById('display-text');
         const metaText = document.getElementById('meta-text');
         const progressFill = document.getElementById('progressFill');
@@ -207,10 +238,8 @@
         }
 
         function playMusic() {
-            // Thêm class quay cho cả Đĩa đen và Nhãn trắng
             record.classList.add('spinning-anim');
             label.classList.add('spinning-anim');
-            
             isPlaying = true;
 
             if (userTrack) {
@@ -224,7 +253,6 @@
 
         function pauseMusic() {
             audio.pause();
-            // Gỡ class quay
             record.classList.remove('spinning-anim');
             label.classList.remove('spinning-anim');
             isPlaying = false;
