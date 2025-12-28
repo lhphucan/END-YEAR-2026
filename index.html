@@ -34,7 +34,6 @@
         .overlay { 
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
             pointer-events: none; z-index: 0; overflow: hidden;
-            /* Thêm lớp tối 4 góc (Vignette) */
             background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.3) 100%);
         }
         
@@ -58,32 +57,53 @@
             padding-bottom: 30px; 
         }
 
-        /* --- 1. LOGO ĐÃ TĂNG KÍCH THƯỚC --- */
+        /* --- LOGO --- */
         .logo-img {
-            width: 240px; /* Tăng từ 150px lên 240px */
-            max-width: 80%; /* Để không bị tràn nếu màn hình quá bé */
+            width: 240px;
+            max-width: 80%;
             height: auto;
             object-fit: contain;
             margin-top: 10px;
             filter: contrast(1.2);
         }
 
-        /* ĐĨA THAN */
+        /* --- ĐĨA THAN (PHẦN QUAN TRỌNG ĐÃ SỬA) --- */
         .vinyl-container {
             position: relative;
             width: 65vmin; height: 65vmin; 
             max-width: 260px; max-height: 260px;
             display: flex; justify-content: center; align-items: center;
             transition: transform 0.2s;
+            border-radius: 50%; /* Đảm bảo khung tròn */
         }
         
-        /* Hiệu ứng nhấn nút */
+        /* HIỆU ỨNG ÁNH SÁNG PHẢN CHIẾU (GLARE) */
+        /* Đã chuyển ra container để nó ĐỨNG YÊN khi đĩa quay */
+        .vinyl-container::after {
+            content: ""; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            border-radius: 50%;
+            /* Dùng conic-gradient tạo vệt sáng chữ X đặc trưng của đĩa than */
+            background: conic-gradient(
+                from 45deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.15) 10%,
+                transparent 20%,
+                transparent 50%,
+                rgba(255, 255, 255, 0.15) 60%,
+                transparent 70%
+            );
+            pointer-events: none; /* Không chặn click chuột */
+            z-index: 10; /* Nằm trên cùng */
+        }
+
         .vinyl-container:active { transform: scale(0.96); }
 
         .vinyl-record {
             width: 100%; height: 100%;
             border-radius: 50%;
             background-color: #101010;
+            /* Vân đĩa (Grooves) */
             background-image: repeating-radial-gradient(#101010 0, #101010 2px, #222 3px, #181818 4px);
             position: absolute;
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
@@ -91,38 +111,44 @@
             transition: box-shadow 0.5s;
         }
 
-        /* --- HIỆU ỨNG BASS (PULSE) KHI NGHE NHẠC --- */
+        /* Hiệu ứng bóng đổ khi quay */
         .spinning .vinyl-record {
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6); /* Bóng đậm hơn */
-            animation: pulseShadow 1s infinite alternate; /* Phập phồng nhẹ */
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            animation: pulseShadow 1s infinite alternate;
         }
         @keyframes pulseShadow {
             from { box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
             to { box-shadow: 0 15px 50px rgba(0,0,0,0.5); }
         }
 
-        .vinyl-record::after {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.05) 100%);
-            pointer-events: none;
-        }
-
         .vinyl-label {
             position: absolute; width: 32%; height: 32%;
             background-color: #f5f5f5; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            border: 1px solid #ccc; z-index: 5;
+            border: 1px solid #ccc; 
+            z-index: 5; /* Nằm trên đĩa nhưng dưới lớp bóng sáng */
             box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
         }
+        
+        /* Nếu logo là ảnh, đảm bảo nó tròn */
+        .vinyl-label img {
+            width: 100%; height: 100%; 
+            border-radius: 50%; 
+            object-fit: cover;
+        }
 
-        .spindle { width: 6px; height: 6px; background: #000; border-radius: 50%; position: absolute; }
+        .spindle { width: 6px; height: 6px; background: #000; border-radius: 50%; position: absolute; z-index: 6; }
 
         /* Animation Quay */
-        .spinning-anim { animation: spin 3s linear infinite, wobble 4s ease-in-out infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes wobble {
-            0%, 100% { margin-left: 0px; margin-top: 0px; }
-            50% { margin-left: 0px; margin-top: 2px; }
+        /* Chỉ quay cái đĩa (.vinyl-record) và cái nhãn bên trong, KHÔNG quay cái bóng sáng */
+        .spinning-anim { 
+            animation: spin 3s linear infinite; 
+        }
+        
+        /* Bỏ wobble (lắc lư) để đĩa quay mượt hơn, hoặc giữ lại nếu thích kiểu lofi */
+        @keyframes spin { 
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); } 
         }
 
         /* TEXT */
@@ -150,7 +176,7 @@
         .breathing { animation: breathe 2s ease-in-out infinite; color: #444; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-        /* --- HIỆU ỨNG GLITCH (NHIỄU SÓNG) --- */
+        /* --- GLITCH --- */
         .glitch {
             animation: glitch-anim 0.3s cubic-bezier(.25, .46, .45, .94) both;
             color: #000;
@@ -233,6 +259,8 @@
         const totalTimeEl = document.getElementById('totalTime');
         const mainContainer = document.getElementById('mainContainer');
         const vinylContainer = document.querySelector('.vinyl-container');
+        // Thêm tham chiếu đến nhãn để quay nó cùng lúc
+        const vinylLabel = document.querySelector('.vinyl-label');
 
         const tracks = [
             { id: 1, wish: "TRACK 01: KHỞI ĐẦU RỰC RỠ & ĐẦY KIÊU HÃNH.", song: "Sunroof - Nicky Youre", file: "track1.mp3" },
@@ -257,7 +285,7 @@
                 userTrack = tracks[parseInt(savedIndex)];
                 setTrackInfo(userTrack);
                 displayText.classList.remove('breathing');
-                displayText.classList.add('glitch'); // Thêm hiệu ứng glitch nếu đã lưu
+                displayText.classList.add('glitch');
                 mainContainer.classList.add('has-played');
             }
         };
@@ -272,7 +300,9 @@
 
         function playMusic() {
             vinylContainer.classList.add('spinning');
+            // Quay cả đĩa đen và nhãn trắng
             record.classList.add('spinning-anim');
+            vinylLabel.classList.add('spinning-anim');
             isPlaying = true;
 
             if (userTrack) {
@@ -288,6 +318,7 @@
             audio.pause();
             vinylContainer.classList.remove('spinning');
             record.classList.remove('spinning-anim');
+            vinylLabel.classList.remove('spinning-anim');
             isPlaying = false;
         }
 
@@ -317,9 +348,8 @@
             localStorage.setItem(STORAGE_KEY, randomIndex);
             setTrackInfo(userTrack);
             
-            // Hiệu ứng chốt kết quả
             displayText.style.opacity = 1;
-            displayText.classList.add('glitch'); // Kích hoạt Glitch
+            displayText.classList.add('glitch');
             
             mainContainer.classList.add('has-played');
             audio.src = userTrack.file;
@@ -344,6 +374,7 @@
         audio.onended = function() {
             vinylContainer.classList.remove('spinning');
             record.classList.remove('spinning-anim');
+            vinylLabel.classList.remove('spinning-anim');
             isPlaying = false;
             progressFill.style.width = '0%';
         };
