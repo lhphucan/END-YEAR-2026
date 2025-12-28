@@ -2,206 +2,261 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PHOTONOIR - 2026 Soundtrack</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PHOTONOIR - 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --bg-color: #ECECEC; /* Màu xám xi măng nhạt - Sang hơn trắng tinh */
+            --ink-color: #050505; /* Đen tuyền */
+            --accent-color: #333;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         body {
-            background-color: #ffffff;
-            color: #000000;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--ink-color);
+            font-family: 'Manrope', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            letter-spacing: 0.05em;
-        }
-
-        .player-card {
-            width: 300px;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .logo {
-            font-size: 14px;
-            font-weight: 900;
-            letter-spacing: 0.3em;
-            margin-bottom: 60px;
-            text-transform: uppercase;
-        }
-
-        .album-art {
-            width: 200px;
-            height: 200px;
-            background-color: #000;
-            margin: 0 auto 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            overflow: hidden;
             position: relative;
         }
 
-        /* Hiệu ứng đĩa quay nhẹ khi đang phát nhạc */
-        .album-art.playing {
-            animation: pulse 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
-        }
-
-        .album-art::after {
+        /* --- HIỆU ỨNG FILM GRAIN (HẠT NHIỄU) --- */
+        body::before {
             content: "";
-            width: 40px;
-            height: 40px;
-            background-color: #fff;
-            border-radius: 50%;
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            animation: grain 8s steps(10) infinite;
+            pointer-events: none;
+            z-index: 999;
+        }
+        @keyframes grain { 0%, 100% { transform: translate(0, 0); } 10% { transform: translate(-5%, -10%); } 30% { transform: translate(3%, -15%); } 50% { transform: translate(12%, 9%); } 70% { transform: translate(9%, 4%); } 90% { transform: translate(-1%, 7%); } }
+
+        .container {
+            width: 100%;
+            max-width: 380px;
+            padding: 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
         }
 
-        .track-info {
-            margin-bottom: 30px;
-        }
-
-        .track-name {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            min-height: 48px;
-        }
-
-        .artist {
-            font-size: 12px;
-            color: #888;
+        /* --- LOGO --- */
+        .brand-name {
+            font-family: 'Anton', sans-serif;
+            font-size: 56px; /* To hơn nữa */
+            letter-spacing: 4px;
+            color: var(--ink-color);
+            margin-bottom: 50px;
+            line-height: 0.8;
             text-transform: uppercase;
         }
 
-        .progress-container {
-            width: 100%;
-            height: 2px;
-            background-color: #eee;
+        /* --- ĐĨA THAN ABSTRACT (Tối giản hóa) --- */
+        .vinyl-wrapper {
+            position: relative;
+            width: 220px;
+            height: 220px;
             margin-bottom: 40px;
         }
 
-        #progress-bar {
-            width: 0%;
+        .vinyl-record {
+            width: 100%;
             height: 100%;
-            background-color: #000;
-            transition: width 0.1s linear;
-        }
-
-        .play-btn {
-            width: 60px;
-            height: 60px;
-            border: 1px solid #000;
             border-radius: 50%;
+            background-color: var(--ink-color);
+            /* Bỏ vân gradient rẻ tiền, dùng bóng đổ nhẹ */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: pointer;
-            background: none;
-            outline: none;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .triangle {
-            width: 0;
-            height: 0;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-            border-left: 14px solid #000;
+        /* Tâm đĩa trắng - Tương phản cao */
+        .vinyl-label {
+            width: 80px;
+            height: 80px;
+            background-color: var(--bg-color);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+        }
+        
+        .vinyl-dot {
+            width: 12px; height: 12px;
+            background-color: var(--ink-color);
+            border-radius: 50%;
+        }
+
+        .spinning { animation: spin 1.5s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* --- TYPOGRAPHY CHO CÂU CHÚC --- */
+        .message-area {
+            min-height: 100px;
+            display: flex; flex-direction: column; justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .wishes-text {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.6;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .meta-text {
+            font-size: 10px;
+            color: #777;
+            letter-spacing: 3px;
+            margin-top: 15px;
+            font-weight: 400;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+            display: inline-block;
+            width: 50px; /* Đường gạch ngắn minimal */
+            margin-left: auto; margin-right: auto;
+        }
+
+        /* --- NÚT BẤM --- */
+        .btn-control {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            background: transparent;
+            border: 2px solid var(--ink-color);
+            color: var(--ink-color);
+            cursor: pointer;
+            display: flex; justify-content: center; align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-control:active { background: var(--ink-color); color: var(--bg-color); transform: scale(0.9); }
+        
+        .icon-play {
+            width: 0; height: 0;
+            border-top: 8px solid transparent; border-bottom: 8px solid transparent;
+            border-left: 14px solid currentColor;
             margin-left: 4px;
         }
 
-        .pause-icon {
-            display: none;
-            width: 14px;
-            height: 18px;
-            border-left: 4px solid #000;
-            border-right: 4px solid #000;
-        }
+        .hidden { opacity: 0; pointer-events: none; transition: opacity 0.5s; }
+        .blur-text { filter: blur(4px); opacity: 0.7; } /* Hiệu ứng chữ chạy mờ */
 
-        .playing .triangle { display: none; }
-        .playing .pause-icon { display: block; }
     </style>
 </head>
 <body>
 
-    <div class="player-card">
-        <div class="logo">PHOTONOIR</div>
+    <div class="container">
+        <div class="brand-name">PHOTONOIR</div>
 
-        <div class="album-art" id="album"></div>
-
-        <div class="track-info">
-            <div class="track-name" id="display-text">Nhấn để nghe thông điệp...</div>
-            <div class="artist">Soul of 2026</div>
+        <div class="vinyl-wrapper">
+            <div class="vinyl-record" id="vinyl">
+                <div class="vinyl-label">
+                    <div class="vinyl-dot"></div>
+                </div>
+            </div>
         </div>
 
-        <div class="progress-container">
-            <div id="progress-bar"></div>
+        <div class="message-area">
+            <div class="wishes-text" id="display-text">TAP PLAY TO START</div>
+            <div class="meta-text" id="meta-text">2026</div>
         </div>
 
-        <div class="controls">
-            <button class="play-btn" id="playBtn" onclick="togglePlay()">
-                <div class="triangle"></div>
-                <div class="pause-icon"></div>
-            </button>
-        </div>
+        <button class="btn-control" id="playBtn" onclick="runSequence()">
+            <div class="icon-play"></div>
+        </button>
     </div>
 
     <audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3"></audio>
 
     <script>
         const audio = document.getElementById('bgMusic');
+        const vinyl = document.getElementById('vinyl');
         const playBtn = document.getElementById('playBtn');
-        const album = document.getElementById('album');
-        const progressBar = document.getElementById('progress-bar');
-        const textElement = document.getElementById('display-text');
+        const displayText = document.getElementById('display-text');
+        const metaText = document.getElementById('meta-text');
 
+        // DANH SÁCH CÂU CHÚC (Đã biên tập lại cho ngắn gọn, chất Noir)
         const wishes = [
-            "Bắt đầu hành trình mới với thật nhiều khoảnh khắc đáng giá.",
-            "Hãy sống trọn từng khung hình của năm 2026 nhé.",
-            "Mong mọi cảnh quay đều rực rỡ và tràn đầy niềm vui.",
-            "Chạm tới những ước mơ lớn, từng bước một.",
-            "Tìm thấy những kết nối ý nghĩa và chân thật.",
-            "Tạm biệt những điều cũ, mở ra chương mới đầy hứng khởi.",
-            "Chúc bạn luôn giữ vững phong độ và khí chất của riêng mình.",
-            "CHÚC MỪNG! Bạn nhận được Voucher 20% cho lần tới. Chụp màn hình nhé!",
-            "Mỗi ngày là một cảnh quay đẹp, một trải nghiệm quý giá.",
-            "An yên và hạnh phúc đồng hành cùng bạn suốt năm mới."
+            "FRAME 01: Một khởi đầu rực rỡ và đầy kiêu hãnh.",
+            "SCENE 2026: Sống trọn từng khoảnh khắc điện ảnh.",
+            "FOCUS: Lấy nét vào những điều làm bạn hạnh phúc.",
+            "CUT: Bỏ lại nỗi buồn. Chỉ giữ lại niềm vui.",
+            "ACTION: Dám làm những điều chưa từng dám.",
+            "FLASH: Tỏa sáng theo cách riêng của bạn.",
+            "ZOOM IN: Tìm thấy những kết nối chân thật nhất.",
+            "SPECIAL GIFT: Voucher 20% - Chụp màn hình ngay!",
+            "SOUNDTRACK: Năm nay sẽ là bản nhạc hay nhất đời bạn."
         ];
 
-        function togglePlay() {
-            if (audio.paused) {
-                audio.play();
-                document.body.classList.add('playing');
-                album.classList.add('playing');
-                nextWish();
-            } else {
-                audio.pause();
-                document.body.classList.remove('playing');
-                album.classList.remove('playing');
+        window.onload = function() {
+            // Thay đổi key version 4
+            const savedWish = localStorage.getItem('photonoir_v4');
+            if (savedWish) {
+                showFinal(savedWish);
             }
-        }
-
-        function nextWish() {
-            const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
-            textElement.innerText = randomWish;
-        }
-
-        // Cập nhật thanh progress theo thời gian nhạc chạy
-        audio.ontimeupdate = function() {
-            const percentage = (audio.currentTime / audio.duration) * 100;
-            progressBar.style.width = percentage + "%";
         };
 
-        // Khi nhạc hết thì quay lại từ đầu
-        audio.onended = function() {
-            document.body.classList.remove('playing');
-            album.classList.remove('playing');
-            progressBar.style.width = "0%";
-        };
+        function runSequence() {
+            // 1. Kích hoạt
+            audio.play().catch(e => console.log("Cần tương tác user để play nhạc"));
+            vinyl.classList.add('spinning');
+            playBtn.classList.add('hidden');
+            metaText.innerText = "SHUFFLING";
+            
+            // 2. Hiệu ứng chữ chạy (Slot Machine Effect)
+            let count = 0;
+            const maxRun = 25; // Số lần nhảy chữ
+            const speed = 80;  // Tốc độ nhảy (ms)
+
+            const interval = setInterval(() => {
+                // Hiển thị chữ ngẫu nhiên + Hiệu ứng mờ
+                displayText.innerText = wishes[Math.floor(Math.random() * wishes.length)];
+                displayText.style.opacity = 0.5; 
+                
+                count++;
+                if (count >= maxRun) {
+                    clearInterval(interval);
+                    finishSequence();
+                }
+            }, speed);
+        }
+
+        function finishSequence() {
+            // Chọn kết quả thật
+            const finalResult = wishes[Math.floor(Math.random() * wishes.length)];
+            localStorage.setItem('photonoir_v4', finalResult);
+
+            // Hiển thị kết quả chốt
+            displayText.innerText = finalResult;
+            displayText.style.opacity = 1;
+            displayText.style.transform = "scale(1.05)"; // Phóng to nhẹ
+            displayText.style.transition = "all 0.5s ease";
+            
+            metaText.innerText = "NOW PLAYING";
+            
+            // Rung nhẹ
+            if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+        }
+
+        function showFinal(text) {
+            displayText.innerText = text;
+            metaText.innerText = "SAVED TRACK";
+            playBtn.classList.add('hidden');
+        }
     </script>
 </body>
 </html>
