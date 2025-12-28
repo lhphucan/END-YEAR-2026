@@ -30,7 +30,14 @@
             position: relative;
         }
 
-        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+        /* --- VIGNETTE & GRAIN (TẠO KHÔNG KHÍ NOIR) --- */
+        .overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            pointer-events: none; z-index: 0; overflow: hidden;
+            /* Thêm lớp tối 4 góc (Vignette) */
+            background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.3) 100%);
+        }
+        
         .grain {
             position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
@@ -38,7 +45,7 @@
         }
         @keyframes grainMove { 0%, 100% { transform: translate(0, 0); } 90% { transform: translate(-1%, 7%); } }
 
-        /* BỐ CỤC MOBILE */
+        /* BỐ CỤC */
         .container {
             width: 100%; max-width: 400px; 
             height: 100%;
@@ -51,9 +58,10 @@
             padding-bottom: 30px; 
         }
 
-        /* LOGO */
+        /* --- 1. LOGO ĐÃ TĂNG KÍCH THƯỚC --- */
         .logo-img {
-            width: 150px; 
+            width: 240px; /* Tăng từ 150px lên 240px */
+            max-width: 80%; /* Để không bị tràn nếu màn hình quá bé */
             height: auto;
             object-fit: contain;
             margin-top: 10px;
@@ -66,7 +74,11 @@
             width: 65vmin; height: 65vmin; 
             max-width: 260px; max-height: 260px;
             display: flex; justify-content: center; align-items: center;
+            transition: transform 0.2s;
         }
+        
+        /* Hiệu ứng nhấn nút */
+        .vinyl-container:active { transform: scale(0.96); }
 
         .vinyl-record {
             width: 100%; height: 100%;
@@ -76,6 +88,17 @@
             position: absolute;
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
             border: 1px solid rgba(255,255,255,0.1);
+            transition: box-shadow 0.5s;
+        }
+
+        /* --- HIỆU ỨNG BASS (PULSE) KHI NGHE NHẠC --- */
+        .spinning .vinyl-record {
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6); /* Bóng đậm hơn */
+            animation: pulseShadow 1s infinite alternate; /* Phập phồng nhẹ */
+        }
+        @keyframes pulseShadow {
+            from { box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+            to { box-shadow: 0 15px 50px rgba(0,0,0,0.5); }
         }
 
         .vinyl-record::after {
@@ -94,7 +117,8 @@
 
         .spindle { width: 6px; height: 6px; background: #000; border-radius: 50%; position: absolute; }
 
-        .spinning { animation: spin 3s linear infinite, wobble 4s ease-in-out infinite; }
+        /* Animation Quay */
+        .spinning-anim { animation: spin 3s linear infinite, wobble 4s ease-in-out infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes wobble {
             0%, 100% { margin-left: 0px; margin-top: 0px; }
@@ -126,6 +150,20 @@
         .breathing { animation: breathe 2s ease-in-out infinite; color: #444; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
+        /* --- HIỆU ỨNG GLITCH (NHIỄU SÓNG) --- */
+        .glitch {
+            animation: glitch-anim 0.3s cubic-bezier(.25, .46, .45, .94) both;
+            color: #000;
+        }
+        @keyframes glitch-anim {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
         /* PLAYER BAR */
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
@@ -134,18 +172,16 @@
         .progress-bar-fill { width: 0%; height: 100%; background: #111; transition: width 0.1s linear; }
         .time-display { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; font-weight: 600; color: #666; }
 
-        /* --- BỘ ĐẾM SỐ NGƯỜI (COUNTER) --- */
+        /* COUNTER */
         .visitor-counter {
             font-size: 9px; color: #888; letter-spacing: 1.5px;
             text-transform: uppercase; font-weight: 600;
             margin-top: 10px; opacity: 0.8;
             display: flex; gap: 5px; justify-content: center;
         }
-        /* Ẩn bộ đếm khi chưa load xong để đỡ bị giật */
         #busuanzi_container_site_pv { display: none; } 
 
     </style>
-    
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </head>
 <body>
@@ -196,6 +232,7 @@
         const currentTimeEl = document.getElementById('currentTime');
         const totalTimeEl = document.getElementById('totalTime');
         const mainContainer = document.getElementById('mainContainer');
+        const vinylContainer = document.querySelector('.vinyl-container');
 
         const tracks = [
             { id: 1, wish: "TRACK 01: KHỞI ĐẦU RỰC RỠ & ĐẦY KIÊU HÃNH.", song: "Sunroof - Nicky Youre", file: "track1.mp3" },
@@ -209,7 +246,7 @@
             { id: 9, wish: "TRACK 09: YÊU BẢN THÂN NHIỀU HƠN MỘT CHÚT.", song: "Flowers - Miley Cyrus", file: "track9.mp3" }
         ];
 
-        const STORAGE_KEY = 'photonoir_tracklist_v13';
+        const STORAGE_KEY = 'photonoir_tracklist_v15';
         let isPlaying = false;
         let shuffleInterval = null;
         let userTrack = null;
@@ -220,6 +257,7 @@
                 userTrack = tracks[parseInt(savedIndex)];
                 setTrackInfo(userTrack);
                 displayText.classList.remove('breathing');
+                displayText.classList.add('glitch'); // Thêm hiệu ứng glitch nếu đã lưu
                 mainContainer.classList.add('has-played');
             }
         };
@@ -233,28 +271,29 @@
         }
 
         function playMusic() {
+            vinylContainer.classList.add('spinning');
+            record.classList.add('spinning-anim');
+            isPlaying = true;
+
             if (userTrack) {
                 audio.src = userTrack.file;
                 audio.play();
-                record.classList.add('spinning');
-                isPlaying = true;
                 mainContainer.classList.add('has-played');
             } else {
                 startShuffle();
-                record.classList.add('spinning');
-                isPlaying = true;
             }
         }
 
         function pauseMusic() {
             audio.pause();
-            record.classList.remove('spinning');
+            vinylContainer.classList.remove('spinning');
+            record.classList.remove('spinning-anim');
             isPlaying = false;
         }
 
         function startShuffle() {
             displayText.classList.remove('breathing');
-            metaText.innerText = "SCANNING TRACKS...";
+            metaText.innerText = "SCANNING FREQUENCY...";
             let count = 0; let speed = 50; let maxCount = 40;
 
             function step() {
@@ -277,11 +316,15 @@
             userTrack = tracks[randomIndex];
             localStorage.setItem(STORAGE_KEY, randomIndex);
             setTrackInfo(userTrack);
+            
+            // Hiệu ứng chốt kết quả
             displayText.style.opacity = 1;
+            displayText.classList.add('glitch'); // Kích hoạt Glitch
+            
             mainContainer.classList.add('has-played');
             audio.src = userTrack.file;
             audio.play().catch(e => console.log("Interaction needed"));
-            if (navigator.vibrate) navigator.vibrate([50, 50]);
+            if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
         }
 
         function setTrackInfo(track) {
@@ -299,7 +342,8 @@
         };
 
         audio.onended = function() {
-            record.classList.remove('spinning');
+            vinylContainer.classList.remove('spinning');
+            record.classList.remove('spinning-anim');
             isPlaying = false;
             progressFill.style.width = '0%';
         };
