@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PHOTONOIR - END OF THE YEAR</title>
+    <title>PHOTONOIR - 2026</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
             scroll-behavior: smooth;
         }
 
-        /* --- BACKGROUND EFFECTS --- */
+        /* --- BACKGROUND & FILM EFFECTS --- */
         .film-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; overflow: hidden; opacity: 0.5; }
         .grain { position: absolute; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.2'/%3E%3C/svg%3E"); animation: grainFlicker 0.2s steps(2) infinite; }
         .scratches { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(0,0,0,0.05) 3px, transparent 4px); animation: scratchJump 0.3s steps(1) infinite; opacity: 0.3; }
@@ -33,10 +33,10 @@
         /* --- MÀN HÌNH 1: PLAYER --- */
         .screen-hero {
             width: 100%; max-width: 480px; 
-            min-height: 100dvh; 
+            height: 100dvh; 
             margin: 0 auto; 
             display: flex; flex-direction: column; 
-            justify-content: center; /* Căn giữa dọc */
+            justify-content: center; 
             align-items: center; 
             position: relative; z-index: 2; 
             padding: 20px;
@@ -46,26 +46,28 @@
         .header-group {
             width: 100%;
             display: flex; flex-direction: column; align-items: center;
-            margin-bottom: 25px; /* Khoảng cách với đĩa than */
+            margin-bottom: 25px; 
             z-index: 10;
         }
 
         /* 1. Logo Ảnh (Màu đen gốc) */
         .logo-img { 
-            width: 65%; max-width: 300px; height: auto; object-fit: contain; 
+            width: 60%; max-width: 280px; height: auto; object-fit: contain; 
             filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); 
-            margin-bottom: 5px;
+            margin-bottom: 0px; /* Sát vào chữ bên dưới */
         }
 
-        /* 2. Dòng chữ "end OF The YEAR" (Màu đỏ đô) */
+        /* 2. Dòng chữ "end OF The YEAR" (Đã chỉnh to và đậm như yêu cầu) */
         .sub-logo-text {
             font-family: 'Manrope', sans-serif;
-            font-weight: 800; 
-            font-size: 18px; 
+            font-weight: 800; /* ExtraBold */
+            font-size: 36px; /* Kích thước lớn như ảnh bạn thích */
+            line-height: 1;
             color: var(--accent-color); /* Đỏ đô */
-            text-transform: none; /* Giữ nguyên viết hoa/thường */
-            letter-spacing: 2px;
+            text-transform: none; 
+            letter-spacing: -1px; /* Khoảng cách chữ khít lại */
             margin: 0;
+            text-align: center;
             text-shadow: 0 1px 0 rgba(255,255,255,0.5);
         }
 
@@ -78,7 +80,7 @@
 
         /* ĐĨA THAN */
         .vinyl-container {
-            position: relative; width: 62vmin; height: 62vmin; max-width: 320px; max-height: 320px;
+            position: relative; width: 60vmin; height: 60vmin; max-width: 300px; max-height: 300px;
             display: flex; justify-content: center; align-items: center;
             transition: transform 0.1s; margin-bottom: 20px; 
         }
@@ -169,6 +171,7 @@
         /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 380px) or (max-height: 700px) {
             .logo-img { width: 80%; }
+            .sub-logo-text { font-size: 32px; } /* Mobile nhỏ đi một xíu cho vừa */
             .vinyl-container { width: 55vmin; height: 55vmin; }
             .wishes-text { font-size: 14px; }
         }
