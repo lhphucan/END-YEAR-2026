@@ -23,7 +23,7 @@
             scroll-behavior: smooth;
         }
 
-        /* --- BACKGROUND & FILM EFFECTS --- */
+        /* --- BACKGROUND & EFFECTS --- */
         .film-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; overflow: hidden; opacity: 0.5; }
         .grain { position: absolute; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.2'/%3E%3C/svg%3E"); animation: grainFlicker 0.2s steps(2) infinite; }
         .scratches { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(0,0,0,0.05) 3px, transparent 4px); animation: scratchJump 0.3s steps(1) infinite; opacity: 0.3; }
@@ -32,106 +32,35 @@
 
         /* --- MÀN HÌNH 1: PLAYER --- */
         .screen-hero {
-            width: 100%; max-width: 480px; 
-            height: 100dvh; 
+            width: 100%; max-width: 480px; height: 100dvh; 
             margin: 0 auto; 
             display: flex; flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            position: relative; z-index: 2; 
-            padding: 20px;
+            justify-content: center; align-items: center; 
+            position: relative; z-index: 2; padding: 20px;
         }
 
-        /* --- PHẦN LOGO + TEXT --- */
-        .header-group {
-            width: 100%;
-            display: flex; flex-direction: column; align-items: center;
-            margin-bottom: 25px; 
-            z-index: 10;
-        }
+        .header-group { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 25px; z-index: 10; }
+        .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 0; }
+        .sub-logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); }
 
-        /* 1. Logo Ảnh (Màu đen gốc) */
-        .logo-img { 
-            width: 60%; max-width: 280px; height: auto; object-fit: contain; 
-            filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); 
-            margin-bottom: 0px; /* Sát vào chữ bên dưới */
-        }
-
-        /* 2. Dòng chữ "end OF The YEAR" (Đã chỉnh to và đậm như yêu cầu) */
-        .sub-logo-text {
-            font-family: 'Manrope', sans-serif;
-            font-weight: 800; /* ExtraBold */
-            font-size: 36px; /* Kích thước lớn như ảnh bạn thích */
-            line-height: 1;
-            color: var(--accent-color); /* Đỏ đô */
-            text-transform: none; 
-            letter-spacing: -1px; /* Khoảng cách chữ khít lại */
-            margin: 0;
-            text-align: center;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.5);
-        }
-
-        /* KHỐI GIỮA */
-        .center-content {
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            width: 100%; position: relative; z-index: 5;
-            margin-bottom: 20px;
-        }
-
-        /* ĐĨA THAN */
-        .vinyl-container {
-            position: relative; width: 60vmin; height: 60vmin; max-width: 300px; max-height: 300px;
-            display: flex; justify-content: center; align-items: center;
-            transition: transform 0.1s; margin-bottom: 20px; 
-        }
+        .center-content { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; position: relative; z-index: 5; margin-bottom: 20px; }
+        .vinyl-container { position: relative; width: 60vmin; height: 60vmin; max-width: 300px; max-height: 300px; display: flex; justify-content: center; align-items: center; transition: transform 0.1s; margin-bottom: 20px; }
         .vinyl-container:active { transform: scale(0.97); }
-        .vinyl-record {
-            width: 100%; height: 100%; border-radius: 50%; background-color: #101010;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            background: repeating-radial-gradient(#050505 0, #050505 2px, #333 3px, #050505 4px);
-            position: relative;
-        }
-        .vinyl-record::after {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
-            background: linear-gradient(135deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 70%);
-            pointer-events: none;
-        }
+        .vinyl-record { width: 100%; height: 100%; border-radius: 50%; background-color: #101010; box-shadow: 0 15px 40px rgba(0,0,0,0.5); background: repeating-radial-gradient(#050505 0, #050505 2px, #333 3px, #050505 4px); position: relative; }
+        .vinyl-record::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 70%); pointer-events: none; }
         .spinning-anim { animation: spin 8s linear infinite !important; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .vinyl-label {
-            position: absolute; top: 34%; left: 34%; width: 32%; height: 32%;
-            background-color: #f0f0f0; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            border: 1px solid #aaa; z-index: 5; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
-        }
+        .vinyl-label { position: absolute; top: 34%; left: 34%; width: 32%; height: 32%; background-color: #f0f0f0; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 1px solid #aaa; z-index: 5; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); }
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
 
-        /* TEXT - MÀU ĐỎ ĐÔ */
-        .message-area { 
-            width: 100%; text-align: center; padding: 0 10px;
-            display: flex; flex-direction: column; gap: 5px; 
-            height: 80px; justify-content: center; flex-shrink: 0;
-        }
-        
-        .wishes-text { 
-            font-size: 15px; font-weight: 800; line-height: 1.35; 
-            color: var(--accent-color);
-            text-transform: uppercase; letter-spacing: 0px; 
-            transition: opacity 0.3s;
-            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-            text-shadow: 0 1px 1px rgba(255,255,255,0.2);
-        }
-
+        .message-area { width: 100%; text-align: center; padding: 0 10px; display: flex; flex-direction: column; gap: 5px; height: 80px; justify-content: center; flex-shrink: 0; }
+        .wishes-text { font-size: 15px; font-weight: 800; line-height: 1.35; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0px; transition: opacity 0.3s; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 1px rgba(255,255,255,0.2); }
         .meta-text { font-size: 10px; color: #555; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
         .breathing { animation: breathe 3s ease-in-out infinite; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         .glitch { animation: glitch-anim 0.3s both; color: var(--accent-color) !important; } 
 
-        /* PLAYER */
-        .player-wrapper { 
-            width: 100%; padding: 0 20px; flex-shrink: 0; 
-            margin-bottom: 40px; 
-        }
+        .player-wrapper { width: 100%; padding: 0 20px; flex-shrink: 0; margin-bottom: 40px; }
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
         .progress-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px; overflow: hidden; }
@@ -140,15 +69,49 @@
         .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 10px; display: flex; gap: 5px; justify-content: center; }
         #busuanzi_container_site_pv { display: none; }
 
-        /* SCROLL HINT */
         .scroll-hint {
             position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center;
-            font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5;
-            animation: float 2s infinite; cursor: pointer; z-index: 20;
+            font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0; 
+            animation: float 2s infinite; cursor: pointer; z-index: 20; transition: opacity 1s;
         }
+        .show-scroll { opacity: 0.6 !important; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 
-        /* --- MÀN HÌNH 2: THƯ CẢM ƠN --- */
+        /* --- MÀN HÌNH 2: PHÂN TÍCH (NEW) --- */
+        .screen-analysis {
+            display: none; /* Ẩn mặc định */
+            width: 100%; max-width: 480px; margin: 0 auto;
+            position: relative; z-index: 2;
+            padding: 60px 30px;
+            background: #EAEAEA; /* Màu nền hơi khác một chút để phân biệt */
+            border-top: 1px solid rgba(0,0,0,0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .analysis-box {
+            border: 2px solid #000;
+            padding: 30px 20px;
+            background: #F2F2F2;
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.1);
+        }
+
+        .analysis-label {
+            font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 2px;
+            text-transform: uppercase; color: #555; margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px;
+            display: flex; justify-content: space-between;
+        }
+
+        .analysis-title {
+            font-family: 'Playfair Display', serif; font-weight: 700; font-size: 20px; font-style: italic;
+            color: var(--accent-color); margin-bottom: 20px; line-height: 1.3;
+        }
+
+        .analysis-content {
+            font-family: 'Manrope', sans-serif; font-size: 14px; line-height: 1.7; color: #333; text-align: justify;
+        }
+
+        /* --- MÀN HÌNH 3: THƯ CẢM ƠN --- */
         .screen-letter {
             width: 100%; max-width: 480px; margin: 0 auto;
             position: relative; z-index: 2;
@@ -156,13 +119,7 @@
             background: linear-gradient(180deg, rgba(224,224,224,0) 0%, rgba(245,245,245,0.95) 15%, #F5F5F5 100%);
         }
         .letter-container { border-left: 2px solid var(--accent-color); padding-left: 25px; }
-        
-        .letter-header { 
-            font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; 
-            text-transform: uppercase; margin-bottom: 30px; 
-            color: var(--accent-color); opacity: 0.8; 
-        }
-        
+        .letter-header { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; color: var(--accent-color); opacity: 0.8; }
         .letter-body { font-family: 'Playfair Display', serif; font-size: 18px; line-height: 1.8; color: #111; font-weight: 400; }
         .letter-body p { margin-bottom: 25px; }
         .letter-body p:first-child::first-letter { font-size: 3.5em; float: left; line-height: 0.8; margin-right: 10px; font-weight: 600; color: var(--accent-color); }
@@ -171,7 +128,7 @@
         /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 380px) or (max-height: 700px) {
             .logo-img { width: 80%; }
-            .sub-logo-text { font-size: 32px; } /* Mobile nhỏ đi một xíu cho vừa */
+            .sub-logo-text { font-size: 32px; }
             .vinyl-container { width: 55vmin; height: 55vmin; }
             .wishes-text { font-size: 14px; }
         }
@@ -186,7 +143,6 @@
     </div>
 
     <div class="screen-hero">
-        
         <div class="header-group">
             <img src="logo.png" alt="PHOTONOIR" class="logo-img">
             <h2 class="sub-logo-text">end OF The YEAR</h2>
@@ -215,12 +171,24 @@
             <div class="visitor-counter"><span>TOTAL PLAYS:</span><span id="busuanzi_container_site_pv" style="display: inline;"><span id="busuanzi_value_site_pv">...</span></span></div>
         </div>
 
-        <div class="scroll-hint" onclick="scrollToLetter()">
-            ↓ SCROLL TO READ
+        <div class="scroll-hint" id="scrollHint" onclick="scrollToNext()">
+            ↓ SCROLL TO VIEW
         </div>
     </div>
 
-    <div class="screen-letter" id="letterSection">
+    <div class="screen-analysis" id="analysisSection">
+        <div class="analysis-box">
+            <div class="analysis-label">
+                <span>FREQUENCY REPORT</span>
+                <span>2026</span>
+            </div>
+            <div class="analysis-title" id="analysisTitle">Why this track?</div>
+            <div class="analysis-content" id="analysisContent">
+                </div>
+        </div>
+    </div>
+
+    <div class="screen-letter">
         <div class="letter-container">
             <div class="letter-header">A LETTER FROM PHOTONOIR</div>
             <div class="letter-body">
@@ -243,18 +211,76 @@
         const progressFill = document.getElementById('progressFill');
         const currentTimeEl = document.getElementById('currentTime');
         const totalTimeEl = document.getElementById('totalTime');
-        const letterSection = document.getElementById('letterSection');
+        const scrollHint = document.getElementById('scrollHint');
+        const analysisSection = document.getElementById('analysisSection');
+        const analysisTitle = document.getElementById('analysisTitle');
+        const analysisContent = document.getElementById('analysisContent');
 
+        // DATA: Thêm trường 'analysis' cho mỗi track
         const tracks = [
-            { id: 1, wish: "TRACK 01: KHỞI ĐẦU RỰC RỠ & ĐẦY KIÊU HÃNH.", song: "Sunroof - Nicky Youre", file: "track1.mp3" },
-            { id: 2, wish: "TRACK 02: SỐNG TRỌN TỪNG KHOẢNH KHẮC ĐIỆN ẢNH.", song: "Golden Hour - JVKE", file: "track2.mp3" },
-            { id: 3, wish: "TRACK 03: OUT NÉT NỖI BUỒN, LẤY NÉT NIỀM VUI.", song: "Shake It Off - Taylor Swift", file: "track3.mp3" },
-            { id: 4, wish: "TRACK 04: DÁM LÀM NHỮNG ĐIỀU CHƯA TỪNG DÁM.", song: "The Nights - Avicii", file: "track4.mp3" },
-            { id: 5, wish: "TRACK 05: TỎA SÁNG THEO CÁCH RIÊNG CỦA BẠN.", song: "Diamonds - Rihanna", file: "track5.mp3" },
-            { id: 6, wish: "TRACK 06: TÌM THẤY KẾT NỐI CHÂN THẬT NHẤT.", song: "Until I Found You", file: "track6.mp3" },
-            { id: 7, wish: "BONUS TRACK: VOUCHER 20% (CHỤP MÀN HÌNH NGAY!)", song: "Money - Lisa", file: "track7.mp3" },
-            { id: 8, wish: "TRACK 08: BẢN NHẠC HAY NHẤT ĐỜI BẠN.", song: "Best Day Of My Life", file: "track8.mp3" },
-            { id: 9, wish: "TRACK 09: YÊU BẢN THÂN NHIỀU HƠN MỘT CHÚT.", song: "Flowers - Miley Cyrus", file: "track9.mp3" }
+            { 
+                id: 1, 
+                wish: "TRACK 01: KHỞI ĐẦU RỰC RỠ & ĐẦY KIÊU HÃNH.", 
+                song: "Sunroof - Nicky Youre", 
+                file: "track1.mp3",
+                analysis: "Vũ trụ gửi tín hiệu này vì bạn đã sẵn sàng để 'mở nóc' tâm hồn mình. Năm 2026 không phải lúc để trốn trong bóng tối. Sự lạc quan và năng lượng của bạn sẽ là nam châm thu hút những cơ hội bất ngờ."
+            },
+            { 
+                id: 2, 
+                wish: "TRACK 02: SỐNG TRỌN TỪNG KHOẢNH KHẮC ĐIỆN ẢNH.", 
+                song: "Golden Hour - JVKE", 
+                file: "track2.mp3",
+                analysis: "Có vẻ như bạn đang tìm kiếm vẻ đẹp trong những điều bình dị. Bản nhạc này chọn bạn để nhắc nhở: Bạn chính là nhân vật chính (Main Character) trong thước phim đời mình. Hãy tỏa sáng, ngay cả khi không có ánh đèn sân khấu."
+            },
+            { 
+                id: 3, 
+                wish: "TRACK 03: OUT NÉT NỖI BUỒN, LẤY NÉT NIỀM VUI.", 
+                song: "Shake It Off - Taylor Swift", 
+                file: "track3.mp3",
+                analysis: "Một chút rắc rối năm cũ ư? Quên nó đi! Tần số này xuất hiện để tiếp thêm sức mạnh cho bạn rũ bỏ những năng lượng tiêu cực. Năm mới, bạn sẽ nhẹ nhàng hơn, vui vẻ hơn và 'bất khả xâm phạm' trước những lời đàm tiếu."
+            },
+            { 
+                id: 4, 
+                wish: "TRACK 04: DÁM LÀM NHỮNG ĐIỀU CHƯA TỪNG DÁM.", 
+                song: "The Nights - Avicii", 
+                file: "track4.mp3",
+                analysis: "Có những giấc mơ bạn đã ấp ủ quá lâu. Đây là tín hiệu: 'Bây giờ hoặc không bao giờ'. Năm 2026, hãy đi con đường bạn sợ hãi, vì đó là nơi kho báu đang chờ đợi."
+            },
+            { 
+                id: 5, 
+                wish: "TRACK 05: TỎA SÁNG THEO CÁCH RIÊNG CỦA BẠN.", 
+                song: "Diamonds - Rihanna", 
+                file: "track5.mp3",
+                analysis: "Áp lực tạo nên kim cương. Những thử thách vừa qua chỉ đang mài giũa bạn sáng hơn mà thôi. Đừng ngại khác biệt, vì sự độc bản của bạn chính là thứ đắt giá nhất."
+            },
+            { 
+                id: 6, 
+                wish: "TRACK 06: TÌM THẤY KẾT NỐI CHÂN THẬT NHẤT.", 
+                song: "Until I Found You", 
+                file: "track6.mp3",
+                analysis: "Bạn đang ở tần số của tình yêu và sự kết nối sâu sắc. Có thể là một tri kỷ, một người bạn tâm giao, hoặc đơn giản là tìm lại sự kết nối với chính bản thân mình. Hãy mở lòng."
+            },
+            { 
+                id: 7, 
+                wish: "BONUS TRACK: VOUCHER 20% (CHỤP MÀN HÌNH NGAY!)", 
+                song: "Money - Lisa", 
+                file: "track7.mp3",
+                analysis: "Thần tài gõ cửa! Sự may mắn về tài chính và công việc đang hướng về phía bạn. Đừng quên nắm bắt cơ hội (và cả chiếc voucher này nữa) nhé!"
+            },
+            { 
+                id: 8, 
+                wish: "TRACK 08: BẢN NHẠC HAY NHẤT ĐỜI BẠN.", 
+                song: "Best Day Of My Life", 
+                file: "track8.mp3",
+                analysis: "Năng lượng tích cực cực đại! Bạn đang thu hút những ngày tuyệt vời phía trước. Hãy thức dậy mỗi ngày với suy nghĩ rằng điều kỳ diệu sắp xảy ra, và nó sẽ đến."
+            },
+            { 
+                id: 9, 
+                wish: "TRACK 09: YÊU BẢN THÂN NHIỀU HƠN MỘT CHÚT.", 
+                song: "Flowers - Miley Cyrus", 
+                file: "track9.mp3",
+                analysis: "Độc lập, tự do và kiêu hãnh. Tần số này nhắc bạn rằng không ai có thể yêu thương bạn tốt hơn chính bạn. Hãy tự mua hoa cho mình, tự tạo niềm vui cho mình."
+            }
         ];
 
         const STORAGE_KEY = 'photonoir_tracklist_v15';
@@ -265,10 +291,7 @@
             const savedIndex = localStorage.getItem(STORAGE_KEY);
             if (savedIndex !== null) {
                 userTrack = tracks[parseInt(savedIndex)];
-                setTrackInfo(userTrack);
-                displayText.classList.remove('breathing');
-                displayText.classList.add('glitch');
-                document.querySelector('.player-controls').parentElement.classList.add('has-played');
+                finalizeUI(userTrack);
             }
         };
 
@@ -323,19 +346,30 @@
             const randomIndex = Math.floor(Math.random() * tracks.length);
             userTrack = tracks[randomIndex];
             localStorage.setItem(STORAGE_KEY, randomIndex);
-            setTrackInfo(userTrack);
-            displayText.style.opacity = 1;
-            displayText.classList.add('glitch');
-            document.querySelector('.player-controls').parentElement.classList.add('has-played');
             
+            // UI & Audio
             audio.src = userTrack.file;
             audio.play().catch(e => console.log("Interaction needed"));
+            if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
             
             record.classList.add('spinning-anim');
             label.classList.add('spinning-anim');
             isPlaying = true;
 
-            if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+            finalizeUI(userTrack);
+        }
+
+        function finalizeUI(track) {
+            setTrackInfo(track);
+            displayText.style.opacity = 1;
+            displayText.classList.add('glitch');
+            document.querySelector('.player-controls').parentElement.classList.add('has-played');
+            
+            // HIỂN THỊ PHẦN PHÂN TÍCH & SCROLL HINT
+            analysisSection.style.display = 'block';
+            analysisTitle.innerText = "Tại sao là bài hát này?";
+            analysisContent.innerText = track.analysis;
+            scrollHint.classList.add('show-scroll');
         }
 
         function setTrackInfo(track) {
@@ -343,14 +377,17 @@
             metaText.innerText = "NOW PLAYING: " + track.song;
         }
 
-        function scrollToLetter() {
-            letterSection.scrollIntoView({ behavior: 'smooth' });
+        function scrollToNext() {
+            // Cuộn xuống phần phân tích trước
+            analysisSection.scrollIntoView({ behavior: 'smooth' });
         }
 
+        // Fading Volume Script
         window.addEventListener('scroll', () => {
             if (!isPlaying) return;
-            const letterTop = letterSection.getBoundingClientRect().top;
+            const letterTop = document.querySelector('.screen-letter').getBoundingClientRect().top;
             const windowHeight = window.innerHeight;
+            // Khi bắt đầu đọc thư (qua khỏi phần phân tích) thì nhỏ nhạc
             if (letterTop < windowHeight * 0.8) {
                 if (audio.volume > 0.2) audio.volume -= 0.05;
             } else {
