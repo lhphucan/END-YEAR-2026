@@ -15,10 +15,7 @@
         body {
             background-color: var(--bg-color); color: var(--ink-color);
             font-family: 'Manrope', sans-serif;
-            display: flex; 
-            /* THAY ĐỔI QUAN TRỌNG: Chuyển từ center sang flex-start để đẩy mọi thứ lên đỉnh */
-            justify-content: flex-start; 
-            align-items: center;
+            display: flex; justify-content: center; align-items: flex-start; /* Căn lên đỉnh */
             height: 100vh; height: 100dvh; 
             margin: 0; overflow: hidden; position: relative;
         }
@@ -32,30 +29,36 @@
         }
         @keyframes grainMove { 0%, 100% { transform: translate(0, 0); } 90% { transform: translate(-1%, 7%); } }
 
-        /* --- BỐ CỤC TỔNG THỂ --- */
+        /* --- BỐ CỤC CHÍNH --- */
         .container {
             width: 100%; max-width: 480px; height: 100%; 
             display: flex; flex-direction: column; 
-            justify-content: flex-start; 
+            justify-content: flex-start; /* Dồn hết lên trên */
             align-items: center; z-index: 2; 
             
-            /* Padding trên chỉ giữ lại phần an toàn cho tai thỏ */
-            padding: env(safe-area-inset-top) 20px 10px;
+            /* QUAN TRỌNG: Chỉ chừa lại đúng phần tai thỏ, không thêm pixel nào nữa */
+            padding-top: env(safe-area-inset-top);
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 20px;
         }
 
-        /* --- 1. LOGO --- */
+        /* --- 1. LOGO: SÁT TAI THỎ --- */
         .logo-wrapper {
             width: 100%;
             display: flex; justify-content: center; align-items: flex-start;
             flex-shrink: 0;
-            margin-bottom: 0;
             z-index: 10;
-            /* Thêm một chút margin top nhỏ nếu cần thiết để không quá sát mép màn hình */
-            margin-top: 1vh; 
+            /* Kéo ngược lên một chút để trừ hao khoảng trắng của ảnh (nếu có) */
+            margin-top: -5px; 
+            margin-bottom: 0;
         }
 
         .logo-img { 
-            width: 95%; max-width: 420px; height: auto; object-fit: contain; 
+            width: 95%; /* Logo to hết cỡ */
+            max-width: 420px; 
+            height: auto; 
+            object-fit: contain; 
             filter: contrast(1.3) drop-shadow(0 8px 12px rgba(0,0,0,0.15)); 
         }
 
@@ -64,18 +67,19 @@
             display: flex; flex-direction: column; 
             justify-content: flex-start; align-items: center;
             width: 100%;
-            /* Kéo khối này lên cao đè vào khoảng trống dưới logo */
-            margin-top: -60px; 
+            /* THAY ĐỔI: Kéo khối này đè lên trên cực mạnh để sát logo */
+            margin-top: -70px; 
             position: relative; z-index: 5;
         }
 
         .vinyl-container {
             position: relative;
+            /* Đĩa than to */
             width: 65vmin; height: 65vmin; 
             max-width: 320px; max-height: 320px;
             display: flex; justify-content: center; align-items: center;
             transition: transform 0.1s;
-            /* Khoảng cách giữa Đĩa và Chữ */
+            /* Khoảng cách với chữ bên dưới */
             margin-bottom: 15px; 
         }
         .vinyl-container:active { transform: scale(0.97); }
@@ -112,6 +116,8 @@
         .message-area { 
             width: 100%; text-align: center; padding: 0 10px;
             display: flex; flex-direction: column; gap: 5px; 
+            
+            /* Giữ chiều cao cố định để tránh nhảy layout */
             height: 85px; 
             justify-content: flex-start; 
             flex-shrink: 0;
@@ -141,6 +147,7 @@
             width: 100%; 
             padding: 0 20px;
             flex-shrink: 0;
+            /* Kéo Player lên cao theo chữ */
             margin-top: 15px; 
         }
         
@@ -157,10 +164,14 @@
         /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 380px) or (max-height: 700px) {
             .logo-img { width: 95%; }
-            .vinyl-container { width: 58vmin; height: 58vmin; margin-bottom: 15px; }
+            /* Điều chỉnh kích thước đĩa cho màn hình ngắn */
+            .vinyl-container { width: 58vmin; height: 58vmin; margin-bottom: 10px; }
             .wishes-text { font-size: 14px; }
             .player-wrapper { margin-top: 10px; }
             .message-area { height: 80px; }
+            
+            /* Margin âm ít hơn một chút nếu màn hình quá bé để tránh đè logo */
+            .center-content { margin-top: -50px; }
         }
     </style>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
