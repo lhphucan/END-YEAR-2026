@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>end OF The YEAR - 2026</title>
+    <title>PHOTONOIR - END OF THE YEAR</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -23,53 +23,64 @@
             scroll-behavior: smooth;
         }
 
-        /* --- BACKGROUND --- */
+        /* --- BACKGROUND EFFECTS --- */
         .film-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; overflow: hidden; opacity: 0.5; }
         .grain { position: absolute; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.2'/%3E%3C/svg%3E"); animation: grainFlicker 0.2s steps(2) infinite; }
         .scratches { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(0,0,0,0.05) 3px, transparent 4px); animation: scratchJump 0.3s steps(1) infinite; opacity: 0.3; }
         @keyframes grainFlicker { 0% { transform: translate(0,0); } 100% { transform: translate(2px, 2px); } }
         @keyframes scratchJump { 0% { transform: translateX(0); } 50% { transform: translateX(10%); } 100% { transform: translateX(-5%); } }
 
-        /* --- MÀN HÌNH 1: PLAYER (FIX LAYOUT) --- */
+        /* --- MÀN HÌNH 1: PLAYER --- */
         .screen-hero {
             width: 100%; max-width: 480px; 
-            min-height: 100dvh; /* Sử dụng dvh để full màn hình điện thoại chính xác hơn */
+            min-height: 100dvh; 
             margin: 0 auto; 
             display: flex; flex-direction: column; 
-            /* Căn mọi thứ lên trên */
-            justify-content: flex-start; 
+            justify-content: center; /* Căn giữa dọc */
             align-items: center; 
             position: relative; z-index: 2; 
-            /* Padding dưới để chừa chỗ cho Scroll Hint */
-            padding: env(safe-area-inset-top) 20px 20px;
+            padding: 20px;
         }
 
-        /* LOGO */
-        .logo-wrapper {
-            width: 100%; display: flex; justify-content: center; align-items: flex-start;
-            flex-shrink: 0; z-index: 10; margin-top: 1vh; margin-bottom: 0;
+        /* --- PHẦN LOGO + TEXT --- */
+        .header-group {
+            width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            margin-bottom: 25px; /* Khoảng cách với đĩa than */
+            z-index: 10;
         }
-        
-        .typo-logo {
+
+        /* 1. Logo Ảnh (Màu đen gốc) */
+        .logo-img { 
+            width: 65%; max-width: 300px; height: auto; object-fit: contain; 
+            filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); 
+            margin-bottom: 5px;
+        }
+
+        /* 2. Dòng chữ "end OF The YEAR" (Màu đỏ đô) */
+        .sub-logo-text {
             font-family: 'Manrope', sans-serif;
-            font-weight: 800; font-size: 42px; line-height: 0.9;
-            color: var(--accent-color);
-            text-align: center; letter-spacing: -1.5px;
-            text-transform: none; margin: 0;
-            filter: contrast(1.2) drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            font-weight: 800; 
+            font-size: 18px; 
+            color: var(--accent-color); /* Đỏ đô */
+            text-transform: none; /* Giữ nguyên viết hoa/thường */
+            letter-spacing: 2px;
+            margin: 0;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.5);
         }
 
         /* KHỐI GIỮA */
         .center-content {
-            display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
-            width: 100%; margin-top: -60px; position: relative; z-index: 5;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            width: 100%; position: relative; z-index: 5;
+            margin-bottom: 20px;
         }
 
         /* ĐĨA THAN */
         .vinyl-container {
-            position: relative; width: 65vmin; height: 65vmin; max-width: 320px; max-height: 320px;
+            position: relative; width: 62vmin; height: 62vmin; max-width: 320px; max-height: 320px;
             display: flex; justify-content: center; align-items: center;
-            transition: transform 0.1s; margin-bottom: 15px; 
+            transition: transform 0.1s; margin-bottom: 20px; 
         }
         .vinyl-container:active { transform: scale(0.97); }
         .vinyl-record {
@@ -93,11 +104,11 @@
         }
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
 
-        /* TEXT */
+        /* TEXT - MÀU ĐỎ ĐÔ */
         .message-area { 
             width: 100%; text-align: center; padding: 0 10px;
             display: flex; flex-direction: column; gap: 5px; 
-            height: 85px; justify-content: flex-start; flex-shrink: 0;
+            height: 80px; justify-content: center; flex-shrink: 0;
         }
         
         .wishes-text { 
@@ -114,11 +125,10 @@
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         .glitch { animation: glitch-anim 0.3s both; color: var(--accent-color) !important; } 
 
-        /* PLAYER - Đã tách biệt an toàn */
+        /* PLAYER */
         .player-wrapper { 
             width: 100%; padding: 0 20px; flex-shrink: 0; 
-            margin-top: 15px; 
-            margin-bottom: 20px; /* Tạo khoảng cách với Scroll Hint */
+            margin-bottom: 40px; 
         }
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
@@ -128,21 +138,11 @@
         .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 10px; display: flex; gap: 5px; justify-content: center; }
         #busuanzi_container_site_pv { display: none; }
 
-        /* SCROLL HINT (FIX LỖI DÍNH LIỀN) */
+        /* SCROLL HINT */
         .scroll-hint {
-            /* Thay đổi quan trọng: Chuyển từ absolute sang relative để không bị đè */
-            position: relative; 
-            width: 100%; text-align: center;
-            
-            /* Kỹ thuật Flexbox đẩy xuống đáy: */
-            /* Nếu màn hình cao, margin-top: auto sẽ đẩy nó xuống tận cùng */
-            /* Nếu màn hình thấp, nó sẽ chỉ nằm dưới player 1 đoạn */
-            margin-top: auto; 
-            padding-bottom: 20px;
-            
+            position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center;
             font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5;
-            animation: float 2s infinite; cursor: pointer;
-            z-index: 20;
+            animation: float 2s infinite; cursor: pointer; z-index: 20;
         }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 
@@ -168,12 +168,9 @@
 
         /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 380px) or (max-height: 700px) {
-            .typo-logo { font-size: 36px; }
-            .vinyl-container { width: 58vmin; height: 58vmin; margin-bottom: 10px; }
+            .logo-img { width: 80%; }
+            .vinyl-container { width: 55vmin; height: 55vmin; }
             .wishes-text { font-size: 14px; }
-            .player-wrapper { margin-top: 10px; margin-bottom: 10px; }
-            .message-area { height: 80px; }
-            .center-content { margin-top: -50px; }
         }
     </style>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
@@ -186,8 +183,10 @@
     </div>
 
     <div class="screen-hero">
-        <div class="logo-wrapper">
-            <h1 class="typo-logo">end OF The YEAR</h1>
+        
+        <div class="header-group">
+            <img src="logo.png" alt="PHOTONOIR" class="logo-img">
+            <h2 class="sub-logo-text">end OF The YEAR</h2>
         </div>
 
         <div class="center-content">
