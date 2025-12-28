@@ -36,46 +36,42 @@
             justify-content: flex-start; /* Dồn lên trên */
             align-items: center; z-index: 2; 
             
-            /* THAY ĐỔI 1: Padding trên chỉ lấy đúng phần tai thỏ, bỏ hết khoảng trắng thừa */
-            padding: env(safe-area-inset-top) 20px 20px;
+            /* Padding trên tối thiểu */
+            padding: env(safe-area-inset-top) 20px 10px;
         }
 
-        /* --- 1. LOGO: SÁT ĐỈNH --- */
+        /* --- 1. LOGO --- */
         .logo-wrapper {
             width: 100%;
             display: flex; justify-content: center; align-items: flex-start;
             flex-shrink: 0;
-            margin-bottom: 0px; 
+            margin-bottom: 0;
             z-index: 10;
-            /* Đẩy nhẹ lên trên một chút nữa nếu ảnh logo có khoảng trắng thừa */
-            margin-top: 1vh; 
         }
 
         .logo-img { 
-            width: 95%; /* Logo cực to */
-            max-width: 420px; 
-            height: auto; 
-            object-fit: contain; 
+            width: 95%; max-width: 420px; height: auto; object-fit: contain; 
             filter: contrast(1.3) drop-shadow(0 8px 12px rgba(0,0,0,0.15)); 
         }
 
-        /* --- 2. KHỐI GIỮA: KÉO CAO LÊN --- */
+        /* --- 2. KHỐI GIỮA (ĐĨA + CHỮ) --- */
         .center-content {
             display: flex; flex-direction: column; 
             justify-content: flex-start; align-items: center;
             width: 100%;
-            /* THAY ĐỔI 2: Margin âm cực lớn để kéo đĩa than lên sát logo */
-            margin-top: -40px; 
+            /* Kéo khối này lên cao đè vào khoảng trống dưới logo */
+            margin-top: -60px; 
+            position: relative; z-index: 5;
         }
 
         .vinyl-container {
             position: relative;
-            /* Đĩa than to */
             width: 65vmin; height: 65vmin; 
             max-width: 320px; max-height: 320px;
             display: flex; justify-content: center; align-items: center;
             transition: transform 0.1s;
-            margin-bottom: 20px; 
+            /* Khoảng cách giữa Đĩa và Chữ */
+            margin-bottom: 15px; 
         }
         .vinyl-container:active { transform: scale(0.97); }
 
@@ -107,18 +103,29 @@
         }
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
 
-        /* --- TEXT --- */
+        /* --- TEXT (ĐÃ SỬA LỖI NHẢY DÒNG) --- */
         .message-area { 
             width: 100%; text-align: center; padding: 0 10px;
             display: flex; flex-direction: column; gap: 5px; 
-            /* Kéo phần chữ sát lên đĩa than hơn chút nữa */
-            margin-top: -5px;
+            
+            /* FIX QUAN TRỌNG: Cấp chiều cao cứng cho khu vực này */
+            /* 80px đủ cho khoảng 3 dòng chữ + tên bài hát */
+            height: 85px; 
+            /* Căn giữa nội dung trong cái hộp 85px đó */
+            justify-content: flex-start; 
+            flex-shrink: 0; /* Không cho phép hộp này bị bóp méo */
         }
         
         .wishes-text { 
             font-size: 15px; font-weight: 800; line-height: 1.35; 
             color: #000; text-transform: uppercase; letter-spacing: 0px; 
             transition: opacity 0.3s;
+            
+            /* Giới hạn số dòng hiển thị để không bị tràn nếu quá dài */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .meta-text { 
@@ -130,12 +137,12 @@
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
         .glitch { animation: glitch-anim 0.3s both; color: #000; }
 
-        /* --- 3. PLAYER: CÁCH MỘT KHOẢNG NHẸ --- */
+        /* --- 3. PLAYER --- */
         .player-wrapper { 
             width: 100%; 
             padding: 0 20px;
             flex-shrink: 0;
-            margin-top: 30px; 
+            margin-top: 15px; 
         }
         
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
@@ -153,8 +160,9 @@
             .logo-img { width: 95%; }
             .vinyl-container { width: 58vmin; height: 58vmin; margin-bottom: 15px; }
             .wishes-text { font-size: 14px; }
-            .player-wrapper { margin-top: 20px; }
-            .container { padding-top: 2px; } /* Màn nhỏ cho sát nóc luôn */
+            .player-wrapper { margin-top: 10px; }
+            /* Điều chỉnh chiều cao hộp chữ trên màn hình nhỏ */
+            .message-area { height: 80px; }
         }
     </style>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
