@@ -3,22 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PHOTONOIR - 2026</title>
+    <title>end OF The YEAR - 2026</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     
     <style>
-        :root { --bg-color: #E0E0E0; --ink-color: #000; }
+        :root { --bg-color: #E0E0E0; --ink-color: #000; --accent-color: #960018; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         html, body {
             margin: 0; padding: 0;
             background-color: var(--bg-color); color: var(--ink-color);
             font-family: 'Manrope', sans-serif;
-            
-            /* --- SỬA LỖI LAYOUT BỊ CHIA ĐÔI --- */
-            /* Thay vì display: flex, ta dùng block bình thường để các khối tự xuống dòng */
             display: block; 
             min-height: 100vh;
             overflow-x: hidden; 
@@ -27,66 +24,57 @@
         }
 
         /* --- BACKGROUND --- */
-        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.15) 100%); }
-        
-        /* Hiệu ứng Film */
         .film-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; overflow: hidden; opacity: 0.5; }
         .grain { position: absolute; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.2'/%3E%3C/svg%3E"); animation: grainFlicker 0.2s steps(2) infinite; }
         .scratches { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(0,0,0,0.05) 3px, transparent 4px); animation: scratchJump 0.3s steps(1) infinite; opacity: 0.3; }
         @keyframes grainFlicker { 0% { transform: translate(0,0); } 100% { transform: translate(2px, 2px); } }
         @keyframes scratchJump { 0% { transform: translateX(0); } 50% { transform: translateX(10%); } 100% { transform: translateX(-5%); } }
 
-        /* --- MÀN HÌNH 1: PLAYER --- */
+        /* --- MÀN HÌNH 1: PLAYER (FIX LAYOUT) --- */
         .screen-hero {
-            width: 100%; 
-            /* Đảm bảo chiếm trọn màn hình nhưng không quá rộng trên PC */
-            max-width: 480px; 
-            min-height: 100vh;
-            margin: 0 auto; /* Căn giữa màn hình desktop */
-            
+            width: 100%; max-width: 480px; 
+            min-height: 100dvh; /* Sử dụng dvh để full màn hình điện thoại chính xác hơn */
+            margin: 0 auto; 
             display: flex; flex-direction: column; 
-            justify-content: flex-start; /* Dồn lên trên */
+            /* Căn mọi thứ lên trên */
+            justify-content: flex-start; 
             align-items: center; 
             position: relative; z-index: 2; 
+            /* Padding dưới để chừa chỗ cho Scroll Hint */
             padding: env(safe-area-inset-top) 20px 20px;
         }
 
         /* LOGO */
         .logo-wrapper {
-            width: 100%;
-            display: flex; justify-content: center; align-items: flex-start;
-            flex-shrink: 0;
-            z-index: 10;
-            margin-top: -5px; margin-bottom: 0;
+            width: 100%; display: flex; justify-content: center; align-items: flex-start;
+            flex-shrink: 0; z-index: 10; margin-top: 1vh; margin-bottom: 0;
         }
-        .logo-img { 
-            width: 95%; max-width: 420px; height: auto; object-fit: contain; 
-            filter: contrast(1.3) drop-shadow(0 8px 12px rgba(0,0,0,0.15)); 
+        
+        .typo-logo {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800; font-size: 42px; line-height: 0.9;
+            color: var(--accent-color);
+            text-align: center; letter-spacing: -1.5px;
+            text-transform: none; margin: 0;
+            filter: contrast(1.2) drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
 
-        /* KHỐI GIỮA (ĐĨA + CHỮ) */
+        /* KHỐI GIỮA */
         .center-content {
-            display: flex; flex-direction: column; 
-            justify-content: flex-start; align-items: center;
-            width: 100%;
-            margin-top: -70px; /* Kéo sát lên logo */
-            position: relative; z-index: 5;
+            display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
+            width: 100%; margin-top: -60px; position: relative; z-index: 5;
         }
 
-        /* ĐĨA THAN (Đã fix texture) */
+        /* ĐĨA THAN */
         .vinyl-container {
-            position: relative; width: 65vmin; height: 65vmin; 
-            max-width: 320px; max-height: 320px;
+            position: relative; width: 65vmin; height: 65vmin; max-width: 320px; max-height: 320px;
             display: flex; justify-content: center; align-items: center;
             transition: transform 0.1s; margin-bottom: 15px; 
         }
         .vinyl-container:active { transform: scale(0.97); }
-
         .vinyl-record {
-            width: 100%; height: 100%; border-radius: 50%;
-            background-color: #101010;
+            width: 100%; height: 100%; border-radius: 50%; background-color: #101010;
             box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            /* Texture vân đĩa rõ nét */
             background: repeating-radial-gradient(#050505 0, #050505 2px, #333 3px, #050505 4px);
             position: relative;
         }
@@ -95,16 +83,13 @@
             background: linear-gradient(135deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 70%);
             pointer-events: none;
         }
-
         .spinning-anim { animation: spin 8s linear infinite !important; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
         .vinyl-label {
             position: absolute; top: 34%; left: 34%; width: 32%; height: 32%;
             background-color: #f0f0f0; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            border: 1px solid #aaa; z-index: 5;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            border: 1px solid #aaa; z-index: 5; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
         }
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
 
@@ -114,32 +99,50 @@
             display: flex; flex-direction: column; gap: 5px; 
             height: 85px; justify-content: flex-start; flex-shrink: 0;
         }
+        
         .wishes-text { 
             font-size: 15px; font-weight: 800; line-height: 1.35; 
-            color: #000; text-transform: uppercase; letter-spacing: 0px; 
+            color: var(--accent-color);
+            text-transform: uppercase; letter-spacing: 0px; 
             transition: opacity 0.3s;
             display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.2);
         }
+
         .meta-text { font-size: 10px; color: #555; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
         .breathing { animation: breathe 3s ease-in-out infinite; }
-        @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        .glitch { animation: glitch-anim 0.3s both; color: #000; }
+        @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        .glitch { animation: glitch-anim 0.3s both; color: var(--accent-color) !important; } 
 
-        /* PLAYER */
-        .player-wrapper { width: 100%; padding: 0 20px; flex-shrink: 0; margin-top: 15px; }
+        /* PLAYER - Đã tách biệt an toàn */
+        .player-wrapper { 
+            width: 100%; padding: 0 20px; flex-shrink: 0; 
+            margin-top: 15px; 
+            margin-bottom: 20px; /* Tạo khoảng cách với Scroll Hint */
+        }
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
         .progress-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px; overflow: hidden; }
-        .progress-bar-fill { width: 0%; height: 100%; background: #000; transition: width 0.1s linear; }
+        .progress-bar-fill { width: 0%; height: 100%; background: var(--accent-color); transition: width 0.1s linear; }
         .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #000; font-family: monospace; }
         .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 10px; display: flex; gap: 5px; justify-content: center; }
         #busuanzi_container_site_pv { display: none; }
 
-        /* Scroll Hint */
+        /* SCROLL HINT (FIX LỖI DÍNH LIỀN) */
         .scroll-hint {
-            position: absolute; bottom: 20px; width: 100%; text-align: center;
+            /* Thay đổi quan trọng: Chuyển từ absolute sang relative để không bị đè */
+            position: relative; 
+            width: 100%; text-align: center;
+            
+            /* Kỹ thuật Flexbox đẩy xuống đáy: */
+            /* Nếu màn hình cao, margin-top: auto sẽ đẩy nó xuống tận cùng */
+            /* Nếu màn hình thấp, nó sẽ chỉ nằm dưới player 1 đoạn */
+            margin-top: auto; 
+            padding-bottom: 20px;
+            
             font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5;
-            animation: float 2s infinite; cursor: pointer; left: 0;
+            animation: float 2s infinite; cursor: pointer;
+            z-index: 20;
         }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 
@@ -150,19 +153,25 @@
             padding: 80px 30px 120px;
             background: linear-gradient(180deg, rgba(224,224,224,0) 0%, rgba(245,245,245,0.95) 15%, #F5F5F5 100%);
         }
-        .letter-container { border-left: 2px solid #000; padding-left: 25px; }
-        .letter-header { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; opacity: 0.5; }
+        .letter-container { border-left: 2px solid var(--accent-color); padding-left: 25px; }
+        
+        .letter-header { 
+            font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; 
+            text-transform: uppercase; margin-bottom: 30px; 
+            color: var(--accent-color); opacity: 0.8; 
+        }
+        
         .letter-body { font-family: 'Playfair Display', serif; font-size: 18px; line-height: 1.8; color: #111; font-weight: 400; }
         .letter-body p { margin-bottom: 25px; }
-        .letter-body p:first-child::first-letter { font-size: 3.5em; float: left; line-height: 0.8; margin-right: 10px; font-weight: 600; }
+        .letter-body p:first-child::first-letter { font-size: 3.5em; float: left; line-height: 0.8; margin-right: 10px; font-weight: 600; color: var(--accent-color); }
         .letter-sign { margin-top: 50px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-top: 1px solid #ccc; display: inline-block; padding-top: 10px; }
 
         /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 380px) or (max-height: 700px) {
-            .logo-img { width: 95%; }
+            .typo-logo { font-size: 36px; }
             .vinyl-container { width: 58vmin; height: 58vmin; margin-bottom: 10px; }
             .wishes-text { font-size: 14px; }
-            .player-wrapper { margin-top: 10px; }
+            .player-wrapper { margin-top: 10px; margin-bottom: 10px; }
             .message-area { height: 80px; }
             .center-content { margin-top: -50px; }
         }
@@ -178,7 +187,7 @@
 
     <div class="screen-hero">
         <div class="logo-wrapper">
-            <img src="logo.png" alt="PHOTONOIR" class="logo-img">
+            <h1 class="typo-logo">end OF The YEAR</h1>
         </div>
 
         <div class="center-content">
@@ -204,7 +213,9 @@
             <div class="visitor-counter"><span>TOTAL PLAYS:</span><span id="busuanzi_container_site_pv" style="display: inline;"><span id="busuanzi_value_site_pv">...</span></span></div>
         </div>
 
-        <div class="scroll-hint" onclick="scrollToLetter()">↓ SCROLL TO READ</div>
+        <div class="scroll-hint" onclick="scrollToLetter()">
+            ↓ SCROLL TO READ
+        </div>
     </div>
 
     <div class="screen-letter" id="letterSection">
