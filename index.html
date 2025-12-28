@@ -15,7 +15,8 @@
             background-color: var(--bg-color); color: var(--ink-color);
             font-family: 'Manrope', sans-serif;
             display: flex; justify-content: center; align-items: center;
-            height: 100vh; height: 100dvh; margin: 0; overflow: hidden; position: relative;
+            height: 100vh; height: 100dvh; /* Đảm bảo full màn hình trên mobile */
+            margin: 0; overflow: hidden; position: relative;
         }
 
         /* --- BACKGROUND --- */
@@ -27,29 +28,32 @@
         }
         @keyframes grainMove { 0%, 100% { transform: translate(0, 0); } 90% { transform: translate(-1%, 7%); } }
 
-        /* --- BỐ CỤC CHÍNH --- */
+        /* --- BỐ CỤC CHÍNH (ĐÃ SỬA) --- */
         .container {
-            width: 100%; max-width: 400px; height: 100%; padding: 20px;
-            display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; z-index: 2; padding-bottom: 30px;
+            width: 100%; max-width: 450px; height: 100%; 
+            padding: 15px 20px 25px 20px; /* Giảm padding trên dưới để tiết kiệm diện tích */
+            display: flex; flex-direction: column; 
+            justify-content: space-between; /* Đẩy các phần tử ra xa nhau hợp lý */
+            align-items: center; z-index: 2; 
         }
 
-        /* LOGO MẶC ĐỊNH */
+        /* LOGO MẶC ĐỊNH (PC) */
         .logo-img { 
-            width: 240px; 
-            max-width: 80%; 
-            height: auto; 
-            object-fit: contain; 
-            margin-top: 10px; 
-            filter: contrast(1.2); 
-            transition: all 0.3s ease;
+            width: 240px; max-width: 80%; height: auto; 
+            object-fit: contain; margin-top: 10px; 
+            filter: contrast(1.2); transition: all 0.3s ease;
+            flex-shrink: 0; /* Không cho logo bị bóp méo */
         }
 
         /* --- ĐĨA THAN --- */
         .vinyl-container {
             position: relative;
-            width: 65vmin; height: 65vmin; max-width: 260px; max-height: 260px;
+            /* Kích thước linh hoạt theo chiều dọc và ngang */
+            width: 60vmin; height: 60vmin; 
+            max-width: 260px; max-height: 260px;
             display: flex; justify-content: center; align-items: center;
             transition: transform 0.1s;
+            flex-shrink: 1; /* Cho phép đĩa than thu nhỏ nếu màn hình quá bé */
         }
         .vinyl-container:active { transform: scale(0.95); }
 
@@ -65,22 +69,14 @@
             background-blend-mode: screen;
         }
 
-        /* VỆT SÁNG PHẢN CHIẾU */
         .vinyl-record::after {
             content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
             background: linear-gradient(135deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 60%);
             pointer-events: none;
         }
 
-        /* --- ANIMATION QUAY (ĐÃ CHỈNH CHẬM LẠI: 12s) --- */
-        .spinning-anim {
-            animation: spin 12s linear infinite !important; /* 12s để quay chậm, chill hơn */
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .spinning-anim { animation: spin 12s linear infinite !important; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .vinyl-label {
             position: absolute; top: 34%; left: 34%; width: 32%; height: 32%;
@@ -93,60 +89,83 @@
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; border: 1px solid #333; }
 
         /* --- TEXT & CONTROLS --- */
-        .message-area { width: 100%; display: flex; flex-direction: column; justify-content: center; text-align: center; min-height: 100px; }
+        .message-area { 
+            width: 100%; display: flex; flex-direction: column; justify-content: center; text-align: center; 
+            /* Giảm chiều cao cố định để không chiếm chỗ của player */
+            flex-grow: 1; 
+            max-height: 120px;
+        }
         
-        /* CHỮ TIÊU ĐỀ/LỜI CHÚC */
         .wishes-text { 
-            font-size: 15px; 
-            font-weight: 800; 
-            line-height: 1.5; 
-            text-transform: uppercase; 
-            letter-spacing: 0.5px; 
-            transition: opacity 0.3s;
-            padding: 0 10px; /* Thêm lề để không bị sát mép */
+            font-size: 15px; font-weight: 800; line-height: 1.4; 
+            text-transform: uppercase; letter-spacing: 0.5px; transition: opacity 0.3s; padding: 0 10px;
         }
 
-        .meta-text { font-size: 10px; color: #666; letter-spacing: 2px; margin-top: 8px; font-weight: 600; text-transform: uppercase; border-top: 1px solid #ccc; padding-top: 8px; display: inline-block; margin: 8px auto 0; }
+        .meta-text { font-size: 10px; color: #666; letter-spacing: 2px; margin-top: 5px; font-weight: 600; text-transform: uppercase; border-top: 1px solid #ccc; padding-top: 5px; display: inline-block; margin: 5px auto 0; }
         .breathing { animation: breathe 2s ease-in-out infinite; color: #444; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         
         .glitch { animation: glitch-anim 0.3s both; color: #000; }
         @keyframes glitch-anim { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
 
+        /* PLAYER BAR - Luôn neo ở dưới */
+        .player-wrapper { width: 100%; margin-top: auto; padding-bottom: 10px; }
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
         .progress-bar-bg { width: 100%; height: 4px; background: #ccc; border-radius: 2px; overflow: hidden; }
         .progress-bar-fill { width: 0%; height: 100%; background: #111; transition: width 0.1s linear; }
         .time-display { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; font-weight: 600; color: #666; }
-        .visitor-counter { font-size: 9px; color: #888; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; margin-top: 10px; opacity: 0.8; display: flex; gap: 5px; justify-content: center; }
+        .visitor-counter { font-size: 9px; color: #888; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; margin-top: 5px; opacity: 0.8; display: flex; gap: 5px; justify-content: center; }
         #busuanzi_container_site_pv { display: none; }
 
-        /* --- TÙY CHỈNH RIÊNG CHO ĐIỆN THOẠI (MOBILE) --- */
+        /* --- TÙY CHỈNH RIÊNG CHO ĐIỆN THOẠI (FIX LỖI MẤT NỘI DUNG) --- */
         @media (max-width: 600px) {
-            /* 1. Logo to hơn & nổi bật hơn */
-            .logo-img {
-                width: 75%; /* Chiếm 75% chiều rộng màn hình */
-                max-width: 300px; 
-                /* Tạo bóng đổ để nổi khối */
-                filter: contrast(1.2) drop-shadow(0 4px 6px rgba(0,0,0,0.2)); 
-                margin-bottom: 20px;
+            .container {
+                /* Sử dụng space-between để dàn đều từ trên xuống dưới */
+                justify-content: space-between; 
+                padding-top: 40px; /* Thêm khoảng cách đỉnh cho thoáng logo */
             }
 
-            /* 2. Đĩa than cân đối lại một chút */
+            /* 1. LOGO: To nhưng giới hạn chiều cao để không đẩy nội dung */
+            .logo-img {
+                width: 90%; 
+                max-height: 20vh; /* Chỉ chiếm tối đa 20% màn hình */
+                margin-bottom: 0;
+                filter: contrast(1.2) drop-shadow(0 5px 8px rgba(0,0,0,0.25));
+            }
+
+            /* 2. ĐĨA THAN: Co giãn thông minh */
             .vinyl-container {
-                width: 70vmin;
-                height: 70vmin;
+                /* Giảm kích thước xuống một chút để nhường chỗ cho Player */
+                width: 65vmin; height: 65vmin;
+                max-width: 280px; max-height: 280px;
+                margin: 10px 0; /* Khoảng cách tối thiểu */
+            }
+
+            /* 3. TEXT: Căn chỉnh lại font */
+            .message-area {
+                flex-grow: 0; /* Không cho giãn nở vô tội vạ */
                 margin-bottom: 15px;
             }
 
-            /* 3. Tiêu đề to và ấn tượng hơn */
             .wishes-text {
-                font-size: 18px; /* Chữ to hơn */
-                line-height: 1.4;
-                letter-spacing: 1px;
-                /* Bóng chữ nhẹ tạo cảm giác in ấn */
+                font-size: 16px; /* Giảm nhẹ 1 xíu để không bị quá dài */
+                line-height: 1.35;
+                letter-spacing: 0.5px;
                 text-shadow: 0 1px 1px rgba(255,255,255,0.8);
             }
+            
+            /* Đảm bảo phần player luôn hiển thị */
+            .player-wrapper {
+                padding-bottom: 20px; /* Khoảng cách an toàn với cạnh dưới đt */
+            }
+        }
+        
+        /* Fix cho màn hình siêu ngắn (iPhone SE, máy cũ) */
+        @media (max-height: 700px) {
+            .logo-img { max-height: 15vh; }
+            .vinyl-container { width: 55vmin; height: 55vmin; }
+            .wishes-text { font-size: 14px; }
         }
     </style>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
@@ -170,7 +189,7 @@
             <div class="meta-text" id="meta-text">2026 COLLECTION</div>
         </div>
 
-        <div style="width: 100%;">
+        <div class="player-wrapper">
             <div class="player-controls">
                 <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
                 <div class="time-display">
