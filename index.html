@@ -3,175 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PHOTONOIR - 2026</title>
+    
+    <title>PHOTONOIR - 2026 COLLECTION</title>
+    <meta name="description" content="Một thước phim điện ảnh cho năm 2026 của bạn.">
+    <meta property="og:image" content="logo.png"> 
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     
     <style>
-        :root { --bg-color: #E0E0E0; --ink-color: #000; }
+        :root { 
+            --bg-color: #E0E0E0; 
+            --ink-color: #050505; 
+            --accent-gray: #888;
+        }
+        
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         html, body {
             margin: 0; padding: 0;
             background-color: var(--bg-color); color: var(--ink-color);
             font-family: 'Manrope', sans-serif;
-            /* QUAN TRỌNG: Cho phép cuộn dọc, chặn cuộn ngang */
             overflow-x: hidden; 
             overflow-y: auto; 
             scroll-behavior: smooth;
         }
 
-        /* --- BACKGROUND --- */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.15) 100%); }
+        /* ================= 1. CINEMATIC FILM EFFECTS ================= */
+        .film-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            pointer-events: none; z-index: 100; overflow: hidden;
+        }
+
+        /* Nhiễu hạt (Grain) - Dùng SVG filter để nét hơn */
         .grain {
-            position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
-            animation: grainMove 6s steps(10) infinite;
-        }
-        @keyframes grainMove { 0%, 100% { transform: translate(0, 0); } 90% { transform: translate(-1%, 7%); } }
-
-        /* ================= MÀN HÌNH 1: PLAYER ================= */
-        .screen-hero {
-            width: 100%; min-height: 100vh; /* Chiếm trọn 1 màn hình */
-            max-width: 480px; 
-            margin: 0 auto; /* Căn giữa trang web */
-            display: flex; flex-direction: column; 
-            justify-content: flex-start; 
-            align-items: center; 
-            position: relative; z-index: 2;
-            padding: env(safe-area-inset-top) 20px 60px; /* Padding dưới lớn để chừa chỗ cho mũi tên */
+            position: absolute; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.12'/%3E%3C/svg%3E");
+            opacity: 0.6;
+            animation: grainFlicker 0.2s steps(2) infinite;
         }
 
-        /* 1. LOGO */
-        .logo-wrapper {
-            width: 100%; display: flex; justify-content: center; align-items: flex-start;
-            flex-shrink: 0; margin-bottom: 0; margin-top: -5px; z-index: 10;
-        }
-        .logo-img { 
-            width: 95%; max-width: 420px; height: auto; object-fit: contain; 
-            filter: contrast(1.3) drop-shadow(0 8px 12px rgba(0,0,0,0.15)); 
+        /* Vết xước dọc (Scratches) - Random hơn */
+        .scratches {
+            position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+            background: repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(0,0,0,0.05) 3px, transparent 4px);
+            animation: scratchJump 0.3s steps(1) infinite;
+            opacity: 0.4;
         }
 
-        /* 2. KHỐI GIỮA */
-        .center-content {
-            display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
-            width: 100%; margin-top: -70px; position: relative; z-index: 5;
-        }
-        .vinyl-container {
-            position: relative; width: 65vmin; height: 65vmin; max-width: 320px; max-height: 320px;
-            display: flex; justify-content: center; align-items: center;
-            transition: transform 0.1s; margin-bottom: 15px; 
-        }
-        .vinyl-container:active { transform: scale(0.97); }
-        .vinyl-record {
-            width: 100%; height: 100%; border-radius: 50%; background-color: #101010;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-            background: repeating-radial-gradient(#111 0, #111 2px, #222 3px, #181818 4px), conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.05) 90deg, transparent 180deg);
-            background-blend-mode: screen;
-        }
-        .vinyl-record::after {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
-            background: linear-gradient(145deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 60%);
-            pointer-events: none;
-        }
-        .spinning-anim { animation: spin 10s linear infinite !important; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .vinyl-label {
-            position: absolute; top: 34%; left: 34%; width: 32%; height: 32%;
-            background-color: #f0f0f0; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            border: 1px solid #aaa; z-index: 5; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
-        }
-        .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
-
-        .message-area { 
-            width: 100%; text-align: center; padding: 0 10px;
-            display: flex; flex-direction: column; gap: 5px; height: 85px; justify-content: flex-start; flex-shrink: 0;
-        }
-        .wishes-text { 
-            font-size: 15px; font-weight: 800; line-height: 1.35; color: #000; 
-            text-transform: uppercase; letter-spacing: 0px; transition: opacity 0.3s;
-            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-        }
-        .meta-text { font-size: 10px; color: #555; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
-        .breathing { animation: breathe 3s ease-in-out infinite; }
-        @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        .glitch { animation: glitch-anim 0.3s both; color: #000; }
-
-        /* 3. PLAYER */
-        .player-wrapper { width: 100%; padding: 0 20px; flex-shrink: 0; margin-top: 15px; }
-        .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
-        .has-played .player-controls { opacity: 1; }
-        .progress-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px; overflow: hidden; }
-        .progress-bar-fill { width: 0%; height: 100%; background: #000; transition: width 0.1s linear; }
-        .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #000; font-family: monospace; }
-        .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 10px; display: flex; gap: 5px; justify-content: center; }
-        #busuanzi_container_site_pv { display: none; }
-
-        /* Mũi tên chỉ dẫn kéo xuống */
-        .scroll-hint {
-            position: absolute; bottom: 15px; width: 100%; text-align: center;
-            opacity: 0.6; animation: bounce 2s infinite; cursor: pointer;
-        }
-        .scroll-hint svg { width: 24px; height: 24px; fill: #333; }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
-
-        /* ================= MÀN HÌNH 2: THƯ CẢM ƠN ================= */
-        .screen-letter {
-            width: 100%; max-width: 480px; margin: 0 auto;
-            padding: 40px 30px 80px; /* Padding dưới nhiều để không bị hụt */
-            position: relative; z-index: 2;
-            background: linear-gradient(to bottom, transparent 0%, rgba(224,224,224,0.5) 20%, #E0E0E0 100%);
-        }
-
-        .divider-line { width: 40px; height: 2px; background: #000; margin: 0 auto 40px; opacity: 0.2; }
-
-        .letter-content {
-            text-align: center; color: #111;
-        }
-
-        .letter-title {
-            font-family: 'Manrope', sans-serif;
-            font-weight: 800; font-size: 14px; letter-spacing: 3px;
-            text-transform: uppercase; margin-bottom: 30px;
+        /* Vệt bụi (Dust) */
+        .dust {
+            position: absolute; width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(50,50,50,0.1) 1px, transparent 1px);
+            background-size: 150px 150px;
+            animation: dustMove 1s steps(5) infinite;
             opacity: 0.5;
         }
 
-        .letter-body {
-            font-family: 'Playfair Display', serif; /* Font chữ có chân sang trọng */
-            font-size: 16px; line-height: 1.8;
-            margin-bottom: 30px;
-            font-style: italic;
+        @keyframes grainFlicker { 0% { transform: translate(0,0); } 100% { transform: translate(2px, 2px); } }
+        @keyframes scratchJump { 0% { transform: translateX(0); opacity: 0.2; } 50% { transform: translateX(10%); opacity: 0.4; } 100% { transform: translateX(-5%); opacity: 0.1; } }
+        @keyframes dustMove { 0% { transform: translateY(0); } 100% { transform: translateY(100px); } }
+
+        /* ================= 2. LOADING SCREEN ================= */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff; z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.8s ease-out;
+        }
+        .loader-text {
+            font-family: 'Manrope', sans-serif; font-weight: 800; letter-spacing: 2px;
+            animation: pulse 1s infinite;
         }
 
-        .letter-body p { margin-bottom: 20px; }
+        /* ================= 3. HERO SECTION (PLAYER) ================= */
+        .screen-hero {
+            width: 100%; min-height: 100vh;
+            max-width: 480px; margin: 0 auto;
+            display: flex; flex-direction: column; 
+            justify-content: flex-start; align-items: center; 
+            position: relative; z-index: 2;
+            /* Padding tối ưu sát tai thỏ */
+            padding: env(safe-area-inset-top) 20px 20px;
+        }
+
+        /* LOGO */
+        .logo-wrapper {
+            width: 100%; display: flex; justify-content: center;
+            margin-top: 1vh; margin-bottom: 0; z-index: 10;
+        }
+        .logo-img { 
+            width: 95%; max-width: 420px; height: auto; object-fit: contain; 
+            filter: contrast(1.4) drop-shadow(0 10px 20px rgba(0,0,0,0.2)); 
+        }
+
+        /* MAIN CONTENT */
+        .center-content {
+            width: 100%; display: flex; flex-direction: column; align-items: center;
+            margin-top: -65px; /* Kéo đè lên vùng dưới logo */
+            position: relative; z-index: 5;
+        }
+
+        /* VINYL */
+        .vinyl-container {
+            width: 66vmin; height: 66vmin; max-width: 320px; max-height: 320px;
+            position: relative; display: flex; justify-content: center; align-items: center;
+            margin-bottom: 20px;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .vinyl-container:active { transform: scale(0.95); }
+        
+        .vinyl-record {
+            width: 100%; height: 100%; border-radius: 50%;
+            background: #111;
+            /* Tạo vân đĩa chân thực hơn */
+            background-image: repeating-radial-gradient(#111 0, #111 2px, #1a1a1a 3px, #111 4px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .vinyl-record::after {
+            content: ''; position: absolute; top:0; left:0; width:100%; height:100%; border-radius:50%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.05) 100%);
+            pointer-events: none;
+        }
+        
+        .spinning-anim { animation: spin 8s linear infinite; } /* Quay 8s cho mượt */
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .vinyl-label {
+            position: absolute; width: 35%; height: 35%; background: #f4f4f4; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2); border: 1px solid #ccc;
+        }
+        .spindle { width: 6px; height: 6px; background: #000; border-radius: 50%; }
+
+        /* TEXT */
+        .message-area {
+            width: 100%; height: 90px; text-align: center; padding: 0 5px;
+            display: flex; flex-direction: column; gap: 4px; justify-content: flex-start;
+        }
+        .wishes-text {
+            font-size: 16px; font-weight: 800; line-height: 1.3; color: #000;
+            text-transform: uppercase; letter-spacing: -0.5px;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .meta-text {
+            font-size: 10px; font-weight: 700; color: #666; letter-spacing: 2px; text-transform: uppercase;
+        }
+        .breathing { animation: pulse 3s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .glitch { animation: glitch 0.3s both; }
+        @keyframes glitch { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
+
+        /* PLAYER BAR */
+        .player-wrapper {
+            width: 100%; margin-top: 15px; padding: 0 10px;
+        }
+        .progress-bar-bg { width: 100%; height: 4px; background: rgba(0,0,0,0.1); border-radius: 2px; }
+        .progress-bar-fill { width: 0%; height: 100%; background: #000; transition: width 0.1s linear; }
+        .time-display { display: flex; justify-content: space-between; font-size: 10px; font-weight: 700; margin-top: 8px; color: #444; font-family: monospace;}
+        
+        .scroll-hint {
+            position: absolute; bottom: 20px; width: 100%; text-align: center;
+            font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.6;
+            animation: float 2s infinite; cursor: pointer;
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+        /* ================= 4. LETTER SECTION (THƯ CẢM ƠN) ================= */
+        .screen-letter {
+            width: 100%; max-width: 480px; margin: 0 auto;
+            position: relative; z-index: 2;
+            padding: 80px 30px 120px;
+            background: linear-gradient(180deg, rgba(224,224,224,0) 0%, rgba(245,245,245,0.95) 15%, #F5F5F5 100%);
+        }
+
+        .letter-container {
+            border-left: 2px solid #000; /* Đường kẻ dọc tạo phong cách tạp chí */
+            padding-left: 25px;
+        }
+
+        .letter-header {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800; font-size: 12px; letter-spacing: 3px;
+            text-transform: uppercase; margin-bottom: 30px; opacity: 0.5;
+        }
+
+        .letter-body {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px; line-height: 1.8; color: #111;
+            font-weight: 400;
+        }
+        .letter-body p { margin-bottom: 25px; }
+        
+        /* Chữ cái đầu tiên to (Drop Cap) */
+        .letter-body p:first-child::first-letter {
+            font-size: 3.5em; float: left; line-height: 0.8; margin-right: 10px; font-weight: 600;
+        }
 
         .letter-sign {
-            font-family: 'Manrope', sans-serif;
-            font-weight: 700; font-size: 12px; letter-spacing: 1px;
-            text-transform: uppercase; margin-top: 40px;
-            display: inline-block; padding: 10px 20px;
-            border: 1px solid #000;
+            margin-top: 50px; font-family: 'Manrope', sans-serif;
+            font-weight: 700; font-size: 14px; text-transform: uppercase;
+            letter-spacing: 1px; border-top: 1px solid #ccc; display: inline-block; padding-top: 10px;
         }
 
-        /* --- MOBILE OPTIMIZATION --- */
-        @media (max-width: 380px) or (max-height: 700px) {
-            .logo-img { width: 95%; }
-            .vinyl-container { width: 58vmin; height: 58vmin; margin-bottom: 10px; }
-            .wishes-text { font-size: 14px; }
-            .player-wrapper { margin-top: 10px; }
+        /* --- VISITOR COUNTER (Ẩn đi cho đẹp, hoặc để nhỏ xíu dưới cùng) --- */
+        #busuanzi_container_site_pv { display: none; }
+
+        /* Responsive Fixes */
+        @media (max-height: 700px) {
+            .vinyl-container { width: 55vmin; height: 55vmin; margin-bottom: 15px; }
             .message-area { height: 80px; }
-            .center-content { margin-top: -50px; }
+            .wishes-text { font-size: 14px; }
         }
     </style>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </head>
 <body>
 
-    <div class="overlay"><div class="grain"></div></div>
+    <div id="loader"><div class="loader-text">LOADING 2026...</div></div>
 
-    <div class="screen-hero" id="hero">
+    <div class="film-layer">
+        <div class="grain"></div>
+        <div class="scratches"></div>
+        <div class="dust"></div>
+    </div>
+
+    <div class="screen-hero">
         <div class="logo-wrapper">
             <img src="logo.png" alt="PHOTONOIR" class="logo-img">
         </div>
@@ -179,9 +237,7 @@
         <div class="center-content">
             <div class="vinyl-container" onclick="handleInteraction()">
                 <div class="vinyl-record" id="record"></div>
-                <div class="vinyl-label" id="label">
-                    <div class="spindle"></div>
-                </div>
+                <div class="vinyl-label" id="label"><div class="spindle"></div></div>
             </div>
 
             <div class="message-area">
@@ -198,41 +254,36 @@
                     <span id="totalTime">--:--</span>
                 </div>
             </div>
-            <div class="visitor-counter">
-                <span>TOTAL PLAYS:</span>
-                <span id="busuanzi_container_site_pv" style="display: inline;"><span id="busuanzi_value_site_pv">...</span></span>
-            </div>
         </div>
 
-        <div class="scroll-hint" onclick="document.querySelector('.screen-letter').scrollIntoView({behavior: 'smooth'})">
-            <svg viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+        <div class="scroll-hint" onclick="scrollToLetter()">
+            ↓ SCROLL TO READ
         </div>
     </div>
 
-    <div class="screen-letter">
-        <div class="divider-line"></div>
-        <div class="letter-content">
-            <div class="letter-title">LETTER FROM PHOTONOIR</div>
-            
+    <div class="screen-letter" id="letterSection">
+        <div class="letter-container">
+            <div class="letter-header">A LETTER FROM PHOTONOIR</div>
             <div class="letter-body">
-                <p>Gửi những tâm hồn đồng điệu,</p>
-                
-                <p>Năm vừa qua là một cuộn phim dài với đầy đủ những gam màu sáng tối. Cảm ơn bạn đã ghé thăm trạm dừng chân nhỏ bé này, đã để âm nhạc và những thước phim của PhotoNoir len lỏi vào một góc cảm xúc của bạn.</p>
-                
+                <p>Năm vừa qua là một thước phim dài với đầy đủ những gam màu sáng tối. Cảm ơn bạn đã ghé thăm trạm dừng chân nhỏ bé này, đã để âm nhạc và hình ảnh của PhotoNoir len lỏi vào một góc cảm xúc.</p>
                 <p>Chúng tôi tin rằng, mỗi khoảnh khắc bạn dừng lại nơi đây, dù chỉ là vài giây hay trọn vẹn một bản nhạc, đều là một sự kết nối vô hình nhưng đầy trân quý.</p>
-                
                 <p>Hành trình 2026 đang mở ra. Chúc bạn luôn giữ được "tần số" rực rỡ nhất của riêng mình. Hãy sống như một thước phim điện ảnh — đậm chất, tự do và đầy kiêu hãnh.</p>
-                
-                <p>Cảm ơn vì đã đồng hành.</p>
             </div>
-
-            <div class="letter-sign">PHOTONOIR TEAM</div>
+            <div class="letter-sign">The PhotoNoir Team.</div>
         </div>
     </div>
 
     <audio id="bgMusic"></audio>
 
     <script>
+        // Loading Logic
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => { document.getElementById('loader').style.display = 'none'; }, 800);
+            }, 1000);
+        });
+
         const audio = document.getElementById('bgMusic');
         const record = document.getElementById('record');
         const label = document.getElementById('label');
@@ -241,6 +292,7 @@
         const progressFill = document.getElementById('progressFill');
         const currentTimeEl = document.getElementById('currentTime');
         const totalTimeEl = document.getElementById('totalTime');
+        const letterSection = document.getElementById('letterSection');
 
         const tracks = [
             { id: 1, wish: "TRACK 01: KHỞI ĐẦU RỰC RỠ & ĐẦY KIÊU HÃNH.", song: "Sunroof - Nicky Youre", file: "track1.mp3" },
@@ -256,9 +308,9 @@
 
         const STORAGE_KEY = 'photonoir_tracklist_v15';
         let isPlaying = false;
-        let shuffleInterval = null;
         let userTrack = null;
 
+        // Auto Load Previous Track
         window.onload = function() {
             const savedIndex = localStorage.getItem(STORAGE_KEY);
             if (savedIndex !== null) {
@@ -282,11 +334,10 @@
             record.classList.add('spinning-anim');
             label.classList.add('spinning-anim');
             isPlaying = true;
-
             if (userTrack) {
                 audio.src = userTrack.file;
                 audio.play();
-                document.querySelector('.player-controls').parentElement.classList.add('has-played');
+                document.querySelector('.player-controls').style.opacity = '1';
             } else {
                 startShuffle();
             }
@@ -303,7 +354,6 @@
             displayText.classList.remove('breathing');
             metaText.innerText = "SCANNING FREQUENCY...";
             let count = 0; let speed = 50; let maxCount = 40;
-
             function step() {
                 const randomItem = tracks[Math.floor(Math.random() * tracks.length)];
                 displayText.innerText = randomItem.wish;
@@ -311,7 +361,7 @@
                 count++;
                 if (count < maxCount) {
                     speed += (count > 30) ? 15 : 2;
-                    shuffleInterval = setTimeout(step, speed);
+                    setTimeout(step, speed);
                 } else {
                     finalizeResult();
                 }
@@ -324,11 +374,9 @@
             userTrack = tracks[randomIndex];
             localStorage.setItem(STORAGE_KEY, randomIndex);
             setTrackInfo(userTrack);
-            
             displayText.style.opacity = 1;
             displayText.classList.add('glitch');
-            
-            document.querySelector('.player-controls').parentElement.classList.add('has-played');
+            document.querySelector('.player-controls').style.opacity = '1';
             audio.src = userTrack.file;
             audio.play().catch(e => console.log("Interaction needed"));
             if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
@@ -338,6 +386,29 @@
             displayText.innerText = track.wish;
             metaText.innerText = "NOW PLAYING: " + track.song;
         }
+
+        // Scroll to Letter
+        function scrollToLetter() {
+            letterSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- AUDIO FADING EFFECT ---
+        // Khi kéo xuống đọc thư, nhạc sẽ nhỏ dần để không làm phiền
+        window.addEventListener('scroll', () => {
+            if (!isPlaying) return;
+            
+            const letterTop = letterSection.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            
+            // Tính toán khoảng cách: Khi thư trồi lên 50% màn hình thì âm lượng giảm
+            if (letterTop < windowHeight * 0.8) {
+                // Đang đọc thư -> Giảm âm lượng
+                if (audio.volume > 0.2) audio.volume -= 0.05;
+            } else {
+                // Quay lại player -> Tăng âm lượng
+                if (audio.volume < 1.0) audio.volume += 0.05;
+            }
+        });
 
         audio.ontimeupdate = function() {
             if (audio.duration) {
