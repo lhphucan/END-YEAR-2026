@@ -6,22 +6,24 @@
     <title>PHOTONOIR - 2026</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     
     <style>
         :root { --bg-color: #E0E0E0; --ink-color: #000; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        body {
+        html, body {
+            margin: 0; padding: 0;
             background-color: var(--bg-color); color: var(--ink-color);
             font-family: 'Manrope', sans-serif;
-            display: flex; justify-content: center; align-items: flex-start; /* Căn lên đỉnh */
-            height: 100vh; height: 100dvh; 
-            margin: 0; overflow: hidden; position: relative;
+            /* QUAN TRỌNG: Cho phép cuộn dọc, chặn cuộn ngang */
+            overflow-x: hidden; 
+            overflow-y: auto; 
+            scroll-behavior: smooth;
         }
 
         /* --- BACKGROUND --- */
-        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.15) 100%); }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.15) 100%); }
         .grain {
             position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
@@ -29,69 +31,43 @@
         }
         @keyframes grainMove { 0%, 100% { transform: translate(0, 0); } 90% { transform: translate(-1%, 7%); } }
 
-        /* --- BỐ CỤC CHÍNH --- */
-        .container {
-            width: 100%; max-width: 480px; height: 100%; 
+        /* ================= MÀN HÌNH 1: PLAYER ================= */
+        .screen-hero {
+            width: 100%; min-height: 100vh; /* Chiếm trọn 1 màn hình */
+            max-width: 480px; 
+            margin: 0 auto; /* Căn giữa trang web */
             display: flex; flex-direction: column; 
-            justify-content: flex-start; /* Dồn hết lên trên */
-            align-items: center; z-index: 2; 
-            
-            /* QUAN TRỌNG: Chỉ chừa lại đúng phần tai thỏ, không thêm pixel nào nữa */
-            padding-top: env(safe-area-inset-top);
-            padding-left: 20px;
-            padding-right: 20px;
-            padding-bottom: 20px;
+            justify-content: flex-start; 
+            align-items: center; 
+            position: relative; z-index: 2;
+            padding: env(safe-area-inset-top) 20px 60px; /* Padding dưới lớn để chừa chỗ cho mũi tên */
         }
 
-        /* --- 1. LOGO: SÁT TAI THỎ --- */
+        /* 1. LOGO */
         .logo-wrapper {
-            width: 100%;
-            display: flex; justify-content: center; align-items: flex-start;
-            flex-shrink: 0;
-            z-index: 10;
-            /* Kéo ngược lên một chút để trừ hao khoảng trắng của ảnh (nếu có) */
-            margin-top: -5px; 
-            margin-bottom: 0;
+            width: 100%; display: flex; justify-content: center; align-items: flex-start;
+            flex-shrink: 0; margin-bottom: 0; margin-top: -5px; z-index: 10;
         }
-
         .logo-img { 
-            width: 95%; /* Logo to hết cỡ */
-            max-width: 420px; 
-            height: auto; 
-            object-fit: contain; 
+            width: 95%; max-width: 420px; height: auto; object-fit: contain; 
             filter: contrast(1.3) drop-shadow(0 8px 12px rgba(0,0,0,0.15)); 
         }
 
-        /* --- 2. KHỐI GIỮA (ĐĨA + CHỮ) --- */
+        /* 2. KHỐI GIỮA */
         .center-content {
-            display: flex; flex-direction: column; 
-            justify-content: flex-start; align-items: center;
-            width: 100%;
-            /* THAY ĐỔI: Kéo khối này đè lên trên cực mạnh để sát logo */
-            margin-top: -70px; 
-            position: relative; z-index: 5;
+            display: flex; flex-direction: column; justify-content: flex-start; align-items: center;
+            width: 100%; margin-top: -70px; position: relative; z-index: 5;
         }
-
         .vinyl-container {
-            position: relative;
-            /* Đĩa than to */
-            width: 65vmin; height: 65vmin; 
-            max-width: 320px; max-height: 320px;
+            position: relative; width: 65vmin; height: 65vmin; max-width: 320px; max-height: 320px;
             display: flex; justify-content: center; align-items: center;
-            transition: transform 0.1s;
-            /* Khoảng cách với chữ bên dưới */
-            margin-bottom: 15px; 
+            transition: transform 0.1s; margin-bottom: 15px; 
         }
         .vinyl-container:active { transform: scale(0.97); }
-
         .vinyl-record {
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            background-color: #101010;
+            width: 100%; height: 100%; border-radius: 50%; background-color: #101010;
             box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-            background: 
-                repeating-radial-gradient(#111 0, #111 2px, #222 3px, #181818 4px), 
-                conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.05) 90deg, transparent 180deg);
+            background: repeating-radial-gradient(#111 0, #111 2px, #222 3px, #181818 4px), conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.05) 90deg, transparent 180deg);
             background-blend-mode: screen;
         }
         .vinyl-record::after {
@@ -99,78 +75,93 @@
             background: linear-gradient(145deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 60%);
             pointer-events: none;
         }
-
         .spinning-anim { animation: spin 10s linear infinite !important; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
         .vinyl-label {
             position: absolute; top: 34%; left: 34%; width: 32%; height: 32%;
             background-color: #f0f0f0; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            border: 1px solid #aaa; z-index: 5;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            border: 1px solid #aaa; z-index: 5; box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
         }
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
 
-        /* --- TEXT --- */
         .message-area { 
             width: 100%; text-align: center; padding: 0 10px;
-            display: flex; flex-direction: column; gap: 5px; 
-            
-            /* Giữ chiều cao cố định để tránh nhảy layout */
-            height: 85px; 
-            justify-content: flex-start; 
-            flex-shrink: 0;
+            display: flex; flex-direction: column; gap: 5px; height: 85px; justify-content: flex-start; flex-shrink: 0;
         }
-        
         .wishes-text { 
-            font-size: 15px; font-weight: 800; line-height: 1.35; 
-            color: #000; text-transform: uppercase; letter-spacing: 0px; 
-            transition: opacity 0.3s;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            font-size: 15px; font-weight: 800; line-height: 1.35; color: #000; 
+            text-transform: uppercase; letter-spacing: 0px; transition: opacity 0.3s;
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
         }
-
-        .meta-text { 
-            font-size: 10px; color: #555; letter-spacing: 2px; 
-            font-weight: 700; text-transform: uppercase; opacity: 0.7;
-        }
-        
+        .meta-text { font-size: 10px; color: #555; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
         .breathing { animation: breathe 3s ease-in-out infinite; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
         .glitch { animation: glitch-anim 0.3s both; color: #000; }
 
-        /* --- 3. PLAYER --- */
-        .player-wrapper { 
-            width: 100%; 
-            padding: 0 20px;
-            flex-shrink: 0;
-            /* Kéo Player lên cao theo chữ */
-            margin-top: 15px; 
-        }
-        
+        /* 3. PLAYER */
+        .player-wrapper { width: 100%; padding: 0 20px; flex-shrink: 0; margin-top: 15px; }
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
-        
         .progress-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px; overflow: hidden; }
         .progress-bar-fill { width: 0%; height: 100%; background: #000; transition: width 0.1s linear; }
-        
         .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #000; font-family: monospace; }
         .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 10px; display: flex; gap: 5px; justify-content: center; }
         #busuanzi_container_site_pv { display: none; }
 
+        /* Mũi tên chỉ dẫn kéo xuống */
+        .scroll-hint {
+            position: absolute; bottom: 15px; width: 100%; text-align: center;
+            opacity: 0.6; animation: bounce 2s infinite; cursor: pointer;
+        }
+        .scroll-hint svg { width: 24px; height: 24px; fill: #333; }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+
+        /* ================= MÀN HÌNH 2: THƯ CẢM ƠN ================= */
+        .screen-letter {
+            width: 100%; max-width: 480px; margin: 0 auto;
+            padding: 40px 30px 80px; /* Padding dưới nhiều để không bị hụt */
+            position: relative; z-index: 2;
+            background: linear-gradient(to bottom, transparent 0%, rgba(224,224,224,0.5) 20%, #E0E0E0 100%);
+        }
+
+        .divider-line { width: 40px; height: 2px; background: #000; margin: 0 auto 40px; opacity: 0.2; }
+
+        .letter-content {
+            text-align: center; color: #111;
+        }
+
+        .letter-title {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800; font-size: 14px; letter-spacing: 3px;
+            text-transform: uppercase; margin-bottom: 30px;
+            opacity: 0.5;
+        }
+
+        .letter-body {
+            font-family: 'Playfair Display', serif; /* Font chữ có chân sang trọng */
+            font-size: 16px; line-height: 1.8;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .letter-body p { margin-bottom: 20px; }
+
+        .letter-sign {
+            font-family: 'Manrope', sans-serif;
+            font-weight: 700; font-size: 12px; letter-spacing: 1px;
+            text-transform: uppercase; margin-top: 40px;
+            display: inline-block; padding: 10px 20px;
+            border: 1px solid #000;
+        }
+
         /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 380px) or (max-height: 700px) {
             .logo-img { width: 95%; }
-            /* Điều chỉnh kích thước đĩa cho màn hình ngắn */
             .vinyl-container { width: 58vmin; height: 58vmin; margin-bottom: 10px; }
             .wishes-text { font-size: 14px; }
             .player-wrapper { margin-top: 10px; }
             .message-area { height: 80px; }
-            
-            /* Margin âm ít hơn một chút nếu màn hình quá bé để tránh đè logo */
             .center-content { margin-top: -50px; }
         }
     </style>
@@ -180,8 +171,7 @@
 
     <div class="overlay"><div class="grain"></div></div>
 
-    <div class="container" id="mainContainer">
-        
+    <div class="screen-hero" id="hero">
         <div class="logo-wrapper">
             <img src="logo.png" alt="PHOTONOIR" class="logo-img">
         </div>
@@ -208,15 +198,36 @@
                     <span id="totalTime">--:--</span>
                 </div>
             </div>
-
             <div class="visitor-counter">
                 <span>TOTAL PLAYS:</span>
-                <span id="busuanzi_container_site_pv" style="display: inline;">
-                    <span id="busuanzi_value_site_pv">...</span>
-                </span>
+                <span id="busuanzi_container_site_pv" style="display: inline;"><span id="busuanzi_value_site_pv">...</span></span>
             </div>
         </div>
 
+        <div class="scroll-hint" onclick="document.querySelector('.screen-letter').scrollIntoView({behavior: 'smooth'})">
+            <svg viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+        </div>
+    </div>
+
+    <div class="screen-letter">
+        <div class="divider-line"></div>
+        <div class="letter-content">
+            <div class="letter-title">LETTER FROM PHOTONOIR</div>
+            
+            <div class="letter-body">
+                <p>Gửi những tâm hồn đồng điệu,</p>
+                
+                <p>Năm vừa qua là một cuộn phim dài với đầy đủ những gam màu sáng tối. Cảm ơn bạn đã ghé thăm trạm dừng chân nhỏ bé này, đã để âm nhạc và những thước phim của PhotoNoir len lỏi vào một góc cảm xúc của bạn.</p>
+                
+                <p>Chúng tôi tin rằng, mỗi khoảnh khắc bạn dừng lại nơi đây, dù chỉ là vài giây hay trọn vẹn một bản nhạc, đều là một sự kết nối vô hình nhưng đầy trân quý.</p>
+                
+                <p>Hành trình 2026 đang mở ra. Chúc bạn luôn giữ được "tần số" rực rỡ nhất của riêng mình. Hãy sống như một thước phim điện ảnh — đậm chất, tự do và đầy kiêu hãnh.</p>
+                
+                <p>Cảm ơn vì đã đồng hành.</p>
+            </div>
+
+            <div class="letter-sign">PHOTONOIR TEAM</div>
+        </div>
     </div>
 
     <audio id="bgMusic"></audio>
@@ -230,7 +241,6 @@
         const progressFill = document.getElementById('progressFill');
         const currentTimeEl = document.getElementById('currentTime');
         const totalTimeEl = document.getElementById('totalTime');
-        const mainContainer = document.getElementById('mainContainer');
 
         const tracks = [
             { id: 1, wish: "TRACK 01: KHỞI ĐẦU RỰC RỠ & ĐẦY KIÊU HÃNH.", song: "Sunroof - Nicky Youre", file: "track1.mp3" },
@@ -256,7 +266,7 @@
                 setTrackInfo(userTrack);
                 displayText.classList.remove('breathing');
                 displayText.classList.add('glitch');
-                mainContainer.classList.add('has-played');
+                document.querySelector('.player-controls').parentElement.classList.add('has-played');
             }
         };
 
@@ -276,7 +286,7 @@
             if (userTrack) {
                 audio.src = userTrack.file;
                 audio.play();
-                mainContainer.classList.add('has-played');
+                document.querySelector('.player-controls').parentElement.classList.add('has-played');
             } else {
                 startShuffle();
             }
@@ -318,7 +328,7 @@
             displayText.style.opacity = 1;
             displayText.classList.add('glitch');
             
-            mainContainer.classList.add('has-played');
+            document.querySelector('.player-controls').parentElement.classList.add('has-played');
             audio.src = userTrack.file;
             audio.play().catch(e => console.log("Interaction needed"));
             if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
