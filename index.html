@@ -9,34 +9,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg-color: #E0E0E0;
-            --ink-color: #111;
-        }
-
+        :root { --bg-color: #E0E0E0; --ink-color: #111; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
         body {
-            background-color: var(--bg-color);
-            color: var(--ink-color);
+            background-color: var(--bg-color); color: var(--ink-color);
             font-family: 'Manrope', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh; 
-            height: 100dvh; 
-            margin: 0;
-            overflow: hidden;
-            position: relative;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; height: 100dvh; margin: 0; overflow: hidden; position: relative;
         }
 
-        /* --- VIGNETTE & GRAIN (TẠO KHÔNG KHÍ NOIR) --- */
-        .overlay { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            pointer-events: none; z-index: 0; overflow: hidden;
-            background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.3) 100%);
-        }
-        
+        /* --- BACKGROUND --- */
+        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.3) 100%); }
         .grain {
             position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.07'/%3E%3C/svg%3E");
@@ -44,169 +27,93 @@
         }
         @keyframes grainMove { 0%, 100% { transform: translate(0, 0); } 90% { transform: translate(-1%, 7%); } }
 
-        /* BỐ CỤC */
+        /* --- BỐ CỤC CHÍNH --- */
         .container {
-            width: 100%; max-width: 400px; 
-            height: 100%;
-            padding: 20px;
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-evenly;
-            align-items: center; 
-            z-index: 2;
-            padding-bottom: 30px; 
+            width: 100%; max-width: 400px; height: 100%; padding: 20px;
+            display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; z-index: 2; padding-bottom: 30px;
         }
 
-        /* --- LOGO --- */
-        .logo-img {
-            width: 240px;
-            max-width: 80%;
-            height: auto;
-            object-fit: contain;
-            margin-top: 10px;
-            filter: contrast(1.2);
-        }
+        .logo-img { width: 240px; max-width: 80%; height: auto; object-fit: contain; margin-top: 10px; filter: contrast(1.2); }
 
-        /* --- ĐĨA THAN (PHẦN QUAN TRỌNG ĐÃ SỬA) --- */
+        /* --- ĐĨA THAN (ĐÃ SỬA ĐỂ QUAY RÕ HƠN) --- */
         .vinyl-container {
             position: relative;
-            width: 65vmin; height: 65vmin; 
-            max-width: 260px; max-height: 260px;
+            width: 65vmin; height: 65vmin; max-width: 260px; max-height: 260px;
             display: flex; justify-content: center; align-items: center;
-            transition: transform 0.2s;
-            border-radius: 50%; /* Đảm bảo khung tròn */
+            /* Khi bấm vào sẽ nhún nhẹ */
+            transition: transform 0.1s;
         }
-        
-        /* HIỆU ỨNG ÁNH SÁNG PHẢN CHIẾU (GLARE) */
-        /* Đã chuyển ra container để nó ĐỨNG YÊN khi đĩa quay */
-        .vinyl-container::after {
-            content: ""; 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            border-radius: 50%;
-            /* Dùng conic-gradient tạo vệt sáng chữ X đặc trưng của đĩa than */
-            background: conic-gradient(
-                from 45deg,
-                transparent 0%,
-                rgba(255, 255, 255, 0.15) 10%,
-                transparent 20%,
-                transparent 50%,
-                rgba(255, 255, 255, 0.15) 60%,
-                transparent 70%
-            );
-            pointer-events: none; /* Không chặn click chuột */
-            z-index: 10; /* Nằm trên cùng */
-        }
-
-        .vinyl-container:active { transform: scale(0.96); }
+        .vinyl-container:active { transform: scale(0.95); }
 
         .vinyl-record {
             width: 100%; height: 100%;
             border-radius: 50%;
             background-color: #101010;
-            /* Vân đĩa (Grooves) */
-            background-image: repeating-radial-gradient(#101010 0, #101010 2px, #222 3px, #181818 4px);
-            position: absolute;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: box-shadow 0.5s;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            
+            /* TẠO VÂN ĐĨA: Kết hợp vân tròn và vân chéo nhẹ để khi quay mắt thấy được chuyển động */
+            background: 
+                repeating-radial-gradient(#111 0, #111 2px, #222 3px, #181818 4px), /* Vân tròn */
+                conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.03) 90deg, transparent 180deg); /* Vân bóng mờ */
+            
+            background-blend-mode: screen;
         }
 
-        /* Hiệu ứng bóng đổ khi quay */
-        .spinning .vinyl-record {
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            animation: pulseShadow 1s infinite alternate;
-        }
-        @keyframes pulseShadow {
-            from { box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
-            to { box-shadow: 0 15px 50px rgba(0,0,0,0.5); }
+        /* VỆT SÁNG PHẢN CHIẾU (GLARE) - QUAN TRỌNG: GẮN VÀO ĐĨA ĐỂ QUAY CÙNG */
+        .vinyl-record::after {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
+            /* Vệt sáng chéo rõ ràng */
+            background: linear-gradient(135deg, 
+                rgba(255,255,255,0) 40%, 
+                rgba(255,255,255,0.1) 50%, 
+                rgba(255,255,255,0) 60%
+            );
+            pointer-events: none;
         }
 
+        /* --- ANIMATION QUAY --- */
+        /* Class này sẽ được JS thêm vào khi nhạc chạy */
+        .spinning-anim {
+            animation: spin 3s linear infinite !important;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Nhãn đĩa ở giữa (Quay cùng đĩa) */
         .vinyl-label {
-            position: absolute; width: 32%; height: 32%;
+            position: absolute; top: 34%; left: 34%; width: 32%; height: 32%;
             background-color: #f5f5f5; border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
-            border: 1px solid #ccc; 
-            z-index: 5; /* Nằm trên đĩa nhưng dưới lớp bóng sáng */
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+            border: 1px solid #999; z-index: 5;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
         }
         
-        /* Nếu logo là ảnh, đảm bảo nó tròn */
-        .vinyl-label img {
-            width: 100%; height: 100%; 
-            border-radius: 50%; 
-            object-fit: cover;
-        }
+        /* Ảnh logo trong nhãn (nếu có) */
+        .vinyl-label img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; opacity: 0.9; }
 
-        .spindle { width: 6px; height: 6px; background: #000; border-radius: 50%; position: absolute; z-index: 6; }
+        .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; border: 1px solid #333; }
 
-        /* Animation Quay */
-        /* Chỉ quay cái đĩa (.vinyl-record) và cái nhãn bên trong, KHÔNG quay cái bóng sáng */
-        .spinning-anim { 
-            animation: spin 3s linear infinite; 
-        }
-        
-        /* Bỏ wobble (lắc lư) để đĩa quay mượt hơn, hoặc giữ lại nếu thích kiểu lofi */
-        @keyframes spin { 
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); } 
-        }
-
-        /* TEXT */
-        .message-area {
-            width: 100%;
-            display: flex; flex-direction: column; justify-content: center;
-            text-align: center;
-            min-height: 90px;
-        }
-
-        .wishes-text {
-            font-size: 14px; 
-            font-weight: 800; line-height: 1.5;
-            text-transform: uppercase; letter-spacing: 0.5px;
-            transition: opacity 0.3s;
-        }
-
-        .meta-text {
-            font-size: 10px; color: #666; letter-spacing: 2px; margin-top: 8px;
-            font-weight: 600; text-transform: uppercase;
-            border-top: 1px solid #ccc; padding-top: 8px; display: inline-block;
-            margin-left: auto; margin-right: auto;
-        }
-
+        /* --- TEXT & CONTROLS --- */
+        .message-area { width: 100%; display: flex; flex-direction: column; justify-content: center; text-align: center; min-height: 90px; }
+        .wishes-text { font-size: 14px; font-weight: 800; line-height: 1.5; text-transform: uppercase; letter-spacing: 0.5px; transition: opacity 0.3s; }
+        .meta-text { font-size: 10px; color: #666; letter-spacing: 2px; margin-top: 8px; font-weight: 600; text-transform: uppercase; border-top: 1px solid #ccc; padding-top: 8px; display: inline-block; margin: 8px auto 0; }
         .breathing { animation: breathe 2s ease-in-out infinite; color: #444; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        
+        .glitch { animation: glitch-anim 0.3s both; color: #000; }
+        @keyframes glitch-anim { 0% { transform: translate(0); } 20% { transform: translate(-2px, 2px); } 40% { transform: translate(-2px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(2px, -2px); } 100% { transform: translate(0); } }
 
-        /* --- GLITCH --- */
-        .glitch {
-            animation: glitch-anim 0.3s cubic-bezier(.25, .46, .45, .94) both;
-            color: #000;
-        }
-        @keyframes glitch-anim {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-
-        /* PLAYER BAR */
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
-
         .progress-bar-bg { width: 100%; height: 4px; background: #ccc; border-radius: 2px; overflow: hidden; }
         .progress-bar-fill { width: 0%; height: 100%; background: #111; transition: width 0.1s linear; }
         .time-display { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; font-weight: 600; color: #666; }
-
-        /* COUNTER */
-        .visitor-counter {
-            font-size: 9px; color: #888; letter-spacing: 1.5px;
-            text-transform: uppercase; font-weight: 600;
-            margin-top: 10px; opacity: 0.8;
-            display: flex; gap: 5px; justify-content: center;
-        }
-        #busuanzi_container_site_pv { display: none; } 
-
+        .visitor-counter { font-size: 9px; color: #888; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; margin-top: 10px; opacity: 0.8; display: flex; gap: 5px; justify-content: center; }
+        #busuanzi_container_site_pv { display: none; }
     </style>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </head>
@@ -218,8 +125,11 @@
         <img src="logo.png" alt="PHOTONOIR" class="logo-img">
 
         <div class="vinyl-container" onclick="handleInteraction()">
-            <div class="vinyl-record" id="record"></div>
-            <div class="vinyl-label">
+            
+            <div class="vinyl-record" id="record">
+                </div>
+            
+            <div class="vinyl-label" id="label">
                 <div class="spindle"></div>
             </div>
         </div>
@@ -252,15 +162,13 @@
     <script>
         const audio = document.getElementById('bgMusic');
         const record = document.getElementById('record');
+        const label = document.getElementById('label'); // Lấy thêm cái nhãn
         const displayText = document.getElementById('display-text');
         const metaText = document.getElementById('meta-text');
         const progressFill = document.getElementById('progressFill');
         const currentTimeEl = document.getElementById('currentTime');
         const totalTimeEl = document.getElementById('totalTime');
         const mainContainer = document.getElementById('mainContainer');
-        const vinylContainer = document.querySelector('.vinyl-container');
-        // Thêm tham chiếu đến nhãn để quay nó cùng lúc
-        const vinylLabel = document.querySelector('.vinyl-label');
 
         const tracks = [
             { id: 1, wish: "TRACK 01: KHỞI ĐẦU RỰC RỠ & ĐẦY KIÊU HÃNH.", song: "Sunroof - Nicky Youre", file: "track1.mp3" },
@@ -299,10 +207,10 @@
         }
 
         function playMusic() {
-            vinylContainer.classList.add('spinning');
-            // Quay cả đĩa đen và nhãn trắng
+            // Thêm class quay cho cả Đĩa đen và Nhãn trắng
             record.classList.add('spinning-anim');
-            vinylLabel.classList.add('spinning-anim');
+            label.classList.add('spinning-anim');
+            
             isPlaying = true;
 
             if (userTrack) {
@@ -316,9 +224,9 @@
 
         function pauseMusic() {
             audio.pause();
-            vinylContainer.classList.remove('spinning');
+            // Gỡ class quay
             record.classList.remove('spinning-anim');
-            vinylLabel.classList.remove('spinning-anim');
+            label.classList.remove('spinning-anim');
             isPlaying = false;
         }
 
@@ -372,9 +280,8 @@
         };
 
         audio.onended = function() {
-            vinylContainer.classList.remove('spinning');
             record.classList.remove('spinning-anim');
-            vinylLabel.classList.remove('spinning-anim');
+            label.classList.remove('spinning-anim');
             isPlaying = false;
             progressFill.style.width = '0%';
         };
