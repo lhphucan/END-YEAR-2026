@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 The Next Scene</title>
+    <style>
+        body { background: #000; color: #00ff00; font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .monitor { border: 2px solid #333; padding: 30px; position: relative; width: 80%; max-width: 400px; background: rgba(10,10,10,0.9); box-shadow: 0 0 20px rgba(0,255,0,0.2); }
+        .corner { position: absolute; width: 15px; height: 15px; border: 2px solid #fff; }
+        .tl { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+        .tr { top: -2px; right: -2px; border-left: 0; border-bottom: 0; }
+        .bl { bottom: -2px; left: -2px; border-right: 0; border-top: 0; }
+        .br { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+        .rec { color: red; animation: blink 1s infinite; font-weight: bold; }
+        @keyframes blink { 50% { opacity: 0; } }
+        #text { font-size: 20px; min-height: 80px; margin-top: 20px; line-height: 1.4; color: #fff; }
+        button { background: none; border: 1px solid #00ff00; color: #00ff00; padding: 10px 20px; cursor: pointer; margin-top: 20px; font-family: inherit; }
+        button:hover { background: #00ff00; color: #000; }
+    </style>
+</head>
+<body>
+    <div class="monitor">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <div style="font-size: 12px; display: flex; justify-content: space-between;">
+            <span>ISO 400</span>
+            <span class="rec">● REC</span>
+            <span>4K 60FPS</span>
+        </div>
+        <div id="text"></div>
+        <button onclick="generate()">XEM QUẺ KHÁC</button>
+    </div>
+
+    <script>
+        const wishes = [
+            "2026: Đạo diễn cuộc đời mình thật rực rỡ nhé!",
+            "Cắt! 2025 kết thúc rồi. 2026 là một thước phim bom tấn!",
+            "Tình duyên 2026: Không cần Filter vẫn lung linh.",
+            "Tiền tài 2026: Zoom-in liên tục, không điểm dừng.",
+            "Out nét nỗi buồn, lấy nét thành công trong năm mới!",
+            "CHÚC MỪNG! Bạn nhận được Voucher giảm 20% cho lần chụp tới. (Chụp màn hình lại nhé)"
+        ];
+
+        function generate() {
+            const textElement = document.getElementById('text');
+            const randomWish = wishes[Math.floor(Math.random() * wishes.length)];
+            textElement.innerText = '';
+            let i = 0;
+            function type() {
+                if (i < randomWish.length) {
+                    textElement.innerText += randomWish.charAt(i);
+                    i++;
+                    setTimeout(type, 50);
+                }
+            }
+            type();
+        }
+        window.onload = generate;
+    </script>
+</body>
+</html>
