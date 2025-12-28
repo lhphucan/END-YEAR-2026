@@ -32,48 +32,50 @@
         /* --- BỐ CỤC CHÍNH (GRID SYSTEM) --- */
         .container {
             width: 100%; max-width: 480px; height: 100%; 
-            padding: 0 20px 20px 20px; /* Padding dưới để cách đáy */
+            /* Dùng space-between để chia đều khoảng cách Đỉnh - Giữa - Đáy */
             display: flex; flex-direction: column; 
-            /* Căn chỉnh lại: Logo ở trên cùng, Player ở dưới cùng, Đĩa và Text ở giữa */
-            justify-content: flex-start; 
+            justify-content: space-between; 
             align-items: center; z-index: 2; 
+            padding-bottom: env(safe-area-inset-bottom); /* Fix cho iPhone đời mới */
         }
 
-        /* --- 1. LOGO: PHONG CÁCH TẠP CHÍ (MASTHEAD) --- */
+        /* --- 1. LOGO: TO VÀ NẰM SÁT TRÊN CÙNG --- */
         .logo-wrapper {
             width: 100%;
-            padding-top: 8vh; /* Khoảng cách từ đỉnh màn hình */
-            display: flex; justify-content: center;
-            flex-shrink: 0; /* Không bao giờ bị co lại */
-            margin-bottom: 2vh; /* Khoảng cách với đĩa than */
+            display: flex; justify-content: center; align-items: flex-start;
+            padding-top: 5vh; /* Cách đỉnh một chút */
+            flex-shrink: 0; 
+            z-index: 10; /* Nổi lên trên */
         }
 
         .logo-img { 
-            width: 100%; /* Chiếm hết chiều ngang container */
-            max-width: 360px; /* Giới hạn trên máy tính */
+            width: 90%; /* Chiếm 90% chiều ngang */
+            max-width: 400px; 
             height: auto; 
             object-fit: contain; 
-            /* Tăng độ tương phản và sắc nét cho logo đen */
-            filter: contrast(1.3) drop-shadow(0 10px 15px rgba(0,0,0,0.15)); 
-            transform: scale(1.1); /* Phóng to logo lên thêm 10% so với khung */
+            /* Bóng đổ nhẹ tạo khối */
+            filter: contrast(1.3) drop-shadow(0 8px 12px rgba(0,0,0,0.15)); 
         }
 
-        /* --- 2. ĐĨA THAN: TRUNG TÂM --- */
-        .vinyl-section {
+        /* --- 2. KHỐI GIỮA: ĐĨA THAN + CHỮ --- */
+        .center-content {
             flex-grow: 1; /* Chiếm toàn bộ khoảng trống ở giữa */
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            display: flex; flex-direction: column; 
+            justify-content: center; /* Căn giữa dọc */
+            align-items: center;
             width: 100%;
-            position: relative;
-            top: -2vh; /* Đẩy nhẹ lên trên để gần logo hơn */
+            /* Dùng margin âm để kéo khối này lên gần logo hơn, tránh bị dính đáy */
+            margin-top: -20px; 
         }
 
         .vinyl-container {
             position: relative;
-            width: 62vmin; height: 62vmin; /* Kích thước vừa vặn */
-            max-width: 280px; max-height: 280px;
+            /* Giảm kích thước đĩa một xíu (55vmin) để vừa vặn hơn */
+            width: 55vmin; height: 55vmin; 
+            max-width: 260px; max-height: 260px;
             display: flex; justify-content: center; align-items: center;
-            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-bottom: 25px; /* Khoảng cách với chữ bên dưới */
+            transition: transform 0.1s;
+            margin-bottom: 25px; /* Khoảng cách với chữ */
         }
         .vinyl-container:active { transform: scale(0.97); }
 
@@ -81,7 +83,7 @@
             width: 100%; height: 100%;
             border-radius: 50%;
             background-color: #101010;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.4); /* Bóng đổ sâu hơn */
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
             background: 
                 repeating-radial-gradient(#111 0, #111 2px, #222 3px, #181818 4px), 
                 conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.05) 90deg, transparent 180deg);
@@ -105,67 +107,56 @@
         }
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
 
-        /* --- 3. TEXT: TYPOGRAPHY --- */
+        /* --- TEXT: CĂN CHỈNH LẠI --- */
         .message-area { 
-            width: 100%; text-align: center; padding: 0 10px;
+            width: 100%; text-align: center; padding: 0 15px;
+            /* Đảm bảo chữ không bị dính sát đĩa than */
+            display: flex; flex-direction: column; gap: 5px;
         }
         
         .wishes-text { 
-            font-size: 16px; font-weight: 800; line-height: 1.3; 
+            font-size: 15px; font-weight: 800; line-height: 1.35; 
             color: #000;
-            text-transform: uppercase; letter-spacing: -0.5px; /* Letter spacing âm để chữ chặt hơn, modern hơn */
+            text-transform: uppercase; letter-spacing: 0px; 
             transition: opacity 0.3s;
         }
 
         .meta-text { 
-            font-size: 10px; color: #555; letter-spacing: 2px; margin-top: 8px; 
+            font-size: 10px; color: #555; letter-spacing: 2px; 
             font-weight: 700; text-transform: uppercase; 
-            display: block; opacity: 0.7;
+            opacity: 0.7;
         }
         
         .breathing { animation: breathe 3s ease-in-out infinite; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
         .glitch { animation: glitch-anim 0.3s both; color: #000; }
 
-        /* --- 4. PLAYER & FOOTER --- */
+        /* --- 4. PLAYER: LUÔN Ở ĐÁY --- */
         .player-wrapper { 
-            width: 100%; margin-top: auto; /* Luôn đẩy xuống đáy */
-            padding-bottom: 20px; 
+            width: 100%; 
+            padding: 0 20px 30px 20px; /* Padding dưới nhiều hơn để an toàn */
+            flex-shrink: 0;
         }
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
         
-        /* Thanh progress bar đậm hơn */
         .progress-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px; overflow: hidden; }
         .progress-bar-fill { width: 0%; height: 100%; background: #000; transition: width 0.1s linear; }
         
         .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #000; font-family: monospace; }
-        .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 15px; display: flex; gap: 5px; justify-content: center; }
+        .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 10px; display: flex; gap: 5px; justify-content: center; }
         #busuanzi_container_site_pv { display: none; }
 
         /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 600px) {
-            /* Logo tràn viền */
-            .logo-img {
-                width: 100%; /* Logo to hết cỡ chiều ngang */
-                transform: scale(1.2); /* Phóng to thêm 20% tạo cảm giác tràn */
-            }
+            .logo-img { width: 92%; } /* Logo to trên mobile */
             
-            /* Đĩa than cân đối */
-            .vinyl-container {
-                width: 68vmin; height: 68vmin; /* To hơn một chút so với bản cũ */
+            /* Điều chỉnh lại đĩa than nếu màn hình quá ngắn */
+            @media (max-height: 700px) {
+                .vinyl-container { width: 45vmin; height: 45vmin; margin-bottom: 15px; }
+                .logo-wrapper { padding-top: 3vh; }
+                .wishes-text { font-size: 14px; }
             }
-
-            /* Chữ to, rõ ràng */
-            .wishes-text {
-                font-size: 17px;
-            }
-        }
-        
-        /* Fix màn hình dài (iPhone X trở lên) */
-        @media (min-height: 800px) {
-            .logo-wrapper { padding-top: 10vh; margin-bottom: 4vh; }
-            .vinyl-section { justify-content: flex-start; } /* Đẩy nội dung lên trên thay vì giữa */
         }
     </style>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
@@ -180,7 +171,7 @@
             <img src="logo.png" alt="PHOTONOIR" class="logo-img">
         </div>
 
-        <div class="vinyl-section">
+        <div class="center-content">
             <div class="vinyl-container" onclick="handleInteraction()">
                 <div class="vinyl-record" id="record"></div>
                 <div class="vinyl-label" id="label">
