@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
@@ -22,16 +23,21 @@
             display: block; min-height: 100vh; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth;
         }
 
+        /* --- PRELOADER & TOAST --- */
         #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #E0E0E0; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
         .loader-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 4px; color: var(--ink-color); animation: breathe 1s infinite; }
+        
+        #toast { visibility: hidden; min-width: 250px; background-color: #111; color: #fff; text-align: center; border-radius: 4px; padding: 12px 20px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 13px; font-family: 'Manrope', sans-serif; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
-        /* --- VOUCHER UI (FIXED FOR SAVE IMAGE) --- */
+        /* --- VOUCHER TICKET UI --- */
         #voucher-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); z-index: 2000;
             flex-direction: column; justify-content: center; align-items: center;
-            backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             animation: fadeIn 0.5s ease;
         }
         @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
@@ -41,6 +47,7 @@
             font-family: 'Manrope', sans-serif; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.3);
             position: relative; 
+            /* Răng cưa bằng Gradient */
             background-image: radial-gradient(circle at bottom, transparent 6px, #F8F8F8 6.5px);
             background-size: 20px 20px; background-position: bottom center; background-repeat: repeat-x;
             padding-bottom: 20px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
@@ -52,14 +59,11 @@
 
         .ticket-body { padding: 30px 25px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .ticket-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #555; font-weight: 600; }
-        
         .ticket-value { font-size: 56px; font-weight: 800; color: var(--accent-color); line-height: 1; letter-spacing: -2px; }
+        /* Trạng thái đã dùng */
         .ticket-value.used { color: #aaa; font-size: 32px; letter-spacing: 0; text-decoration: line-through; border: 2px solid #aaa; padding: 5px 15px; transform: rotate(-5deg); }
 
-        .barcode {
-            width: 80%; height: 35px; margin: 15px auto;
-            background: repeating-linear-gradient(90deg, #222 0px, #222 2px, transparent 2px, transparent 5px, #222 5px, #222 8px, transparent 8px, transparent 10px);
-        }
+        .barcode { width: 80%; height: 35px; margin: 15px auto; background: repeating-linear-gradient(90deg, #222 0px, #222 2px, transparent 2px, transparent 5px, #222 5px, #222 8px, transparent 8px, transparent 10px); }
 
         .ticket-meta { width: 100%; margin-top: 15px; border-top: 1px solid #ddd; padding-top: 15px; display: flex; justify-content: space-between; align-items: center; }
         .meta-item { text-align: left; }
@@ -68,7 +72,6 @@
         .live-dot { display: inline-block; width: 6px; height: 6px; background: red; border-radius: 50%; margin-right: 4px; animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* BUTTONS */
         .voucher-actions { margin-top: 30px; display: flex; flex-direction: column; gap: 12px; width: 320px; }
         .btn-action { border: none; padding: 14px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; border-radius: 4px; }
         .btn-save { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(5px); }
@@ -78,7 +81,30 @@
         .btn-staff.disabled { background: #444; color: #888; pointer-events: none; box-shadow: none; }
         .close-text { margin-top: 10px; color: rgba(255,255,255,0.6); font-size: 11px; cursor: pointer; text-decoration: underline; text-align: center; }
 
-        /* COMMON STYLES */
+        /* --- HIDDEN SHARE CARD (FOR IMAGE GENERATION) --- */
+        #share-capture-area {
+            position: fixed; left: -9999px; top: 0; width: 350px; height: auto; min-height: 550px;
+            background: #F4F4F4; padding: 40px 30px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; font-family: 'Manrope', sans-serif; color: #111; z-index: 100; border: 10px solid #fff; box-sizing: border-box;
+        }
+        .share-brand { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 16px; letter-spacing: 3px; margin-bottom: 30px; opacity: 0.7; }
+        .share-vinyl { width: 180px; height: 180px; border-radius: 50%; background: #111; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin-bottom: 30px; display: flex; justify-content: center; align-items: center; background: repeating-radial-gradient(#111 0, #111 2px, #222 3px, #111 4px); }
+        .share-label { width: 35%; height: 35%; border-radius: 50%; background: #ccc; border: 2px solid rgba(255,255,255,0.2); }
+        .share-song { font-size: 18px; font-weight: 800; text-transform: uppercase; line-height: 1.3; margin-bottom: 15px; color: var(--accent-color); }
+        .share-wish { font-family: 'Playfair Display', serif; font-size: 16px; font-style: italic; line-height: 1.6; color: #444; margin-bottom: 30px; }
+        .share-footer { border-top: 1px solid #ddd; padding-top: 15px; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        .share-year { font-weight: 800; font-size: 14px; }
+        .share-link { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- HAPPY NEW YEAR TEXT --- */
+        .hny-text {
+            display: none; font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 42px; color: var(--accent-color);
+            text-align: center; line-height: 1.1; letter-spacing: 2px; margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(150, 0, 24, 0.5); animation: zoomIn 1s ease-out infinite alternate;
+        }
+        @keyframes zoomIn { from { transform: scale(1); } to { transform: scale(1.05); } }
+
+        /* --- GENERAL UI --- */
         .film-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; overflow: hidden; opacity: 0.5; }
         .grain { position: absolute; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.2'/%3E%3C/svg%3E"); animation: grainFlicker 0.2s steps(2) infinite; }
         .scratches { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(0,0,0,0.05) 3px, transparent 4px); animation: scratchJump 0.3s steps(1) infinite; opacity: 0.3; }
@@ -90,6 +116,7 @@
         .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 10px; }
         .countdown-timer { font-family: 'Manrope', sans-serif; font-size: 32px; font-weight: 800; color: var(--accent-color); letter-spacing: 2px; margin-bottom: 5px; line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 rgba(255,255,255,0.5); }
         .sub-logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); transition: all 0.5s ease; }
+        
         .center-content { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; position: relative; z-index: 5; margin-bottom: 20px; }
         .vinyl-container { position: relative; width: 60vmin; height: 60vmin; max-width: 300px; max-height: 300px; display: flex; justify-content: center; align-items: center; transition: transform 0.1s; margin-bottom: 20px; }
         .vinyl-container:active { transform: scale(0.97); }
@@ -99,12 +126,14 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .vinyl-label { position: absolute; top: 34%; left: 34%; width: 32%; height: 32%; background-color: #f0f0f0; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 1px solid #aaa; z-index: 5; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); transition: background-color 0.5s ease; }
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
+        
         .message-area { width: 100%; text-align: center; padding: 0 10px; display: flex; flex-direction: column; gap: 5px; height: 80px; justify-content: center; flex-shrink: 0; }
         .wishes-text { font-size: 15px; font-weight: 800; line-height: 1.35; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0px; transition: opacity 0.3s; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 1px rgba(255,255,255,0.2); }
         .meta-text { font-size: 10px; color: #555; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
         .breathing { animation: breathe 3s ease-in-out infinite; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         .glitch { animation: glitch-anim 0.3s both; color: var(--accent-color) !important; } 
+        
         .player-wrapper { width: 100%; padding: 0 20px; flex-shrink: 0; margin-bottom: 30px; }
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
@@ -113,22 +142,22 @@
         .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #000; font-family: monospace; }
         .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 12px; display: flex; gap: 5px; justify-content: center; align-items: center; }
         #busuanzi_container_site_pv { display: inline-block !important; }
+        
         .scroll-hint { position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0; animation: float 2s infinite; cursor: pointer; z-index: 20; transition: opacity 1s; }
         .show-scroll { opacity: 0.6 !important; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+        
         .screen-analysis { display: none; width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 60px 30px; background: #EAEAEA; animation: fadeIn 1s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .analysis-box { border: 2px solid #000; padding: 30px 20px; background: #F2F2F2; box-shadow: 8px 8px 0px rgba(0,0,0,0.1); text-align: center; }
         .analysis-label { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px; text-align: left; }
         .analysis-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 22px; font-style: normal; color: var(--accent-color); margin-bottom: 20px; line-height: 1.3; text-align: left; }
         .analysis-content { font-family: 'Manrope', sans-serif; font-size: 15px; line-height: 1.7; color: #333; text-align: justify; margin-bottom: 25px; }
+        
         .share-btn { background-color: var(--accent-color); color: white; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1px; padding: 12px 25px; border: none; cursor: pointer; text-transform: uppercase; box-shadow: 4px 4px 0px rgba(0,0,0,0.2); transition: transform 0.1s, box-shadow 0.1s; display: inline-flex; align-items: center; gap: 8px; }
         .share-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,0.2); }
         .share-icon { width: 14px; height: 14px; fill: white; }
-        #toast { visibility: hidden; min-width: 250px; background-color: #111; color: #fff; text-align: center; border-radius: 4px; padding: 12px 20px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 13px; font-family: 'Manrope', sans-serif; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+        
         .screen-letter { width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 80px 30px 120px; background: linear-gradient(180deg, rgba(224,224,224,0) 0%, rgba(245,245,245,0.95) 15%, #F5F5F5 100%); }
         .letter-container { border-left: 2px solid var(--accent-color); padding-left: 25px; }
         .letter-header { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; color: var(--accent-color); opacity: 0.8; }
@@ -142,11 +171,10 @@
 <body>
 
     <div id="preloader"><div class="loader-text">LOADING...</div></div>
-    <div id="toast">Đã lưu ảnh voucher vào máy!</div>
+    <div id="toast">Thông báo</div>
     <div class="film-layer"><div class="grain"></div><div class="scratches"></div></div>
 
     <div id="voucher-overlay">
-        
         <div id="voucher-ticket">
             <div class="ticket-header">
                 <div class="ticket-brand">PHOTONOIR</div>
@@ -156,7 +184,6 @@
                 <div class="ticket-label">Voucher Gift</div>
                 <div class="ticket-value" id="voucherValue">-20K</div>
                 <div class="barcode"></div>
-                
                 <div class="ticket-meta">
                     <div class="meta-item">
                         <div class="meta-label">Code Verify</div>
@@ -169,18 +196,28 @@
                 </div>
             </div>
         </div>
-
         <div class="voucher-actions">
             <button class="btn-action btn-save" onclick="downloadVoucher()">
                 <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
                 Lưu vé về máy
             </button>
-            
             <button class="btn-action btn-staff" id="staffBtn" onclick="staffConfirm()">
                 Nhân viên xác nhận
             </button>
-            
             <div class="close-text" onclick="closeVoucher()">Đóng và nghe nhạc tiếp</div>
+        </div>
+    </div>
+
+    <div id="share-capture-area">
+        <div class="share-brand">PHOTONOIR</div>
+        <div class="share-vinyl">
+            <div class="share-label" id="shareLabel"></div>
+        </div>
+        <div class="share-song" id="shareSong">SONG NAME</div>
+        <div class="share-wish" id="shareWish">Message...</div>
+        <div class="share-footer">
+            <div class="share-year">2026</div>
+            <div class="share-link">My Frequency</div>
         </div>
     </div>
 
@@ -188,6 +225,7 @@
         <div class="header-group">
             <img src="logo.png" alt="PHOTONOIR" class="logo-img">
             <div id="countdown" class="countdown-timer">00:00:00:00</div>
+            <div id="hny-text" class="hny-text">HAPPY<br>NEW YEAR</div>
             <h2 class="sub-logo-text" id="mainTitle">Album OF The YEAR</h2>
         </div>
 
@@ -196,7 +234,6 @@
                 <div class="vinyl-record" id="record"></div>
                 <div class="vinyl-label" id="label"><div class="spindle"></div></div>
             </div>
-
             <div class="message-area">
                 <div class="wishes-text breathing" id="display-text">CHẠM ĐỂ TÌM TẦN SỐ CỦA BẠN</div>
                 <div class="meta-text" id="meta-text">2026 COLLECTION</div>
@@ -210,7 +247,6 @@
             </div>
             <div class="visitor-counter"><span>TOTAL PLAYS:</span><span id="busuanzi_container_site_pv"><span id="busuanzi_value_site_pv">...</span></span></div>
         </div>
-
         <div class="scroll-hint" id="scrollHint" onclick="scrollToNext()">↓ SCROLL TO VIEW</div>
     </div>
 
@@ -241,69 +277,7 @@
     <audio id="bgMusic"></audio>
 
     <script>
-        const audio = document.getElementById('bgMusic');
-        const record = document.getElementById('record');
-        const label = document.getElementById('label');
-        const displayText = document.getElementById('display-text');
-        const metaText = document.getElementById('meta-text');
-        const progressFill = document.getElementById('progressFill');
-        const currentTimeEl = document.getElementById('currentTime');
-        const totalTimeEl = document.getElementById('totalTime');
-        const scrollHint = document.getElementById('scrollHint');
-        const analysisSection = document.getElementById('analysisSection');
-        const analysisTitle = document.getElementById('analysisTitle');
-        const analysisContent = document.getElementById('analysisContent');
-        const countdownEl = document.getElementById('countdown');
-        const mainTitle = document.getElementById('mainTitle');
-        const preloader = document.getElementById('preloader');
-        const voucherOverlay = document.getElementById('voucher-overlay');
-        const liveClockEl = document.getElementById('liveClock');
-        const securityCodeEl = document.getElementById('securityCode');
-        const voucherValueEl = document.getElementById('voucherValue');
-        const staffBtnEl = document.getElementById('staffBtn');
-
-        const STORAGE_KEY = '_ga_playlist_idx';
-        const SPIN_COUNT_KEY = '_ga_session_ck';
-        const VOUCHER_USED_KEY = '_ga_promo_status';
-
-        let isPlaying = false;
-        let userTrack = null;
-
-        window.onload = function() {
-            preloader.style.opacity = '0';
-            setTimeout(() => { preloader.style.display = 'none'; }, 500);
-            const savedIndex = localStorage.getItem(STORAGE_KEY);
-            if (savedIndex !== null) {
-                userTrack = tracks[parseInt(savedIndex)];
-                finalizeUI(userTrack);
-            }
-        };
-
-        const targetDate = new Date('January 1, 2026 00:00:00').getTime();
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const gap = targetDate - now;
-            if (gap < 0) {
-                countdownEl.style.display = 'none';
-                mainTitle.innerText = "HAPPY NEW YEAR";
-                mainTitle.style.letterSpacing = "2px";
-            } else {
-                const d = Math.floor(gap / (1000 * 60 * 60 * 24));
-                const h = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
-                const s = Math.floor((gap % (1000 * 60)) / 1000);
-                countdownEl.innerText = (d < 10 ? "0"+d : d) + ":" + (h < 10 ? "0"+h : h) + ":" + (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s);
-            }
-        }
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-
-        function updateLiveClock() {
-            const now = new Date();
-            liveClockEl.innerHTML = '<span class="live-dot"></span>' + now.toLocaleTimeString();
-        }
-        setInterval(updateLiveClock, 1000);
-
+        // --- CONFIG & DATA ---
         const tracks = [
             { id: 1, wish: "TRACK 01: KHỞI ĐẦU RỰC RỠ & ĐẦY KIÊU HÃNH.", song: "Sunroof - Nicky Youre", file: "track1.mp3", color: "#FFD700", analysis: "Vũ trụ gửi tín hiệu này vì bạn đã sẵn sàng để 'mở nóc' tâm hồn mình. Năm 2026 không phải lúc để trốn trong bóng tối. Sự lạc quan và năng lượng của bạn sẽ là nam châm thu hút những cơ hội bất ngờ." },
             { id: 2, wish: "TRACK 02: SỐNG TRỌN TỪNG KHOẢNH KHẮC ĐIỆN ẢNH.", song: "Golden Hour - JVKE", file: "track2.mp3", color: "#FFA500", analysis: "Có vẻ như bạn đang tìm kiếm vẻ đẹp trong những điều bình dị. Bản nhạc này chọn bạn để nhắc nhở: Bạn chính là nhân vật chính (Main Character) trong thước phim đời mình. Hãy tỏa sáng, ngay cả khi không có ánh đèn sân khấu." },
@@ -322,6 +296,84 @@
             { id: 15, wish: "TRACK 15: GHI TÊN MÌNH LÊN BẢNG VÀNG.", song: "Hall of Fame - The Script", file: "track15.mp3", color: "#B8860B", analysis: "Vinh quang đang chờ đợi ở phía cuối con đường. Mọi nỗ lực bền bỉ của bạn sẽ được đền đáp xứng đáng. Hãy kiên trì, vì bạn sinh ra là để trở thành một nhà vô địch trong lĩnh vực của mình." }
         ];
 
+        // --- VARIABLES ---
+        const audio = document.getElementById('bgMusic');
+        const record = document.getElementById('record');
+        const label = document.getElementById('label');
+        const displayText = document.getElementById('display-text');
+        const metaText = document.getElementById('meta-text');
+        const progressFill = document.getElementById('progressFill');
+        const currentTimeEl = document.getElementById('currentTime');
+        const totalTimeEl = document.getElementById('totalTime');
+        const analysisSection = document.getElementById('analysisSection');
+        const analysisTitle = document.getElementById('analysisTitle');
+        const analysisContent = document.getElementById('analysisContent');
+        const preloader = document.getElementById('preloader');
+        
+        // Voucher Elements
+        const voucherOverlay = document.getElementById('voucher-overlay');
+        const liveClockEl = document.getElementById('liveClock');
+        const securityCodeEl = document.getElementById('securityCode');
+        const voucherValueEl = document.getElementById('voucherValue');
+        const staffBtnEl = document.getElementById('staffBtn');
+
+        const STORAGE_KEY = '_ga_playlist_idx';
+        const SPIN_COUNT_KEY = '_ga_session_ck';
+        const VOUCHER_USED_KEY = '_ga_promo_status';
+
+        let isPlaying = false;
+        let userTrack = null;
+
+        // --- INITIALIZATION ---
+        window.onload = function() {
+            preloader.style.opacity = '0';
+            setTimeout(() => { preloader.style.display = 'none'; }, 500);
+            
+            // Restore last track if any
+            const savedIndex = localStorage.getItem(STORAGE_KEY);
+            if (savedIndex !== null) {
+                userTrack = tracks[parseInt(savedIndex)];
+                finalizeUI(userTrack);
+            }
+        };
+
+        // --- COUNTDOWN & HNY LOGIC ---
+        const targetDate = new Date('January 1, 2026 00:00:00').getTime();
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const gap = targetDate - now;
+
+            if (gap < 0) {
+                // HAPPY NEW YEAR MODE
+                document.getElementById('countdown').style.display = 'none';
+                document.getElementById('hny-text').style.display = 'block';
+                // Trigger fireworks loop if not already running
+                if (!window.hnyFireworks) {
+                    window.hnyFireworks = true;
+                    var duration = 15 * 1000;
+                    var animationEnd = Date.now() + duration;
+                    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+                    var interval = setInterval(function() {
+                        var timeLeft = animationEnd - Date.now();
+                        if (timeLeft <= 0) { return clearInterval(interval); }
+                        var particleCount = 50 * (timeLeft / duration);
+                        confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+                    }, 250);
+                }
+            } else {
+                // COUNTDOWN MODE
+                const d = Math.floor(gap / (1000 * 60 * 60 * 24));
+                const h = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((gap % (1000 * 60)) / 1000);
+                document.getElementById('countdown').innerText = (d < 10 ? "0"+d : d) + ":" + (h < 10 ? "0"+h : h) + ":" + (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s);
+            }
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // --- PLAYER LOGIC ---
         function handleInteraction() { if (isPlaying) { pauseMusic(); } else { playMusic(); } }
 
         function playMusic() {
@@ -354,6 +406,7 @@
             label.style.backgroundColor = '#f0f0f0'; 
             let count = 0; let speed = 50; let maxCount = 40;
             const randomPool = tracks.filter(t => t.id !== 7);
+            
             function step() {
                 const randomItem = randomPool[Math.floor(Math.random() * randomPool.length)];
                 displayText.innerText = randomItem.wish;
@@ -397,6 +450,31 @@
             finalizeUI(userTrack);
         }
 
+        function finalizeUI(track) {
+            setTrackInfo(track);
+            displayText.style.opacity = 1;
+            displayText.classList.add('glitch');
+            document.querySelector('.player-controls').parentElement.classList.add('has-played');
+            label.style.backgroundColor = track.color;
+            
+            analysisSection.style.display = 'block';
+            analysisTitle.innerText = "Why this track?";
+            analysisContent.innerText = track.analysis;
+            
+            // Show Voucher
+            if (track.id === 7) {
+                updateVoucherUI();
+                voucherOverlay.style.display = 'flex';
+            }
+        }
+
+        // --- VOUCHER LOGIC ---
+        function updateLiveClock() {
+            const now = new Date();
+            liveClockEl.innerHTML = '<span class="live-dot"></span>' + now.toLocaleTimeString();
+        }
+        setInterval(updateLiveClock, 1000);
+
         function updateVoucherUI() {
             const isUsed = localStorage.getItem(VOUCHER_USED_KEY) === 'true';
             let secCode = localStorage.getItem('_ga_sec_code');
@@ -417,6 +495,7 @@
                 voucherValueEl.classList.remove('used');
                 staffBtnEl.innerText = "NHÂN VIÊN XÁC NHẬN";
                 staffBtnEl.classList.remove('disabled');
+                
                 var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 3000 };
                 if (window.confettiInterval) clearInterval(window.confettiInterval);
                 window.confettiInterval = setInterval(function() {
@@ -425,27 +504,8 @@
             }
         }
 
-        function finalizeUI(track) {
-            setTrackInfo(track);
-            displayText.style.opacity = 1;
-            displayText.classList.add('glitch');
-            document.querySelector('.player-controls').parentElement.classList.add('has-played');
-            label.style.backgroundColor = track.color;
-            
-            analysisSection.style.display = 'block';
-            analysisTitle.innerText = "Why this track?";
-            analysisContent.innerText = track.analysis;
-            scrollHint.classList.add('show-scroll');
-
-            if (track.id === 7) {
-                updateVoucherUI();
-                voucherOverlay.style.display = 'flex';
-            }
-        }
-
-        // --- PASSWORD PROTECTION ---
         function staffConfirm() {
-            let pass = prompt("Vui lòng nhập mật khẩu quản lý để xác nhận:");
+            let pass = prompt("Vui lòng nhập mật khẩu quản lý:");
             if (pass === "photonoir@") {
                 if (confirm("Xác nhận: Khách hàng đang sử dụng Voucher này?")) {
                     localStorage.setItem(VOUCHER_USED_KEY, 'true');
@@ -458,36 +518,52 @@
         }
 
         function closeVoucher() { voucherOverlay.style.display = 'none'; }
-        
+
         function downloadVoucher() {
             const ticketElement = document.getElementById("voucher-ticket");
             const originalTime = liveClockEl.innerHTML;
             liveClockEl.innerHTML = originalTime.replace('<span class="live-dot"></span>', '');
 
-            html2canvas(ticketElement, { 
-                backgroundColor: null, 
-                scale: 2, 
-                useCORS: true 
-            }).then(canvas => {
+            html2canvas(ticketElement, { backgroundColor: null, scale: 2, useCORS: true }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'PhotoNoir_Ticket_20K.png';
                 link.href = canvas.toDataURL("image/png");
                 link.click();
-                liveClockEl.innerHTML = originalTime;
                 
-                var x = document.getElementById("toast");
-                x.className = "show";
-                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                liveClockEl.innerHTML = originalTime;
+                showToast("Đã lưu vé vào thư viện ảnh!");
             });
         }
 
-        function setTrackInfo(track) { displayText.innerText = track.wish; metaText.innerText = "NOW PLAYING: " + track.song; }
-        function scrollToNext() { analysisSection.scrollIntoView({ behavior: 'smooth' }); }
+        // --- SHARE LOGIC ---
         function shareResult() {
             if (!userTrack) return;
-            const text = `Tần số 2026 của tôi: "${userTrack.song}" - ${userTrack.wish}. Xem thông điệp vũ trụ của bạn tại: ${window.location.href}`;
-            if (navigator.share) { navigator.share({ title: 'PHOTONOIR - 2026', text: text, url: window.location.href, }).catch(console.error); } 
-            else { navigator.clipboard.writeText(text).then(() => { var x = document.getElementById("toast"); x.className = "show"; setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000); }); }
+
+            // Fill Data
+            document.getElementById('shareSong').innerText = userTrack.song;
+            document.getElementById('shareWish').innerText = '"' + userTrack.wish.split(':')[1].trim() + '"';
+            document.getElementById('shareLabel').style.backgroundColor = userTrack.color;
+
+            // Capture
+            const captureArea = document.getElementById('share-capture-area');
+            html2canvas(captureArea, { scale: 2, backgroundColor: '#F4F4F4' }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'PhotoNoir_MyVibe_2026.png';
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                showToast("Đang lưu thẻ Vibe về máy...");
+            });
+        }
+
+        // --- UTILS ---
+        function setTrackInfo(track) { displayText.innerText = track.wish; metaText.innerText = "NOW PLAYING: " + track.song; }
+        function scrollToNext() { document.getElementById('scrollHint').scrollIntoView({ behavior: 'smooth' }); }
+        
+        function showToast(msg) {
+            var x = document.getElementById("toast");
+            x.innerText = msg;
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
         }
 
         window.addEventListener('scroll', () => {
