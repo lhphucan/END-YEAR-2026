@@ -23,21 +23,17 @@
             transition: filter 0.5s ease;
         }
 
-        /* SECRET MODE */
         body.invert-mode { filter: invert(1) hue-rotate(180deg); background-color: #1f1f1f; }
 
-        /* --- ANIMATIONS (NEW) --- */
-        /* Scroll Reveal Class */
+        /* --- ANIMATIONS --- */
         .reveal-on-scroll {
-            opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+            opacity: 0; transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
 
-        /* Breathing Effect */
         .breathing { animation: breathe 3s ease-in-out infinite; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-        
-        /* Glitch Effect */
         .glitch { animation: glitch-anim 0.3s both; color: var(--accent-color) !important; } 
 
         /* UTILS */
@@ -79,14 +75,9 @@
         .meta-label { font-size: 8px; text-transform: uppercase; color: #999; letter-spacing: 1px; margin-bottom: 2px;}
         .meta-value { font-size: 14px; font-weight: 700; font-family: monospace; color: #000; letter-spacing: 1px; }
 
-        /* SIGNATURE AREA */
         .signature-group { width: 100%; margin-top: 5px; text-align: center; }
         .sign-label { display: block; font-size: 9px; text-transform: uppercase; color: #888; letter-spacing: 1px; margin-bottom: 5px; }
-        .sign-input { 
-            width: 100%; border: none; border-bottom: 1px solid #aaa; background: transparent; 
-            text-align: center; font-family: 'Dancing Script', cursive; 
-            font-weight: 400; font-size: 26px; color: #000; outline: none; padding-bottom: 5px; 
-        }
+        .sign-input { width: 100%; border: none; border-bottom: 1px solid #aaa; background: transparent; text-align: center; font-family: 'Dancing Script', cursive; font-weight: 400; font-size: 26px; color: #000; outline: none; padding-bottom: 5px; }
         .sign-input::placeholder { color: #ccc; font-family: 'Manrope', sans-serif; font-weight: 400; font-size: 12px; letter-spacing: 1px; }
 
         /* SHARE CARD DESIGN */
@@ -109,68 +100,60 @@
         .real-label { width: 40%; height: 40%; border-radius: 50%; background-color: #eee; border: 1px solid rgba(255,255,255,0.2); position: relative; z-index: 2; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
         .real-label::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; background: #f4f4f4; border-radius: 50%; }
 
-        /* ZODIAC DISPLAY (UPDATED - CLEANER LAYOUT) */
+        /* ZODIAC DISPLAY ON CARD (ICONS) */
         .share-zodiac-display {
-            display: flex; justify-content: center; align-items: center; gap: 15px;
-            margin-bottom: 25px; min-height: 50px; width: 100%;
+            display: flex; justify-content: center; align-items: center; gap: 12px;
+            margin-bottom: 20px; min-height: 50px; width: 100%;
         }
-        /* Style cho icon trên thẻ */
         .zodiac-svg-icon {
-            width: 48px; height: 48px;
-            display: flex; justify-content: center; align-items: center;
-            opacity: 0.9;
+            width: 48px; height: 48px; display: flex; justify-content: center; align-items: center; opacity: 0.9;
         }
         .zodiac-svg-icon svg {
             width: 100%; height: 100%;
-            stroke: #222; stroke-width: 1.5; /* Nét vừa phải, rõ ràng */
+            stroke: #111; stroke-width: 1.5; 
             fill: none; stroke-linecap: round; stroke-linejoin: round;
         }
 
         .share-quote { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; text-transform: uppercase; color: #222; margin-bottom: 10px; border-top: 1px solid #ddd; padding-top: 20px; width: 100%; letter-spacing: 1px; }
         .share-analysis { font-size: 11px; line-height: 1.6; color: #555; margin-bottom: 20px; padding: 0 10px; font-weight: 500; min-height: 50px; display: flex; align-items: center; justify-content: center; font-style: italic; }
-        
-        .share-signature-display { 
-            font-family: 'Dancing Script', cursive; 
-            font-weight: 400; font-size: 34px; color: #000; margin-bottom: 10px; min-height: 40px; 
-        }
+        .share-signature-display { font-family: 'Dancing Script', cursive; font-weight: 400; font-size: 34px; color: #000; margin-bottom: 10px; min-height: 40px; }
         .share-footer { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; border-top: 1px solid #ddd; padding-top: 15px; opacity: 0.6; }
         .share-year { font-weight: 800; font-size: 12px; }
         .share-link { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* MULTI ZODIAC SELECTOR (FIXED STYLE) */
+        /* MULTI ZODIAC SELECTOR (TEXT BUTTONS) */
         .modal-actions { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; width: 320px; }
         .input-group { width: 100%; margin-bottom: 5px; }
         .nice-input { width: 100%; padding: 12px; background: rgba(255,255,255,0.9); border: 1px solid #ccc; border-radius: 4px; font-family: 'Manrope', sans-serif; font-size: 14px; text-align: center; }
         
         .zodiac-selector { 
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; 
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; 
             margin-bottom: 15px; padding: 15px; 
-            background: rgba(0,0,0,0.3); /* Nền tối nhẹ để nổi bật nút */
-            border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); 
+            background: rgba(255,255,255,0.1); border-radius: 12px; 
+            border: 1px solid rgba(255,255,255,0.2); 
         }
         .zodiac-btn { 
-            width: 38px; height: 38px; 
-            border: 1px solid rgba(255,255,255,0.3); 
-            background: transparent; border-radius: 50%; 
-            cursor: pointer; transition: all 0.2s; 
-            display: flex; justify-content: center; align-items: center; padding: 6px;
+            padding: 8px 12px;
+            border: 1px solid rgba(255,255,255,0.4); 
+            background: transparent; 
+            color: #fff; 
+            font-family: 'Manrope', sans-serif;
+            font-size: 12px; 
+            font-weight: 600;
+            border-radius: 20px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            display: flex; justify-content: center; align-items: center; 
+            white-space: nowrap;
         }
-        /* Quan trọng: Định dạng SVG trong nút chọn */
-        .zodiac-btn svg {
-            width: 100%; height: 100%;
-            stroke: #ccc; /* Màu nét mặc định là xám sáng */
-            stroke-width: 1.5;
-            fill: none;
-            stroke-linecap: round; stroke-linejoin: round;
-        }
-        
-        .zodiac-btn:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
-        .zodiac-btn:hover svg { stroke: #fff; }
-
+        .zodiac-btn:hover { border-color: #fff; background: rgba(255,255,255,0.2); }
         .zodiac-btn.active { 
-            background: #fff; border-color: #fff; transform: scale(1.1);
+            background: #fff; 
+            color: #000;
+            border-color: #fff; 
+            transform: scale(1.05); 
+            box-shadow: 0 2px 8px rgba(255,255,255,0.3);
         }
-        .zodiac-btn.active svg { stroke: #000; /* Khi chọn thì nét chuyển màu đen */ }
 
         .btn-action { border: none; padding: 14px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; border-radius: 4px; }
         .btn-save { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(5px); }
@@ -186,21 +169,11 @@
         .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 10px; cursor: pointer; }
         .logo-img:active { transform: scale(0.95); }
         
-        .hny-text { 
-            display: none; font-family: 'Manrope', sans-serif; font-weight: 800; 
-            font-size: 13vw; color: var(--accent-color); text-align: center; 
-            line-height: 1; letter-spacing: -2px; margin-bottom: 10px;
-            white-space: nowrap; text-transform: uppercase;
-        }
+        .hny-text { display: none; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 13vw; color: var(--accent-color); text-align: center; line-height: 1; letter-spacing: -2px; margin-bottom: 10px; white-space: nowrap; text-transform: uppercase; }
         @media (min-width: 480px) { .hny-text { font-size: 64px; } }
 
         .countdown-timer { font-family: 'Manrope', sans-serif; font-size: 32px; font-weight: 800; color: var(--accent-color); letter-spacing: 2px; margin-bottom: 5px; line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 rgba(255,255,255,0.5); }
-        .sub-logo-text { 
-            font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; 
-            color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; 
-            text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); 
-            transition: color 1s ease;
-        }
+        .sub-logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); transition: color 1s ease; }
         .center-content { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; position: relative; z-index: 5; margin-bottom: 20px; }
         .vinyl-container { position: relative; width: 60vmin; height: 60vmin; max-width: 300px; max-height: 300px; display: flex; justify-content: center; align-items: center; transition: transform 0.1s; margin-bottom: 20px; }
         .vinyl-container:active { transform: scale(0.97); }
@@ -231,12 +204,7 @@
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
         
         /* SCROLL REVEAL SECTION */
-        .screen-analysis { 
-            display: none; width: 100%; max-width: 480px; margin: 0 auto; 
-            position: relative; z-index: 2; padding: 60px 30px; 
-            background: #EAEAEA; 
-        }
-        
+        .screen-analysis { display: none; width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 60px 30px; background: #EAEAEA; }
         .analysis-box { border: 2px solid #000; padding: 30px 20px; background: #F2F2F2; box-shadow: 8px 8px 0px rgba(0,0,0,0.1); text-align: center; }
         .analysis-label { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px; text-align: left; }
         .analysis-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 22px; font-style: normal; color: var(--accent-color); margin-bottom: 20px; line-height: 1.3; text-align: left; }
@@ -245,6 +213,7 @@
         .share-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,0.2); }
         .share-icon { width: 14px; height: 14px; fill: white; }
         
+        /* LETTER (Ẩn mặc định) */
         .screen-letter { display: none; width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 80px 30px 120px; background: linear-gradient(180deg, rgba(224,224,224,0) 0%, rgba(245,245,245,0.95) 15%, #F5F5F5 100%); }
         .letter-container { border-left: 2px solid var(--accent-color); padding-left: 25px; }
         .letter-header { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; color: var(--accent-color); opacity: 0.8; }
@@ -295,8 +264,9 @@
     <div id="admin-panel">
         <div class="admin-title">Control Center</div>
         <button class="admin-btn" onclick="triggerTestVoucher()">🎁 Test Voucher (25th)</button>
-        <button class="admin-btn" onclick="triggerTestSecret()">👻 Secret Mode (Treasure)</button>
+        <button class="admin-btn" onclick="triggerTestSecret()">👻 Secret Mode</button>
         <button class="admin-btn" onclick="triggerTestHNY()">🎆 Test Giao Thừa (5s)</button>
+        <button class="admin-btn" onclick="setTotalPlays()">🔢 Set Total Plays</button>
         <button class="admin-btn danger" onclick="resetData()">🗑️ Reset Data</button>
         <div class="admin-close" onclick="closeAdminPanel()">Đóng Panel</div>
     </div>
@@ -359,7 +329,10 @@
                 <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
                 <div class="time-display"><span id="currentTime">0:00</span><span id="totalTime">--:--</span></div>
             </div>
-            <div class="visitor-counter"><span>TOTAL PLAYS:</span><span id="busuanzi_container_site_pv"><span id="busuanzi_value_site_pv">...</span></span></div>
+            <div class="visitor-counter">
+                <span>TOTAL PLAYS:</span>
+                <span id="totalPlayCounter">0</span>
+            </div>
         </div>
         <div class="scroll-hint" id="scrollHint" onclick="scrollToNext()">↓ SCROLL TO VIEW</div>
     </div>
@@ -388,22 +361,22 @@
     <audio id="bgMusic"></audio>
 
     <script>
-        // --- ZODIAC PATHS (FIXED GEMINI & OTHERS) ---
-        const zodiacPaths = {
-            "♈": "M2,7 C2,7 5,15 12,15 C19,15 22,7 22,7 M12,15 L12,21 M7,7 C7,4 9,2 12,2 C15,2 17,4 17,7",
-            "♉": "M2,8 C2,4 6,1 12,1 C18,1 22,4 22,8 M12,23 C7,23 3,19 3,14 C3,9 7,5 12,5 C17,5 21,9 21,14 C21,19 17,23 12,23 Z",
-            "♊": "M7,3 L17,3 M7,21 L17,21 M7,3 C7,3 7,12 7,21 M17,3 C17,3 17,12 17,21", // Corrected Gemini (Two pillars with top/bottom stroke)
-            "♋": "M6,12 A6,6 0 1,1 12,6 M18,12 A6,6 0 1,0 12,18",
-            "♌": "M5,16 A3,3 0 1,1 8,13 C8,13 11,3 19,3 C22,3 22,7 22,7 L22,11",
-            "♍": "M5,4 C7,3 9,4 9,7 L9,20 M9,7 C11,5 13,6 13,9 L13,20 M13,9 C15,7 17,8 17,11 L17,18 C17,21 14,22 12,21",
-            "♎": "M2,18 L22,18 M4,13 L20,13 M12,13 C12,9 15,7 18,7 M12,13 C12,9 9,7 6,7",
-            "♏": "M5,4 C7,3 9,4 9,7 L9,20 M9,7 C11,5 13,6 13,9 L13,20 M13,9 C15,7 17,8 17,11 L17,18 L20,21",
-            "♐": "M2,22 L22,2 M22,2 L14,2 M22,2 L22,10 M8,16 L12,12",
-            "♑": "M4,5 L9,12 L14,18 C17,20 21,17 20,13 C19,10 16,10 14,13",
-            "♒": "M2,8 L5,5 L8,8 L11,5 L14,8 L17,5 L20,8 L23,5 M2,16 L5,13 L8,16 L11,13 L14,16 L17,13 L20,16 L23,13",
-            "♓": "M9,3 C3,7 3,17 9,21 M15,3 C21,7 21,17 15,21 M4,12 L20,12"
+        // --- ZODIAC DATA (FIXED & VIETNAMESE NAMES) ---
+        const zodiacData = {
+            "♈": { name: "Bạch Dương", path: "M12 21L12 11M12 11C12 11 17 5 21 5C21 5 18 2 12 2C6 2 3 5 3 5C7 5 12 11 12 11" },
+            "♉": { name: "Kim Ngưu", path: "M12 22C8 22 5 19 5 15C5 11 8 8 12 8C16 8 19 11 19 15C19 19 16 22 12 22ZM2 9C2 5 7 2 12 2C17 2 22 5 22 9" },
+            "♊": { name: "Song Tử", path: "M6 4L18 4M6 20L18 20M8 4L8 20M16 4L16 20" }, // Chuẩn 2 trụ
+            "♋": { name: "Cự Giải", path: "M6 12A6 6 0 1 1 12 6M18 12A6 6 0 1 0 12 18" }, // Chuẩn 69
+            "♌": { name: "Sư Tử", path: "M6 19A3 3 0 1 1 9 16C9 16 12 5 18 5C21 5 22 8 22 8L22 11" },
+            "♍": { name: "Xử Nữ", path: "M5 6C7 5 9 6 9 9L9 20M9 9C11 7 13 8 13 11L13 20M13 11C15 9 17 10 17 13L17 19C17 21 15 22 13 22" },
+            "♎": { name: "Thiên Bình", path: "M4 19L20 19M6 14L18 14M12 14C12 10 15 8 18 8M12 14C12 10 9 8 6 8" },
+            "♏": { name: "Bọ Cạp", path: "M5 6C7 5 9 6 9 9L9 20M9 9C11 7 13 8 13 11L13 20M13 11C15 9 17 10 17 13L17 19L20 22" },
+            "♐": { name: "Nhân Mã", path: "M4 20L20 4M20 4L12 4M20 4L20 12M8 16L12 12" },
+            "♑": { name: "Ma Kết", path: "M5 6L10 12L14 18C16 20 20 18 19 14C18 11 16 11 14 13" },
+            "♒": { name: "Bảo Bình", path: "M4 10L7 7L10 10L13 7L16 10L19 7L22 10M4 17L7 14L10 17L13 14L16 17L19 14L22 17" },
+            "♓": { name: "Song Ngư", path: "M8 4C3 8 3 16 8 20M16 4C21 8 21 16 16 20M4 12L20 12" }
         };
-        const zodiacs = Object.keys(zodiacPaths);
+        const zodiacs = Object.keys(zodiacData);
         let selectedZodiacs = []; 
 
         // --- CONFIG & DATA ---
@@ -439,7 +412,7 @@
         const analysisContent = document.getElementById('analysisContent');
         const preloader = document.getElementById('preloader');
         
-        // UI Elements
+        // Elements
         const voucherOverlay = document.getElementById('voucher-overlay');
         const shareOverlay = document.getElementById('share-overlay');
         const liveClockEl = document.getElementById('liveClock');
@@ -467,11 +440,16 @@
                 userTrack = tracks[parseInt(savedIndex)];
                 finalizeUI(userTrack);
             }
-            // Init Multi Select Zodiac (Selector UI)
+            
+            // Custom Local Counter Init
+            let localPlays = localStorage.getItem('site_total_plays') || 1205;
+            document.getElementById('totalPlayCounter').innerText = parseInt(localPlays).toLocaleString();
+
+            // Init Multi Select Zodiac (TEXT BUTTONS)
             zodiacs.forEach(z => {
                 const btn = document.createElement('button');
                 btn.className = 'zodiac-btn';
-                btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="${zodiacPaths[z]}" /></svg>`;
+                btn.innerText = zodiacData[z].name; // Hiển thị tên tiếng Việt
                 btn.onclick = () => toggleZodiac(z, btn);
                 zodiacSelector.appendChild(btn);
             });
@@ -514,6 +492,16 @@
         }
         function closeAdminPanel() { document.getElementById('admin-panel').style.display = 'none'; }
         
+        function setTotalPlays() {
+            let num = prompt("Nhập số lượt chơi mong muốn:", localStorage.getItem('site_total_plays') || 0);
+            if (num !== null && !isNaN(num)) {
+                localStorage.setItem('site_total_plays', num);
+                document.getElementById('totalPlayCounter').innerText = parseInt(num).toLocaleString();
+                showToast("Đã cập nhật Total Plays!");
+                closeAdminPanel();
+            }
+        }
+
         function triggerTestVoucher() {
             localStorage.setItem(SPIN_COUNT_KEY, 25);
             showToast("🎁 Đã set lượt 25. Quay ngay để trúng!");
@@ -533,7 +521,6 @@
                     document.getElementById('countdown').style.display = 'none';
                     document.getElementById('hny-text').style.display = 'block';
                     document.getElementById('mainTitle').style.color = '#1a1a1a';
-                    // Fireworks
                     if (!window.hnyFireworks) {
                         window.hnyFireworks = true;
                         var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
@@ -574,7 +561,8 @@
                 selectedZodiacs.forEach(z => {
                     const div = document.createElement('div');
                     div.className = 'zodiac-svg-icon';
-                    div.innerHTML = `<svg viewBox="0 0 24 24"><path d="${zodiacPaths[z]}" /></svg>`;
+                    // Sử dụng path từ zodiacData
+                    div.innerHTML = `<svg viewBox="0 0 24 24"><path d="${zodiacData[z].path}" /></svg>`;
                     zodiacDisplay.appendChild(div);
                 });
             } else {
@@ -663,6 +651,13 @@
         }
         function finalizeResult() {
             let spinCount = parseInt(localStorage.getItem(SPIN_COUNT_KEY)) || 0; spinCount++; localStorage.setItem(SPIN_COUNT_KEY, spinCount);
+            
+            // Custom Counter Increment
+            let currentTotal = parseInt(localStorage.getItem('site_total_plays')) || 1205;
+            currentTotal++;
+            localStorage.setItem('site_total_plays', currentTotal);
+            document.getElementById('totalPlayCounter').innerText = currentTotal.toLocaleString();
+
             let selectedTrack;
             if (spinCount > 0 && spinCount % 26 === 0) { selectedTrack = tracks.find(t => t.id === 7); } 
             else { const normalTracks = tracks.filter(t => t.id !== 7); selectedTrack = normalTracks[Math.floor(Math.random() * normalTracks.length)]; }
@@ -749,7 +744,7 @@
 
         // --- UTILS ---
         function setTrackInfo(track) { 
-            // Also apply Scramble Effect when finalizing
+            // Apply Scramble Effect
             scrambleText(displayText, track.wish);
             metaText.innerText = "NOW PLAYING: " + track.song; 
         }
