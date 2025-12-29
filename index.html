@@ -26,6 +26,20 @@
         /* SECRET MODE */
         body.invert-mode { filter: invert(1) hue-rotate(180deg); background-color: #1f1f1f; }
 
+        /* --- ANIMATIONS (NEW) --- */
+        /* Scroll Reveal Class */
+        .reveal-on-scroll {
+            opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* Breathing Effect */
+        .breathing { animation: breathe 3s ease-in-out infinite; }
+        @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        
+        /* Glitch Effect */
+        .glitch { animation: glitch-anim 0.3s both; color: var(--accent-color) !important; } 
+
         /* UTILS */
         #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #E0E0E0; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
         .loader-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 4px; color: var(--ink-color); animation: breathe 1s infinite; }
@@ -95,19 +109,20 @@
         .real-label { width: 40%; height: 40%; border-radius: 50%; background-color: #eee; border: 1px solid rgba(255,255,255,0.2); position: relative; z-index: 2; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
         .real-label::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; background: #f4f4f4; border-radius: 50%; }
 
-        /* ZODIAC DISPLAY (MINIMAL SVG) */
+        /* ZODIAC DISPLAY (UPDATED - CLEANER LAYOUT) */
         .share-zodiac-display {
-            display: flex; justify-content: center; align-items: center; gap: 12px;
-            margin-bottom: 20px; min-height: 50px; width: 100%;
+            display: flex; justify-content: center; align-items: center; gap: 15px;
+            margin-bottom: 25px; min-height: 50px; width: 100%;
         }
+        /* Style cho icon trên thẻ */
         .zodiac-svg-icon {
-            width: 45px; height: 45px;
+            width: 48px; height: 48px;
             display: flex; justify-content: center; align-items: center;
             opacity: 0.9;
         }
         .zodiac-svg-icon svg {
             width: 100%; height: 100%;
-            stroke: #111; stroke-width: 1.2; 
+            stroke: #222; stroke-width: 1.5; /* Nét vừa phải, rõ ràng */
             fill: none; stroke-linecap: round; stroke-linejoin: round;
         }
 
@@ -122,19 +137,40 @@
         .share-year { font-weight: 800; font-size: 12px; }
         .share-link { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* MULTI ZODIAC SELECTOR */
+        /* MULTI ZODIAC SELECTOR (FIXED STYLE) */
         .modal-actions { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; width: 320px; }
         .input-group { width: 100%; margin-bottom: 5px; }
         .nice-input { width: 100%; padding: 12px; background: rgba(255,255,255,0.9); border: 1px solid #ccc; border-radius: 4px; font-family: 'Manrope', sans-serif; font-size: 14px; text-align: center; }
         
-        .zodiac-selector { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 15px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); }
-        .zodiac-btn { 
-            width: 35px; height: 35px; border: 1px solid rgba(255,255,255,0.4); 
-            background: transparent; color: #fff; font-size: 14px; border-radius: 50%; 
-            cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; 
+        .zodiac-selector { 
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; 
+            margin-bottom: 15px; padding: 15px; 
+            background: rgba(0,0,0,0.3); /* Nền tối nhẹ để nổi bật nút */
+            border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); 
         }
+        .zodiac-btn { 
+            width: 38px; height: 38px; 
+            border: 1px solid rgba(255,255,255,0.3); 
+            background: transparent; border-radius: 50%; 
+            cursor: pointer; transition: all 0.2s; 
+            display: flex; justify-content: center; align-items: center; padding: 6px;
+        }
+        /* Quan trọng: Định dạng SVG trong nút chọn */
+        .zodiac-btn svg {
+            width: 100%; height: 100%;
+            stroke: #ccc; /* Màu nét mặc định là xám sáng */
+            stroke-width: 1.5;
+            fill: none;
+            stroke-linecap: round; stroke-linejoin: round;
+        }
+        
         .zodiac-btn:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
-        .zodiac-btn.active { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.5); transform: scale(1.1); }
+        .zodiac-btn:hover svg { stroke: #fff; }
+
+        .zodiac-btn.active { 
+            background: #fff; border-color: #fff; transform: scale(1.1);
+        }
+        .zodiac-btn.active svg { stroke: #000; /* Khi chọn thì nét chuyển màu đen */ }
 
         .btn-action { border: none; padding: 14px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; border-radius: 4px; }
         .btn-save { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(5px); }
@@ -150,28 +186,20 @@
         .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 10px; cursor: pointer; }
         .logo-img:active { transform: scale(0.95); }
         
-        /* HNY TEXT - UPDATED: BIGGER, ONE LINE, NO GLOW */
         .hny-text { 
-            display: none; 
-            font-family: 'Manrope', sans-serif; 
-            font-weight: 800; 
-            font-size: 13vw; /* Dùng vw để chữ to hết cỡ theo chiều ngang */
-            color: var(--accent-color); 
-            text-align: center; 
-            line-height: 1; 
-            letter-spacing: -2px; /* Dồn chữ lại cho ngầu */
-            margin-bottom: 10px;
-            white-space: nowrap; 
-            text-transform: uppercase;
+            display: none; font-family: 'Manrope', sans-serif; font-weight: 800; 
+            font-size: 13vw; color: var(--accent-color); text-align: center; 
+            line-height: 1; letter-spacing: -2px; margin-bottom: 10px;
+            white-space: nowrap; text-transform: uppercase;
         }
-        @media (min-width: 480px) { .hny-text { font-size: 64px; } } /* Max size on desktop */
+        @media (min-width: 480px) { .hny-text { font-size: 64px; } }
 
         .countdown-timer { font-family: 'Manrope', sans-serif; font-size: 32px; font-weight: 800; color: var(--accent-color); letter-spacing: 2px; margin-bottom: 5px; line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 rgba(255,255,255,0.5); }
         .sub-logo-text { 
             font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; 
             color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; 
             text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); 
-            transition: color 1s ease; /* Hiệu ứng chuyển màu mượt */
+            transition: color 1s ease;
         }
         .center-content { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; position: relative; z-index: 5; margin-bottom: 20px; }
         .vinyl-container { position: relative; width: 60vmin; height: 60vmin; max-width: 300px; max-height: 300px; display: flex; justify-content: center; align-items: center; transition: transform 0.1s; margin-bottom: 20px; }
@@ -197,11 +225,18 @@
         .progress-bar-fill { width: 0%; height: 100%; background: var(--accent-color); transition: width 0.1s linear; }
         .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #000; font-family: monospace; }
         .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 12px; display: flex; gap: 5px; justify-content: center; align-items: center; }
+        
         .scroll-hint { position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0; animation: float 2s infinite; cursor: pointer; z-index: 20; transition: opacity 1s; }
         .show-scroll { opacity: 0.6 !important; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
-        .screen-analysis { display: none; width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 60px 30px; background: #EAEAEA; animation: fadeIn 1s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* SCROLL REVEAL SECTION */
+        .screen-analysis { 
+            display: none; width: 100%; max-width: 480px; margin: 0 auto; 
+            position: relative; z-index: 2; padding: 60px 30px; 
+            background: #EAEAEA; 
+        }
+        
         .analysis-box { border: 2px solid #000; padding: 30px 20px; background: #F2F2F2; box-shadow: 8px 8px 0px rgba(0,0,0,0.1); text-align: center; }
         .analysis-label { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px; text-align: left; }
         .analysis-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 22px; font-style: normal; color: var(--accent-color); margin-bottom: 20px; line-height: 1.3; text-align: left; }
@@ -209,6 +244,7 @@
         .share-btn { background-color: var(--accent-color); color: white; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1px; padding: 12px 25px; border: none; cursor: pointer; text-transform: uppercase; box-shadow: 4px 4px 0px rgba(0,0,0,0.2); transition: transform 0.1s, box-shadow 0.1s; display: inline-flex; align-items: center; gap: 8px; }
         .share-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,0.2); }
         .share-icon { width: 14px; height: 14px; fill: white; }
+        
         .screen-letter { display: none; width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 80px 30px 120px; background: linear-gradient(180deg, rgba(224,224,224,0) 0%, rgba(245,245,245,0.95) 15%, #F5F5F5 100%); }
         .letter-container { border-left: 2px solid var(--accent-color); padding-left: 25px; }
         .letter-header { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; color: var(--accent-color); opacity: 0.8; }
@@ -216,9 +252,10 @@
         .letter-body p { margin-bottom: 25px; }
         .letter-body p:first-child::first-letter { font-size: 3.5em; float: left; line-height: 0.8; margin-right: 10px; font-weight: 600; color: var(--accent-color); }
         .letter-sign { margin-top: 50px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-top: 1px solid #ccc; display: inline-block; padding-top: 10px; }
+        
         @media (max-width: 380px) or (max-height: 700px) { .logo-img { width: 80%; } .sub-logo-text { font-size: 32px; } .countdown-timer { font-size: 26px; } .vinyl-container { width: 55vmin; height: 55vmin; } .wishes-text { font-size: 14px; } }
 
-        /* --- ADMIN PANEL (MINIMAL) --- */
+        /* --- ADMIN PANEL --- */
         #admin-trigger {
             position: fixed; bottom: 15px; right: 15px; 
             width: 24px; height: 24px; opacity: 0.4; cursor: pointer; z-index: 9000;
@@ -229,26 +266,14 @@
         
         #admin-panel {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 280px; 
-            background: rgba(10, 10, 10, 0.95);
-            color: #eee; padding: 25px 20px; 
-            border: 1px solid rgba(255,255,255,0.15);
+            width: 280px; background: rgba(10, 10, 10, 0.95);
+            color: #eee; padding: 25px 20px; border: 1px solid rgba(255,255,255,0.15);
             z-index: 10000; box-shadow: 0 15px 40px rgba(0,0,0,0.5); 
             text-align: center; border-radius: 12px;
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
-        .admin-title { 
-            font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px; 
-            margin-bottom: 20px; color: var(--accent-color); letter-spacing: 2px; text-transform: uppercase;
-        }
-        .admin-btn { 
-            width: 100%; padding: 12px; margin-bottom: 10px; 
-            background: transparent; color: #ccc; 
-            border: 1px solid rgba(255,255,255,0.25);
-            cursor: pointer; font-family: 'Manrope'; font-size: 12px; font-weight: 600;
-            border-radius: 6px; transition: all 0.2s;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
+        .admin-title { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px; margin-bottom: 20px; color: var(--accent-color); letter-spacing: 2px; text-transform: uppercase; }
+        .admin-btn { width: 100%; padding: 12px; margin-bottom: 10px; background: transparent; color: #ccc; border: 1px solid rgba(255,255,255,0.25); cursor: pointer; font-family: 'Manrope'; font-size: 12px; font-weight: 600; border-radius: 6px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .admin-btn:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: #fff; }
         .admin-btn.danger { border-color: #960018; color: #ff8888; }
         .admin-btn.danger:hover { background: #960018; color: #fff; }
@@ -308,6 +333,7 @@
         <div class="modal-actions">
             <div class="input-group"><input type="text" id="shareNameInput" class="nice-input" placeholder="Nhập tên bạn để ký..." maxlength="15" oninput="updateSignature(this.value)"></div>
             <div class="zodiac-selector" id="zodiacSelector"></div>
+            
             <button class="btn-action btn-save" onclick="downloadElement('share-card-container', 'PhotoNoir_MyVibe_2026')"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Lưu ảnh về máy</button>
             <button class="btn-action btn-share" onclick="nativeShare()"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>Chia sẻ Link</button>
             <div class="close-text" onclick="closeModal('share-overlay')">Đóng</div>
@@ -338,7 +364,7 @@
         <div class="scroll-hint" id="scrollHint" onclick="scrollToNext()">↓ SCROLL TO VIEW</div>
     </div>
 
-    <div class="screen-analysis" id="analysisSection">
+    <div class="screen-analysis reveal-on-scroll" id="analysisSection">
         <div class="analysis-box">
             <div class="analysis-label"><span>FREQUENCY REPORT</span></div>
             <div class="analysis-title" id="analysisTitle">Why this track?</div>
@@ -347,7 +373,7 @@
         </div>
     </div>
 
-    <div class="screen-letter">
+    <div class="screen-letter reveal-on-scroll">
         <div class="letter-container">
             <div class="letter-header">A LETTER FROM PHOTONOIR</div>
             <div class="letter-body">
@@ -362,11 +388,11 @@
     <audio id="bgMusic"></audio>
 
     <script>
-        // --- ZODIAC DATA (CLEAN LINE ART SVG) ---
+        // --- ZODIAC PATHS (FIXED GEMINI & OTHERS) ---
         const zodiacPaths = {
             "♈": "M2,7 C2,7 5,15 12,15 C19,15 22,7 22,7 M12,15 L12,21 M7,7 C7,4 9,2 12,2 C15,2 17,4 17,7",
             "♉": "M2,8 C2,4 6,1 12,1 C18,1 22,4 22,8 M12,23 C7,23 3,19 3,14 C3,9 7,5 12,5 C17,5 21,9 21,14 C21,19 17,23 12,23 Z",
-            "♊": "M8,2 L8,22 M16,2 L16,22 M4,4 C8,2 16,2 20,4 M4,20 C8,22 16,22 20,20",
+            "♊": "M7,3 L17,3 M7,21 L17,21 M7,3 C7,3 7,12 7,21 M17,3 C17,3 17,12 17,21", // Corrected Gemini (Two pillars with top/bottom stroke)
             "♋": "M6,12 A6,6 0 1,1 12,6 M18,12 A6,6 0 1,0 12,18",
             "♌": "M5,16 A3,3 0 1,1 8,13 C8,13 11,3 19,3 C22,3 22,7 22,7 L22,11",
             "♍": "M5,4 C7,3 9,4 9,7 L9,20 M9,7 C11,5 13,6 13,9 L13,20 M13,9 C15,7 17,8 17,11 L17,18 C17,21 14,22 12,21",
@@ -413,7 +439,7 @@
         const analysisContent = document.getElementById('analysisContent');
         const preloader = document.getElementById('preloader');
         
-        // Elements
+        // UI Elements
         const voucherOverlay = document.getElementById('voucher-overlay');
         const shareOverlay = document.getElementById('share-overlay');
         const liveClockEl = document.getElementById('liveClock');
@@ -441,7 +467,7 @@
                 userTrack = tracks[parseInt(savedIndex)];
                 finalizeUI(userTrack);
             }
-            // Init Multi Select Zodiac
+            // Init Multi Select Zodiac (Selector UI)
             zodiacs.forEach(z => {
                 const btn = document.createElement('button');
                 btn.className = 'zodiac-btn';
@@ -449,7 +475,32 @@
                 btn.onclick = () => toggleZodiac(z, btn);
                 zodiacSelector.appendChild(btn);
             });
+
+            // Init Scroll Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
         };
+
+        // --- TEXT SCRAMBLE ANIMATION ---
+        function scrambleText(element, finalString) {
+            let iterations = 0;
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#@&";
+            const interval = setInterval(() => {
+                element.innerText = finalString.split("").map((letter, index) => {
+                    if(index < iterations) return finalString[index];
+                    return alphabet[Math.floor(Math.random() * alphabet.length)];
+                }).join("");
+                if(iterations >= finalString.length) clearInterval(interval);
+                iterations += 1/2; // Speed
+            }, 30);
+        }
 
         // --- ADMIN FEATURES ---
         function toggleAdminLogin() {
@@ -473,7 +524,6 @@
             closeAdminPanel();
         }
         function triggerTestHNY() {
-            // Đếm ngược 5 giây
             for (var i = 1; i < 99999; i++) window.clearInterval(i);
             var testDate = new Date().getTime() + 5000;
             var t = setInterval(function() {
@@ -482,14 +532,10 @@
                     clearInterval(t);
                     document.getElementById('countdown').style.display = 'none';
                     document.getElementById('hny-text').style.display = 'block';
-                    
-                    // LÀM TỐI CHỮ ALBUM OF THE YEAR
-                    document.getElementById('mainTitle').style.color = '#1a1a1a'; // Gần như đen
-
-                    // Kích hoạt pháo hoa (Vĩnh viễn)
+                    document.getElementById('mainTitle').style.color = '#1a1a1a';
+                    // Fireworks
                     if (!window.hnyFireworks) {
                         window.hnyFireworks = true;
-                        // Bắn không có duration limit
                         var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
                         setInterval(function() {
                             confetti(Object.assign({}, defaults, { particleCount: 50, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
@@ -532,7 +578,6 @@
                     zodiacDisplay.appendChild(div);
                 });
             } else {
-                // Default Star (Minimal)
                 const div = document.createElement('div');
                 div.className = 'zodiac-svg-icon';
                 div.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
@@ -547,13 +592,10 @@
             if (gap < 0) {
                 document.getElementById('countdown').style.display = 'none';
                 document.getElementById('hny-text').style.display = 'block';
-                // Làm tối chữ khi đến giờ
                 document.getElementById('mainTitle').style.color = '#1a1a1a';
-
                 if (!window.hnyFireworks) {
                     window.hnyFireworks = true;
                     var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-                    // Loop Forever
                     setInterval(function() {
                         confetti(Object.assign({}, defaults, { particleCount: 50, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
                     }, 250);
@@ -596,7 +638,12 @@
             if (userTrack) {
                 audio.src = userTrack.file; audio.play();
                 document.querySelector('.player-controls').parentElement.classList.add('has-played');
-                document.querySelector('.screen-letter').style.display = 'block';
+                // Scroll Reveal
+                document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+                    el.style.display = 'block';
+                    setTimeout(() => el.classList.add('is-visible'), 100);
+                });
+
                 if(userTrack.id === 7) { updateVoucherUI(); voucherOverlay.style.display = 'flex'; }
             } else { startShuffle(); }
         }
@@ -607,7 +654,9 @@
             let count = 0; let speed = 50; let maxCount = 40; const randomPool = tracks.filter(t => t.id !== 7);
             function step() {
                 const randomItem = randomPool[Math.floor(Math.random() * randomPool.length)];
-                displayText.innerText = randomItem.wish; displayText.style.opacity = 0.6; count++;
+                // SCRAMBLE EFFECT
+                scrambleText(displayText, randomItem.wish);
+                displayText.style.opacity = 0.6; count++;
                 if (count < maxCount) { speed += (count > 30) ? 15 : 2; setTimeout(step, speed); } else { finalizeResult(); }
             }
             step();
@@ -625,9 +674,14 @@
         function finalizeUI(track) {
             setTrackInfo(track); displayText.style.opacity = 1; displayText.classList.add('glitch');
             document.querySelector('.player-controls').parentElement.classList.add('has-played');
-            label.style.backgroundColor = track.color; analysisSection.style.display = 'block';
-            analysisTitle.innerText = "Why this track?"; analysisContent.innerText = track.analysis;
+            label.style.backgroundColor = track.color; 
+            
+            // SHOW ANALYSIS & LETTER WITH REVEAL
+            document.querySelector('.screen-analysis').style.display = 'block';
             document.querySelector('.screen-letter').style.display = 'block';
+            setTimeout(() => {
+                document.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-visible'));
+            }, 100);
             
             document.getElementById('scrollHint').classList.add('show-scroll');
             if (track.id === 7) { updateVoucherUI(); voucherOverlay.style.display = 'flex'; }
@@ -694,7 +748,11 @@
         }
 
         // --- UTILS ---
-        function setTrackInfo(track) { displayText.innerText = track.wish; metaText.innerText = "NOW PLAYING: " + track.song; }
+        function setTrackInfo(track) { 
+            // Also apply Scramble Effect when finalizing
+            scrambleText(displayText, track.wish);
+            metaText.innerText = "NOW PLAYING: " + track.song; 
+        }
         function scrollToNext() { document.getElementById('scrollHint').scrollIntoView({ behavior: 'smooth' }); }
         function showToast(msg) { var x = document.getElementById("toast"); x.innerText = msg; x.className = "show"; setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000); }
         window.addEventListener('scroll', () => { if (!isPlaying) return; const letterTop = document.querySelector('.screen-letter').getBoundingClientRect().top; const windowHeight = window.innerHeight; if (letterTop < windowHeight * 0.8) { if (audio.volume > 0.2) audio.volume -= 0.05; } else { if (audio.volume < 1.0) audio.volume += 0.05; } });
