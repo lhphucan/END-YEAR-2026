@@ -11,7 +11,6 @@
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     
     <style>
         :root { --bg-color: #E0E0E0; --ink-color: #000; --accent-color: #960018; }
@@ -25,12 +24,17 @@
 
         body.invert-mode { filter: invert(1) hue-rotate(180deg); background-color: #1f1f1f; }
 
-        /* --- ANIMATIONS --- */
+        /* --- CINEMATIC BLUR REVEAL ANIMATION --- */
         .reveal-on-scroll {
-            opacity: 0; transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            opacity: 0; 
+            transform: translateY(60px);
+            filter: blur(20px);
+            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+            will-change: transform, opacity, filter;
         }
-        .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+        .reveal-on-scroll.is-visible { 
+            opacity: 1; transform: translateY(0); filter: blur(0);
+        }
 
         .breathing { animation: breathe 3s ease-in-out infinite; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
@@ -100,7 +104,6 @@
         .real-label { width: 40%; height: 40%; border-radius: 50%; background-color: #eee; border: 1px solid rgba(255,255,255,0.2); position: relative; z-index: 2; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
         .real-label::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; background: #f4f4f4; border-radius: 50%; }
 
-        /* ZODIAC DISPLAY ON CARD (ICONS) */
         .share-zodiac-display {
             display: flex; justify-content: center; align-items: center; gap: 12px;
             margin-bottom: 20px; min-height: 50px; width: 100%;
@@ -121,39 +124,22 @@
         .share-year { font-weight: 800; font-size: 12px; }
         .share-link { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* MULTI ZODIAC SELECTOR (TEXT BUTTONS) */
+        /* MULTI ZODIAC SELECTOR */
         .modal-actions { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; width: 320px; }
         .input-group { width: 100%; margin-bottom: 5px; }
         .nice-input { width: 100%; padding: 12px; background: rgba(255,255,255,0.9); border: 1px solid #ccc; border-radius: 4px; font-family: 'Manrope', sans-serif; font-size: 14px; text-align: center; }
         
-        .zodiac-selector { 
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; 
-            margin-bottom: 15px; padding: 15px; 
-            background: rgba(255,255,255,0.1); border-radius: 12px; 
-            border: 1px solid rgba(255,255,255,0.2); 
-        }
+        .zodiac-selector { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 15px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); }
         .zodiac-btn { 
-            padding: 8px 12px;
-            border: 1px solid rgba(255,255,255,0.4); 
-            background: transparent; 
-            color: #fff; 
-            font-family: 'Manrope', sans-serif;
-            font-size: 12px; 
-            font-weight: 600;
-            border-radius: 20px; 
-            cursor: pointer; 
-            transition: all 0.2s ease; 
-            display: flex; justify-content: center; align-items: center; 
+            padding: 8px 12px; border: 1px solid rgba(255,255,255,0.4); 
+            background: transparent; color: #fff; 
+            font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 600;
+            border-radius: 20px; cursor: pointer; 
+            transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; 
             white-space: nowrap;
         }
         .zodiac-btn:hover { border-color: #fff; background: rgba(255,255,255,0.2); }
-        .zodiac-btn.active { 
-            background: #fff; 
-            color: #000;
-            border-color: #fff; 
-            transform: scale(1.05); 
-            box-shadow: 0 2px 8px rgba(255,255,255,0.3);
-        }
+        .zodiac-btn.active { background: #fff; color: #000; border-color: #fff; transform: scale(1.05); box-shadow: 0 2px 8px rgba(255,255,255,0.3); }
 
         .btn-action { border: none; padding: 14px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; border-radius: 4px; }
         .btn-save { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(5px); }
@@ -169,7 +155,8 @@
         .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 10px; cursor: pointer; }
         .logo-img:active { transform: scale(0.95); }
         
-        .hny-text { display: none; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 13vw; color: var(--accent-color); text-align: center; line-height: 1; letter-spacing: -2px; margin-bottom: 10px; white-space: nowrap; text-transform: uppercase; }
+        /* FIX: Giảm kích thước font HNY cho mobile */
+        .hny-text { display: none; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 10vw; color: var(--accent-color); text-align: center; line-height: 1; letter-spacing: -2px; margin-bottom: 10px; white-space: nowrap; text-transform: uppercase; }
         @media (min-width: 480px) { .hny-text { font-size: 64px; } }
 
         .countdown-timer { font-family: 'Manrope', sans-serif; font-size: 32px; font-weight: 800; color: var(--accent-color); letter-spacing: 2px; margin-bottom: 5px; line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 rgba(255,255,255,0.5); }
@@ -303,7 +290,6 @@
         <div class="modal-actions">
             <div class="input-group"><input type="text" id="shareNameInput" class="nice-input" placeholder="Nhập tên bạn để ký..." maxlength="15" oninput="updateSignature(this.value)"></div>
             <div class="zodiac-selector" id="zodiacSelector"></div>
-            
             <button class="btn-action btn-save" onclick="downloadElement('share-card-container', 'PhotoNoir_MyVibe_2026')"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Lưu ảnh về máy</button>
             <button class="btn-action btn-share" onclick="nativeShare()"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>Chia sẻ Link</button>
             <div class="close-text" onclick="closeModal('share-overlay')">Đóng</div>
@@ -361,12 +347,12 @@
     <audio id="bgMusic"></audio>
 
     <script>
-        // --- ZODIAC DATA (FIXED & VIETNAMESE NAMES) ---
+        // --- ZODIAC DATA (FIXED CANCER PATH) ---
         const zodiacData = {
             "♈": { name: "Bạch Dương", path: "M12 21L12 11M12 11C12 11 17 5 21 5C21 5 18 2 12 2C6 2 3 5 3 5C7 5 12 11 12 11" },
             "♉": { name: "Kim Ngưu", path: "M12 22C8 22 5 19 5 15C5 11 8 8 12 8C16 8 19 11 19 15C19 19 16 22 12 22ZM2 9C2 5 7 2 12 2C17 2 22 5 22 9" },
-            "♊": { name: "Song Tử", path: "M6 4L18 4M6 20L18 20M8 4L8 20M16 4L16 20" }, // Chuẩn 2 trụ
-            "♋": { name: "Cự Giải", path: "M6 12A6 6 0 1 1 12 6M18 12A6 6 0 1 0 12 18" }, // Chuẩn 69
+            "♊": { name: "Song Tử", path: "M6 4L18 4M6 20L18 20M8 4L8 20M16 4L16 20" },
+            "♋": { name: "Cự Giải", path: "M9,5 A4,4 0 1,1 9,13 A4,4 0 1,1 9,5 M15,11 A4,4 0 1,1 15,19 A4,4 0 1,1 15,11" }, // Updated Path: Two complete circles
             "♌": { name: "Sư Tử", path: "M6 19A3 3 0 1 1 9 16C9 16 12 5 18 5C21 5 22 8 22 8L22 11" },
             "♍": { name: "Xử Nữ", path: "M5 6C7 5 9 6 9 9L9 20M9 9C11 7 13 8 13 11L13 20M13 11C15 9 17 10 17 13L17 19C17 21 15 22 13 22" },
             "♎": { name: "Thiên Bình", path: "M4 19L20 19M6 14L18 14M12 14C12 10 15 8 18 8M12 14C12 10 9 8 6 8" },
@@ -711,6 +697,7 @@
 
         // --- SHARE LOGIC ---
         function openShareOverlay() {
+            // FIX: Cho phép mở kể cả là voucher, miễn là có track
             if (!userTrack) return;
             document.getElementById('realShareQuote').innerText = '"' + userTrack.wish.split(':')[1].trim() + '"';
             document.getElementById('realShareAnalysis').innerText = userTrack.analysis;
