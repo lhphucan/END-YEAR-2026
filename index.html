@@ -23,7 +23,6 @@
             transition: filter 0.5s ease;
         }
 
-        /* SECRET MODE */
         body.invert-mode { filter: invert(1) hue-rotate(180deg); background-color: #1f1f1f; }
 
         /* UTILS */
@@ -65,7 +64,13 @@
         .meta-label { font-size: 8px; text-transform: uppercase; color: #999; letter-spacing: 1px; margin-bottom: 2px;}
         .meta-value { font-size: 14px; font-weight: 700; font-family: monospace; color: #000; letter-spacing: 1px; }
 
-        /* SHARE CARD */
+        /* SIGNATURE AREA (VOUCHER) */
+        .signature-group { width: 100%; margin-top: 5px; text-align: center; }
+        .sign-label { display: block; font-size: 9px; text-transform: uppercase; color: #888; letter-spacing: 1px; margin-bottom: 5px; }
+        .sign-input { width: 100%; border: none; border-bottom: 1px solid #aaa; background: transparent; text-align: center; font-family: 'Dancing Script', cursive; font-size: 24px; color: #000; outline: none; padding-bottom: 5px; }
+        .sign-input::placeholder { color: #ccc; font-family: 'Manrope', sans-serif; font-size: 12px; letter-spacing: 1px; }
+
+        /* SHARE CARD DESIGN */
         #share-card-container {
             width: 340px; background: #F4F4F4; padding: 40px 25px; 
             display: flex; flex-direction: column; align-items: center; 
@@ -85,29 +90,44 @@
         .real-label { width: 40%; height: 40%; border-radius: 50%; background-color: #eee; border: 1px solid rgba(255,255,255,0.2); position: relative; z-index: 2; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
         .real-label::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; background: #f4f4f4; border-radius: 50%; }
 
-        /* ZODIAC DISPLAY ON CARD */
+        /* ZODIAC DISPLAY (Multi + Minimal) */
         .share-zodiac-display {
-            font-size: 48px; color: var(--accent-color); margin-bottom: 10px;
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.1); height: 60px; line-height: 1;
+            display: flex; justify-content: center; align-items: center; gap: 15px;
+            margin-bottom: 20px; min-height: 50px; width: 100%;
+        }
+        .zodiac-glyph {
+            width: 45px; height: 45px; border: 1px solid #111; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 22px; color: #111; font-family: 'Playfair Display', serif;
+            background-color: transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        .share-analysis { font-size: 11px; line-height: 1.6; color: #555; margin-bottom: 20px; padding: 0 10px; font-weight: 500; min-height: 60px; display: flex; align-items: center; justify-content: center; font-style: italic; }
-        .share-quote { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; text-transform: uppercase; color: #222; margin-bottom: 25px; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; padding: 15px 0; width: 100%; letter-spacing: 1px; }
+        .share-quote { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; text-transform: uppercase; color: #222; margin-bottom: 10px; border-top: 1px solid #ddd; padding-top: 20px; width: 100%; letter-spacing: 1px; }
+        .share-analysis { font-size: 11px; line-height: 1.6; color: #555; margin-bottom: 20px; padding: 0 10px; font-weight: 500; min-height: 50px; display: flex; align-items: center; justify-content: center; font-style: italic; }
         
         .share-signature-display { font-family: 'Dancing Script', cursive; font-size: 32px; color: #000; margin-bottom: 10px; min-height: 40px; }
-        .share-footer { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; opacity: 0.6; }
+        .share-footer { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; border-top: 1px solid #ddd; padding-top: 15px; opacity: 0.6; }
         .share-year { font-weight: 800; font-size: 12px; }
         .share-link { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* INPUT GROUP & BUTTONS */
+        /* MULTI ZODIAC SELECTOR */
         .modal-actions { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; width: 320px; }
         .input-group { width: 100%; margin-bottom: 5px; }
         .nice-input { width: 100%; padding: 12px; background: rgba(255,255,255,0.9); border: 1px solid #ccc; border-radius: 4px; font-family: 'Manrope', sans-serif; font-size: 14px; text-align: center; }
         
-        /* ZODIAC SELECTOR */
-        .zodiac-selector { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; }
-        .zodiac-btn { width: 35px; height: 35px; border: 1px solid rgba(255,255,255,0.3); background: transparent; color: #fff; font-size: 16px; border-radius: 50%; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; }
-        .zodiac-btn:hover, .zodiac-btn.active { background: var(--accent-color); border-color: var(--accent-color); transform: scale(1.1); }
+        .zodiac-selector { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 15px; padding: 10px; background: rgba(255,255,255,0.15); border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); }
+        .zodiac-btn { 
+            width: 32px; height: 32px; 
+            border: 1px solid rgba(255,255,255,0.4); 
+            background: transparent; color: #fff; 
+            font-size: 14px; border-radius: 50%; cursor: pointer; 
+            transition: all 0.2s; display: flex; justify-content: center; align-items: center; 
+        }
+        .zodiac-btn:hover { border-color: #fff; }
+        .zodiac-btn.active { 
+            background: #fff; color: #000; border-color: #fff; 
+            box-shadow: 0 0 10px rgba(255,255,255,0.5); transform: scale(1.1);
+        }
 
         .btn-action { border: none; padding: 14px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; border-radius: 4px; }
         .btn-save { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(5px); }
@@ -117,14 +137,13 @@
         .btn-staff.disabled { background: #444; color: #888; pointer-events: none; }
         .close-text { margin-top: 10px; color: rgba(255,255,255,0.6); font-size: 12px; cursor: pointer; text-decoration: underline; text-align: center; margin-bottom: 20px; }
 
-        /* MAIN UI ELEMENTS */
+        /* MAIN UI */
         .screen-hero { width: 100%; max-width: 480px; min-height: 100dvh; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; z-index: 2; padding: 20px; }
         .header-group { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 25px; z-index: 10; }
         .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 10px; cursor: pointer; }
         .logo-img:active { transform: scale(0.95); }
         .countdown-timer { font-family: 'Manrope', sans-serif; font-size: 32px; font-weight: 800; color: var(--accent-color); letter-spacing: 2px; margin-bottom: 5px; line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 rgba(255,255,255,0.5); }
         .sub-logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); transition: all 0.5s ease; }
-        
         .center-content { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; position: relative; z-index: 5; margin-bottom: 20px; }
         .vinyl-container { position: relative; width: 60vmin; height: 60vmin; max-width: 300px; max-height: 300px; display: flex; justify-content: center; align-items: center; transition: transform 0.1s; margin-bottom: 20px; }
         .vinyl-container:active { transform: scale(0.97); }
@@ -145,7 +164,6 @@
         .breathing { animation: breathe 3s ease-in-out infinite; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         .glitch { animation: glitch-anim 0.3s both; color: var(--accent-color) !important; } 
-        
         .player-wrapper { width: 100%; padding: 0 20px; flex-shrink: 0; margin-bottom: 30px; }
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
@@ -153,6 +171,8 @@
         .progress-bar-fill { width: 0%; height: 100%; background: var(--accent-color); transition: width 0.1s linear; }
         .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #000; font-family: monospace; }
         .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 12px; display: flex; gap: 5px; justify-content: center; align-items: center; }
+        
+        /* SCROLL HINT (FIXED) */
         .scroll-hint { position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0; animation: float 2s infinite; cursor: pointer; z-index: 20; transition: opacity 1s; }
         .show-scroll { opacity: 0.6 !important; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
@@ -166,7 +186,6 @@
         .share-btn { background-color: var(--accent-color); color: white; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1px; padding: 12px 25px; border: none; cursor: pointer; text-transform: uppercase; box-shadow: 4px 4px 0px rgba(0,0,0,0.2); transition: transform 0.1s, box-shadow 0.1s; display: inline-flex; align-items: center; gap: 8px; }
         .share-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,0.2); }
         .share-icon { width: 14px; height: 14px; fill: white; }
-        
         .screen-letter { display: none; width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 80px 30px 120px; background: linear-gradient(180deg, rgba(224,224,224,0) 0%, rgba(245,245,245,0.95) 15%, #F5F5F5 100%); }
         .letter-container { border-left: 2px solid var(--accent-color); padding-left: 25px; }
         .letter-header { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; color: var(--accent-color); opacity: 0.8; }
@@ -207,9 +226,7 @@
         <div id="share-card-container">
             <div class="share-brand">PHOTONOIR</div>
             <div class="real-vinyl"><div class="real-label" id="realShareLabel"></div></div>
-            
-            <div class="share-zodiac-display" id="zodiacDisplay">♈</div>
-            
+            <div class="share-zodiac-display" id="zodiacDisplay"></div>
             <div class="share-quote" id="realShareQuote">"Message..."</div>
             <div class="share-analysis" id="realShareAnalysis">Analysis...</div>
             <div class="share-signature-display" id="signatureDisplay">Guest</div>
@@ -217,12 +234,8 @@
         </div>
 
         <div class="modal-actions">
-            <div class="input-group">
-                <input type="text" id="shareNameInput" class="nice-input" placeholder="Nhập tên bạn để ký..." maxlength="15" oninput="updateSignature(this.value)">
-            </div>
-            
-            <div class="zodiac-selector" id="zodiacSelector">
-                </div>
+            <div class="input-group"><input type="text" id="shareNameInput" class="nice-input" placeholder="Nhập tên bạn để ký..." maxlength="15" oninput="updateSignature(this.value)"></div>
+            <div class="zodiac-selector" id="zodiacSelector"></div>
             
             <button class="btn-action btn-save" onclick="downloadElement('share-card-container', 'PhotoNoir_MyVibe_2026')"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Lưu ảnh về máy</button>
             <button class="btn-action btn-share" onclick="nativeShare()"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>Chia sẻ Link</button>
@@ -278,9 +291,10 @@
     <audio id="bgMusic"></audio>
 
     <script>
-        // --- ZODIAC DATA ---
+        // --- ZODIAC DATA (Multi Select) ---
         const zodiacs = ["♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓"];
-        
+        let selectedZodiacs = []; // Mảng chứa các cung đã chọn
+
         // --- CONFIG & DATA ---
         const tracks = [
             { id: 1, wish: "TRACK 01: KHỞI ĐẦU RỰC RỠ & ĐẦY KIÊU HÃNH.", song: "Sunroof - Nicky Youre", file: "track1.mp3", color: "#FFD700", analysis: "Vũ trụ gửi tín hiệu này vì bạn đã sẵn sàng để 'mở nóc' tâm hồn mình. Năm 2026 không phải lúc để trốn trong bóng tối. Sự lạc quan và năng lượng của bạn sẽ là nam châm thu hút những cơ hội bất ngờ." },
@@ -323,6 +337,7 @@
         const staffBtnEl = document.getElementById('staffBtn');
         const zodiacSelector = document.getElementById('zodiacSelector');
         const zodiacDisplay = document.getElementById('zodiacDisplay');
+        const scrollHint = document.getElementById('scrollHint');
 
         const STORAGE_KEY = '_ga_playlist_idx';
         const SPIN_COUNT_KEY = '_ga_session_ck';
@@ -341,20 +356,43 @@
                 userTrack = tracks[parseInt(savedIndex)];
                 finalizeUI(userTrack);
             }
-            // Init Zodiac Buttons
+            // Init Zodiac Buttons (Multi Select)
             zodiacs.forEach(z => {
                 const btn = document.createElement('button');
                 btn.className = 'zodiac-btn';
                 btn.innerText = z;
-                btn.onclick = () => selectZodiac(z, btn);
+                btn.onclick = () => toggleZodiac(z, btn);
                 zodiacSelector.appendChild(btn);
             });
         };
 
-        function selectZodiac(symbol, btn) {
-            document.querySelectorAll('.zodiac-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            zodiacDisplay.innerText = symbol;
+        function toggleZodiac(symbol, btn) {
+            if (selectedZodiacs.includes(symbol)) {
+                selectedZodiacs = selectedZodiacs.filter(s => s !== symbol);
+                btn.classList.remove('active');
+            } else {
+                if (selectedZodiacs.length >= 3) { showToast("Chọn tối đa 3 cung thôi nhé!"); return; } 
+                selectedZodiacs.push(symbol);
+                btn.classList.add('active');
+            }
+            updateZodiacUI();
+        }
+
+        function updateZodiacUI() {
+            zodiacDisplay.innerHTML = ''; 
+            if (selectedZodiacs.length > 0) {
+                selectedZodiacs.forEach(z => {
+                    const glyph = document.createElement('div');
+                    glyph.className = 'zodiac-glyph';
+                    glyph.innerText = z;
+                    zodiacDisplay.appendChild(glyph);
+                });
+            } else {
+                const glyph = document.createElement('div');
+                glyph.className = 'zodiac-glyph';
+                glyph.innerText = '★';
+                zodiacDisplay.appendChild(glyph);
+            }
         }
 
         // --- COUNTDOWN & HNY ---
@@ -396,15 +434,15 @@
 
         function activateSecretMode() {
             secretMode = true; logoClicks = 0;
-            document.body.classList.add('invert-mode'); // Đảo màu web
+            document.body.classList.add('invert-mode'); 
             showToast("🔓 SECRET MODE: YOU ARE A TREASURE!");
             
             const secretTrack = { 
                 id: 999, 
                 wish: "SECRET TRACK: BẠN LÀ KHO BÁU VÔ GIÁ!", 
-                song: "Treasure - Bruno Mars", // Internal use
+                song: "Treasure - Bruno Mars", 
                 file: "secret.mp3", 
-                color: "#FFD700", // Gold
+                color: "#FFD700", 
                 analysis: "Giai điệu này nhắc nhở rằng: Đừng bao giờ nghi ngờ giá trị của bản thân. Trong mắt vũ trụ (và PhotoNoir), bạn chính là một kho báu lấp lánh cần được nâng niu. Hãy tỏa sáng nhé!" 
             };
             userTrack = secretTrack;
@@ -451,6 +489,10 @@
             label.style.backgroundColor = track.color; analysisSection.style.display = 'block';
             analysisTitle.innerText = "Why this track?"; analysisContent.innerText = track.analysis;
             document.querySelector('.screen-letter').style.display = 'block';
+            
+            // SHOW SCROLL HINT (FIXED)
+            scrollHint.classList.add('show-scroll');
+
             if (track.id === 7) { updateVoucherUI(); voucherOverlay.style.display = 'flex'; }
         }
 
@@ -487,6 +529,7 @@
             document.getElementById('realShareQuote').innerText = '"' + userTrack.wish.split(':')[1].trim() + '"';
             document.getElementById('realShareAnalysis').innerText = userTrack.analysis;
             document.getElementById('realShareLabel').style.backgroundColor = userTrack.color;
+            updateZodiacUI(); 
             shareOverlay.style.display = 'flex';
         }
         function updateSignature(val) { document.getElementById('signatureDisplay').innerText = val ? val : "Guest"; }
@@ -494,7 +537,6 @@
 
         function downloadElement(elementId, fileName) {
             const element = document.getElementById(elementId);
-            // Tạm thời đổi input thành text tĩnh để chụp đẹp hơn (cho Voucher)
             let tempSpan = null; let input = null; let originalTime = "";
             if(elementId === 'voucher-ticket') {
                 originalTime = liveClockEl.innerHTML; liveClockEl.innerHTML = originalTime.replace('<span class="live-dot"></span>', '');
