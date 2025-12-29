@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     
     <style>
@@ -24,42 +25,62 @@
         #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #E0E0E0; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
         .loader-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 4px; color: var(--ink-color); animation: breathe 1s infinite; }
 
-        /* VOUCHER POPUP */
+        /* --- VOUCHER UI (STYLE VÉ) --- */
         #voucher-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 2000;
+            background: rgba(0,0,0,0.92); z-index: 2000;
             flex-direction: column; justify-content: center; align-items: center;
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(5px); animation: fadeIn 0.5s ease;
         }
-        @keyframes popIn { from {opacity: 0; transform: scale(0.8);} to {opacity: 1; transform: scale(1);} }
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
 
-        .voucher-card {
-            background: #fff; width: 90%; max-width: 350px; padding: 30px 20px;
-            border-radius: 10px; text-align: center; border: 4px solid var(--accent-color);
-            position: relative;
+        #voucher-ticket {
+            background: #F4F4F4; width: 320px; padding: 0; color: #111;
+            font-family: 'Manrope', sans-serif; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            position: relative; overflow: hidden;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 95% 98%, 90% 100%, 85% 98%, 80% 100%, 75% 98%, 70% 100%, 65% 98%, 60% 100%, 55% 98%, 50% 100%, 45% 98%, 40% 100%, 35% 98%, 30% 100%, 25% 98%, 20% 100%, 15% 98%, 10% 100%, 5% 98%, 0% 100%);
         }
-        .voucher-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--accent-color); margin-bottom: 10px; }
-        .voucher-code { font-family: 'Manrope', sans-serif; font-size: 36px; font-weight: 800; color: #000; letter-spacing: 2px; margin: 10px 0; border: 2px dashed #333; padding: 10px; }
+
+        .ticket-header { background: #111; color: #F4F4F4; padding: 20px; text-align: center; border-bottom: 2px dashed #555; }
+        .ticket-brand { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 20px; letter-spacing: 2px; }
+        .ticket-sub { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; margin-top: 5px; opacity: 0.8; }
+
+        .ticket-body { padding: 30px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .ticket-label { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
         
-        /* SECURITY HASH */
-        .security-hash {
-            background: #eee; color: #555; padding: 5px 10px; font-family: monospace; font-weight: bold;
-            font-size: 18px; margin-bottom: 5px; display: inline-block; border-radius: 4px; letter-spacing: 2px;
+        .ticket-value { font-size: 48px; font-weight: 800; color: var(--accent-color); line-height: 1; }
+        
+        /* Style cho trạng thái ĐÃ SỬ DỤNG */
+        .ticket-value.used { 
+            color: #888; 
+            font-size: 32px; 
+            text-decoration: line-through; 
+            opacity: 0.6;
+            border: 2px solid #888;
+            padding: 5px 15px;
+            transform: rotate(-10deg);
         }
-        .security-note { font-size: 12px; color: #d00; margin-bottom: 15px; font-style: italic; }
 
-        .realtime-clock { font-family: monospace; font-size: 14px; color: #555; margin-bottom: 20px; font-weight: 700; }
-        .live-dot { display: inline-block; width: 8px; height: 8px; background: red; border-radius: 50%; margin-right: 5px; animation: blink 1s infinite; }
+        .ticket-meta { width: 100%; margin-top: 10px; border-top: 1px solid #ddd; padding-top: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .meta-item { text-align: left; }
+        .meta-label { font-size: 9px; text-transform: uppercase; color: #888; letter-spacing: 1px; }
+        .meta-value { font-size: 14px; font-weight: 700; font-family: monospace; color: #000; }
+        .live-dot { display: inline-block; width: 6px; height: 6px; background: red; border-radius: 50%; margin-right: 4px; animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
-        
-        .confirm-btn {
-            background: #000; color: #fff; border: none; padding: 12px 20px;
-            font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px;
-            cursor: pointer; width: 100%; text-transform: uppercase;
-        }
-        .close-voucher { margin-top: 15px; color: #888; font-size: 12px; cursor: pointer; text-decoration: underline; }
+        .barcode { height: 30px; width: 100%; background-image: linear-gradient(90deg, #000 2px, transparent 2px, #000 4px, transparent 4px, #000 8px, transparent 8px); opacity: 0.8; margin-top: 10px; }
 
-        /* OTHER STYLES */
+        /* BUTTONS */
+        .voucher-actions { margin-top: 25px; display: flex; flex-direction: column; gap: 10px; width: 320px; }
+        .btn-action { border: none; padding: 15px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .btn-save { background: transparent; color: #fff; border: 1px solid #fff; }
+        .btn-save:active { background: #fff; color: #000; }
+        .btn-staff { background: var(--accent-color); color: #fff; box-shadow: 0 5px 15px rgba(150, 0, 24, 0.4); }
+        .btn-staff:active { transform: scale(0.98); }
+        .btn-staff.disabled { background: #555; pointer-events: none; box-shadow: none; opacity: 0.5; }
+        
+        .close-text { margin-top: 15px; color: #666; font-size: 11px; cursor: pointer; text-decoration: underline; }
+
+        /* COMMON STYLES */
         .film-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; overflow: hidden; opacity: 0.5; }
         .grain { position: absolute; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.2'/%3E%3C/svg%3E"); animation: grainFlicker 0.2s steps(2) infinite; }
         .scratches { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(0,0,0,0.05) 3px, transparent 4px); animation: scratchJump 0.3s steps(1) infinite; opacity: 0.3; }
@@ -72,17 +93,14 @@
         .countdown-timer { font-family: 'Manrope', sans-serif; font-size: 32px; font-weight: 800; color: var(--accent-color); letter-spacing: 2px; margin-bottom: 5px; line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 rgba(255,255,255,0.5); }
         .sub-logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); transition: all 0.5s ease; }
         .center-content { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; position: relative; z-index: 5; margin-bottom: 20px; }
-        
         .vinyl-container { position: relative; width: 60vmin; height: 60vmin; max-width: 300px; max-height: 300px; display: flex; justify-content: center; align-items: center; transition: transform 0.1s; margin-bottom: 20px; }
         .vinyl-container:active { transform: scale(0.97); }
-        
         .vinyl-record { width: 100%; height: 100%; border-radius: 50%; background-color: #101010; box-shadow: 0 15px 40px rgba(0,0,0,0.5); background: repeating-radial-gradient(#050505 0, #050505 2px, #333 3px, #050505 4px); position: relative; }
         .vinyl-record::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 70%); pointer-events: none; }
         .spinning-anim { animation: spin 8s linear infinite !important; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .vinyl-label { position: absolute; top: 34%; left: 34%; width: 32%; height: 32%; background-color: #f0f0f0; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 1px solid #aaa; z-index: 5; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); transition: background-color 0.5s ease; }
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
-        
         .message-area { width: 100%; text-align: center; padding: 0 10px; display: flex; flex-direction: column; gap: 5px; height: 80px; justify-content: center; flex-shrink: 0; }
         .wishes-text { font-size: 15px; font-weight: 800; line-height: 1.35; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0px; transition: opacity 0.3s; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 1px rgba(255,255,255,0.2); }
         .meta-text { font-size: 10px; color: #555; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
@@ -130,15 +148,43 @@
     <div class="film-layer"><div class="grain"></div><div class="scratches"></div></div>
 
     <div id="voucher-overlay">
-        <div class="voucher-card">
-            <div class="voucher-title">PHOTO NOIR GIFT</div>
-            <div class="voucher-code">GIẢM 20K</div>
-            <div class="security-note">Mã xác thực (Dành cho nhân viên):</div>
-            <div class="security-hash" id="securityCode">...</div>
+        
+        <div id="voucher-ticket">
+            <div class="ticket-header">
+                <div class="ticket-brand">PHOTONOIR</div>
+                <div class="ticket-sub">Special Access</div>
+            </div>
+            <div class="ticket-body">
+                <div class="ticket-label">Voucher Value</div>
+                <div class="ticket-value" id="voucherValue">-20K</div>
+                <div class="barcode"></div>
+                
+                <div class="ticket-meta">
+                    <div class="meta-item">
+                        <div class="meta-label">Security Code</div>
+                        <div class="meta-value" id="securityCode">...</div>
+                    </div>
+                    <div class="meta-item" style="text-align: right;">
+                        <div class="meta-label">Time Check</div>
+                        <div class="meta-value" id="liveClock">00:00:00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="voucher-actions">
+            <button class="btn-action btn-save" onclick="downloadVoucher()">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                Lưu ảnh về máy
+            </button>
             
-            <div class="realtime-clock" id="liveClock"><span class="live-dot"></span>00:00:00</div>
-            <button class="confirm-btn" onclick="staffConfirm()">NHÂN VIÊN XÁC NHẬN</button>
-            <div class="close-voucher" onclick="closeVoucher()">Đóng (Để nghe nhạc tiếp)</div>
+            <button class="btn-action btn-staff" id="staffBtn" onclick="staffConfirm()">
+                Nhân viên xác nhận dùng
+            </button>
+            
+            <div style="text-align: center;">
+                <div class="close-text" onclick="closeVoucher()">Đóng và nghe nhạc tiếp</div>
+            </div>
         </div>
     </div>
 
@@ -217,6 +263,8 @@
         const voucherOverlay = document.getElementById('voucher-overlay');
         const liveClockEl = document.getElementById('liveClock');
         const securityCodeEl = document.getElementById('securityCode');
+        const voucherValueEl = document.getElementById('voucherValue');
+        const staffBtnEl = document.getElementById('staffBtn');
 
         const STORAGE_KEY = '_ga_playlist_idx';
         const SPIN_COUNT_KEY = '_ga_session_ck';
@@ -288,7 +336,9 @@
                 audio.src = userTrack.file;
                 audio.play();
                 document.querySelector('.player-controls').parentElement.classList.add('has-played');
-                if(userTrack.id === 7 && !localStorage.getItem(VOUCHER_USED_KEY)) {
+                // Nếu là track Voucher, gọi hàm cập nhật UI
+                if(userTrack.id === 7) {
+                    updateVoucherUI();
                     voucherOverlay.style.display = 'flex';
                 }
             } else {
@@ -352,6 +402,41 @@
             finalizeUI(userTrack);
         }
 
+        function updateVoucherUI() {
+            const isUsed = localStorage.getItem(VOUCHER_USED_KEY) === 'true';
+            
+            // SECURITY CODE (Tạo mới nếu chưa có, giữ nguyên nếu có)
+            let secCode = localStorage.getItem('_ga_sec_code');
+            if (!secCode) {
+                secCode = '#' + Math.random().toString(36).substr(2, 4).toUpperCase();
+                localStorage.setItem('_ga_sec_code', secCode);
+            }
+            securityCodeEl.innerText = secCode;
+
+            if (isUsed) {
+                // TRẠNG THÁI ĐÃ DÙNG
+                voucherValueEl.innerText = "ĐÃ SỬ DỤNG";
+                voucherValueEl.classList.add('used');
+                staffBtnEl.innerText = "VOUCHER ĐÃ HỦY";
+                staffBtnEl.classList.add('disabled');
+                // Tắt pháo hoa
+                if (window.confettiInterval) clearInterval(window.confettiInterval);
+            } else {
+                // TRẠNG THÁI CHƯA DÙNG (MỚI TRÚNG)
+                voucherValueEl.innerText = "-20K";
+                voucherValueEl.classList.remove('used');
+                staffBtnEl.innerText = "NHÂN VIÊN XÁC NHẬN DÙNG";
+                staffBtnEl.classList.remove('disabled');
+                
+                // Bắn pháo hoa
+                var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 3000 };
+                if (window.confettiInterval) clearInterval(window.confettiInterval);
+                window.confettiInterval = setInterval(function() {
+                    confetti(Object.assign({}, defaults, { particleCount: 30, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+                }, 400);
+            }
+        }
+
         function finalizeUI(track) {
             setTrackInfo(track);
             displayText.style.opacity = 1;
@@ -364,34 +449,38 @@
             analysisContent.innerText = track.analysis;
             scrollHint.classList.add('show-scroll');
 
-            // NẾU LÀ VOUCHER
+            // HIỆN VOUCHER (Nếu là track 7)
             if (track.id === 7) {
-                if (!localStorage.getItem(VOUCHER_USED_KEY)) {
-                    voucherOverlay.style.display = 'flex';
-                    
-                    // TẠO MÃ XÁC THỰC NGẪU NHIÊN 4 KÝ TỰ (VD: #A8B2)
-                    const randomCode = '#' + Math.random().toString(36).substr(2, 4).toUpperCase();
-                    securityCodeEl.innerText = randomCode;
-
-                    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 3000 };
-                    if (window.confettiInterval) clearInterval(window.confettiInterval);
-                    window.confettiInterval = setInterval(function() {
-                        confetti(Object.assign({}, defaults, { particleCount: 30, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
-                    }, 400);
-                }
+                updateVoucherUI();
+                voucherOverlay.style.display = 'flex';
             }
         }
 
         function staffConfirm() {
-            if (confirm("Xác nhận mã bảo mật hợp lệ và đánh dấu đã sử dụng?")) {
+            if (confirm("Xác nhận: Khách hàng đang sử dụng Voucher này?")) {
                 localStorage.setItem(VOUCHER_USED_KEY, 'true');
-                voucherOverlay.style.display = 'none';
-                if (window.confettiInterval) clearInterval(window.confettiInterval);
-                alert("Voucher đã hủy thành công. Cảm ơn quý khách!");
+                updateVoucherUI(); // Cập nhật giao diện ngay lập tức
+                alert("Đã xác nhận sử dụng thành công!");
             }
         }
 
         function closeVoucher() { voucherOverlay.style.display = 'none'; }
+        
+        function downloadVoucher() {
+            const ticketElement = document.getElementById("voucher-ticket");
+            const originalTime = liveClockEl.innerHTML;
+            liveClockEl.innerHTML = originalTime.replace('<span class="live-dot"></span>', ''); // Xóa chấm đỏ khi chụp
+
+            html2canvas(ticketElement, { backgroundColor: null, scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'PhotoNoir_Voucher.png';
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                liveClockEl.innerHTML = originalTime; // Trả lại đồng hồ
+                alert("Đã lưu vé vào thư viện ảnh!");
+            });
+        }
+
         function setTrackInfo(track) { displayText.innerText = track.wish; metaText.innerText = "NOW PLAYING: " + track.song; }
         function scrollToNext() { analysisSection.scrollIntoView({ behavior: 'smooth' }); }
         function shareResult() {
