@@ -18,135 +18,101 @@
             margin: 0; padding: 0;
             background-color: var(--bg-color); color: var(--ink-color);
             font-family: 'Manrope', sans-serif;
-            display: block; 
-            min-height: 100vh;
-            overflow-x: hidden; 
-            overflow-y: auto; 
-            scroll-behavior: smooth;
+            display: block; min-height: 100vh; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth;
         }
 
-        /* --- PRELOADER (MÀN HÌNH CHỜ) --- */
-        #preloader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #E0E0E0; z-index: 9999;
-            display: flex; justify-content: center; align-items: center;
-            transition: opacity 0.5s;
-        }
-        .loader-text {
-            font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 18px; 
-            letter-spacing: 4px; color: var(--ink-color); animation: breathe 1s infinite;
-        }
+        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #E0E0E0; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
+        .loader-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 4px; color: var(--ink-color); animation: breathe 1s infinite; }
 
-        /* --- TOAST (THÔNG BÁO ĐẸP) --- */
-        #toast {
-            visibility: hidden; min-width: 250px; background-color: #111; color: #fff;
-            text-align: center; border-radius: 4px; padding: 12px 20px; position: fixed;
-            z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%);
-            font-size: 13px; font-family: 'Manrope', sans-serif; letter-spacing: 1px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        /* VOUCHER POPUP */
+        #voucher-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 2000;
+            flex-direction: column; justify-content: center; align-items: center;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+        @keyframes popIn { from {opacity: 0; transform: scale(0.8);} to {opacity: 1; transform: scale(1);} }
 
-        /* --- BACKGROUND --- */
+        .voucher-card {
+            background: #fff; width: 90%; max-width: 350px; padding: 30px 20px;
+            border-radius: 10px; text-align: center; border: 4px solid var(--accent-color);
+            position: relative;
+        }
+        .voucher-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--accent-color); margin-bottom: 10px; }
+        .voucher-code { font-family: 'Manrope', sans-serif; font-size: 36px; font-weight: 800; color: #000; letter-spacing: 2px; margin: 10px 0; border: 2px dashed #333; padding: 10px; }
+        
+        /* SECURITY HASH */
+        .security-hash {
+            background: #eee; color: #555; padding: 5px 10px; font-family: monospace; font-weight: bold;
+            font-size: 18px; margin-bottom: 5px; display: inline-block; border-radius: 4px; letter-spacing: 2px;
+        }
+        .security-note { font-size: 12px; color: #d00; margin-bottom: 15px; font-style: italic; }
+
+        .realtime-clock { font-family: monospace; font-size: 14px; color: #555; margin-bottom: 20px; font-weight: 700; }
+        .live-dot { display: inline-block; width: 8px; height: 8px; background: red; border-radius: 50%; margin-right: 5px; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        .confirm-btn {
+            background: #000; color: #fff; border: none; padding: 12px 20px;
+            font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px;
+            cursor: pointer; width: 100%; text-transform: uppercase;
+        }
+        .close-voucher { margin-top: 15px; color: #888; font-size: 12px; cursor: pointer; text-decoration: underline; }
+
+        /* OTHER STYLES */
         .film-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; overflow: hidden; opacity: 0.5; }
         .grain { position: absolute; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.2'/%3E%3C/svg%3E"); animation: grainFlicker 0.2s steps(2) infinite; }
         .scratches { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(0,0,0,0.05) 3px, transparent 4px); animation: scratchJump 0.3s steps(1) infinite; opacity: 0.3; }
         @keyframes grainFlicker { 0% { transform: translate(0,0); } 100% { transform: translate(2px, 2px); } }
         @keyframes scratchJump { 0% { transform: translateX(0); } 50% { transform: translateX(10%); } 100% { transform: translateX(-5%); } }
 
-        /* --- MÀN HÌNH 1: PLAYER --- */
-        .screen-hero {
-            width: 100%; max-width: 480px; 
-            min-height: 100dvh; 
-            margin: 0 auto; 
-            display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; 
-            position: relative; z-index: 2; padding: 20px;
-        }
-
+        .screen-hero { width: 100%; max-width: 480px; min-height: 100dvh; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; z-index: 2; padding: 20px; }
         .header-group { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 25px; z-index: 10; }
         .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 10px; }
-        
-        .countdown-timer {
-            font-family: 'Manrope', sans-serif;
-            font-size: 32px; font-weight: 800;
-            color: var(--accent-color); letter-spacing: 2px;
-            margin-bottom: 5px; line-height: 1;
-            font-variant-numeric: tabular-nums; 
-            text-shadow: 0 2px 0 rgba(255,255,255,0.5);
-        }
-
-        .sub-logo-text { 
-            font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; 
-            color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; 
-            text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); transition: all 0.5s ease; 
-        }
-
+        .countdown-timer { font-family: 'Manrope', sans-serif; font-size: 32px; font-weight: 800; color: var(--accent-color); letter-spacing: 2px; margin-bottom: 5px; line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 rgba(255,255,255,0.5); }
+        .sub-logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); transition: all 0.5s ease; }
         .center-content { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; position: relative; z-index: 5; margin-bottom: 20px; }
+        
         .vinyl-container { position: relative; width: 60vmin; height: 60vmin; max-width: 300px; max-height: 300px; display: flex; justify-content: center; align-items: center; transition: transform 0.1s; margin-bottom: 20px; }
         .vinyl-container:active { transform: scale(0.97); }
+        
         .vinyl-record { width: 100%; height: 100%; border-radius: 50%; background-color: #101010; box-shadow: 0 15px 40px rgba(0,0,0,0.5); background: repeating-radial-gradient(#050505 0, #050505 2px, #333 3px, #050505 4px); position: relative; }
         .vinyl-record::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 70%); pointer-events: none; }
         .spinning-anim { animation: spin 8s linear infinite !important; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        .vinyl-label { 
-            position: absolute; top: 34%; left: 34%; width: 32%; height: 32%; 
-            background-color: #f0f0f0; border-radius: 50%; 
-            display: flex; justify-content: center; align-items: center; 
-            border: 1px solid #aaa; z-index: 5; 
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
-            transition: background-color 0.5s ease;
-        }
+        .vinyl-label { position: absolute; top: 34%; left: 34%; width: 32%; height: 32%; background-color: #f0f0f0; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 1px solid #aaa; z-index: 5; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); transition: background-color 0.5s ease; }
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
-
+        
         .message-area { width: 100%; text-align: center; padding: 0 10px; display: flex; flex-direction: column; gap: 5px; height: 80px; justify-content: center; flex-shrink: 0; }
         .wishes-text { font-size: 15px; font-weight: 800; line-height: 1.35; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0px; transition: opacity 0.3s; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 1px rgba(255,255,255,0.2); }
         .meta-text { font-size: 10px; color: #555; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
         .breathing { animation: breathe 3s ease-in-out infinite; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         .glitch { animation: glitch-anim 0.3s both; color: var(--accent-color) !important; } 
-
         .player-wrapper { width: 100%; padding: 0 20px; flex-shrink: 0; margin-bottom: 30px; }
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
         .progress-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px; overflow: hidden; }
         .progress-bar-fill { width: 0%; height: 100%; background: var(--accent-color); transition: width 0.1s linear; }
         .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #000; font-family: monospace; }
-        
-        .visitor-counter { 
-            font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; 
-            font-weight: 700; margin-top: 12px; 
-            display: flex; gap: 5px; justify-content: center; align-items: center;
-        }
+        .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 12px; display: flex; gap: 5px; justify-content: center; align-items: center; }
         #busuanzi_container_site_pv { display: inline-block !important; }
-
         .scroll-hint { position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0; animation: float 2s infinite; cursor: pointer; z-index: 20; transition: opacity 1s; }
         .show-scroll { opacity: 0.6 !important; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
-
-        /* --- SCREEN ANALYSIS & SHARE --- */
         .screen-analysis { display: none; width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 60px 30px; background: #EAEAEA; animation: fadeIn 1s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
         .analysis-box { border: 2px solid #000; padding: 30px 20px; background: #F2F2F2; box-shadow: 8px 8px 0px rgba(0,0,0,0.1); text-align: center; }
         .analysis-label { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px; text-align: left; }
         .analysis-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 22px; font-style: normal; color: var(--accent-color); margin-bottom: 20px; line-height: 1.3; text-align: left; }
         .analysis-content { font-family: 'Manrope', sans-serif; font-size: 15px; line-height: 1.7; color: #333; text-align: justify; margin-bottom: 25px; }
-
-        .share-btn {
-            background-color: var(--accent-color); color: white;
-            font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1px;
-            padding: 12px 25px; border: none; cursor: pointer; text-transform: uppercase;
-            box-shadow: 4px 4px 0px rgba(0,0,0,0.2); transition: transform 0.1s, box-shadow 0.1s;
-            display: inline-flex; align-items: center; gap: 8px;
-        }
+        .share-btn { background-color: var(--accent-color); color: white; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1px; padding: 12px 25px; border: none; cursor: pointer; text-transform: uppercase; box-shadow: 4px 4px 0px rgba(0,0,0,0.2); transition: transform 0.1s, box-shadow 0.1s; display: inline-flex; align-items: center; gap: 8px; }
         .share-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,0.2); }
         .share-icon { width: 14px; height: 14px; fill: white; }
-
-        /* --- SCREEN LETTER --- */
+        #toast { visibility: hidden; min-width: 250px; background-color: #111; color: #fff; text-align: center; border-radius: 4px; padding: 12px 20px; position: fixed; z-index: 1000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 13px; font-family: 'Manrope', sans-serif; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
         .screen-letter { width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 80px 30px 120px; background: linear-gradient(180deg, rgba(224,224,224,0) 0%, rgba(245,245,245,0.95) 15%, #F5F5F5 100%); }
         .letter-container { border-left: 2px solid var(--accent-color); padding-left: 25px; }
         .letter-header { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; color: var(--accent-color); opacity: 0.8; }
@@ -154,27 +120,26 @@
         .letter-body p { margin-bottom: 25px; }
         .letter-body p:first-child::first-letter { font-size: 3.5em; float: left; line-height: 0.8; margin-right: 10px; font-weight: 600; color: var(--accent-color); }
         .letter-sign { margin-top: 50px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-top: 1px solid #ccc; display: inline-block; padding-top: 10px; }
-
-        @media (max-width: 380px) or (max-height: 700px) {
-            .logo-img { width: 80%; }
-            .sub-logo-text { font-size: 32px; }
-            .countdown-timer { font-size: 26px; } 
-            .vinyl-container { width: 55vmin; height: 55vmin; }
-            .wishes-text { font-size: 14px; }
-        }
+        @media (max-width: 380px) or (max-height: 700px) { .logo-img { width: 80%; } .sub-logo-text { font-size: 32px; } .countdown-timer { font-size: 26px; } .vinyl-container { width: 55vmin; height: 55vmin; } .wishes-text { font-size: 14px; } }
     </style>
 </head>
 <body>
 
-    <div id="preloader">
-        <div class="loader-text">LOADING...</div>
-    </div>
-
+    <div id="preloader"><div class="loader-text">LOADING...</div></div>
     <div id="toast">Đã copy nội dung! Hãy chia sẻ ngay.</div>
+    <div class="film-layer"><div class="grain"></div><div class="scratches"></div></div>
 
-    <div class="film-layer">
-        <div class="grain"></div>
-        <div class="scratches"></div>
+    <div id="voucher-overlay">
+        <div class="voucher-card">
+            <div class="voucher-title">PHOTO NOIR GIFT</div>
+            <div class="voucher-code">GIẢM 20K</div>
+            <div class="security-note">Mã xác thực (Dành cho nhân viên):</div>
+            <div class="security-hash" id="securityCode">...</div>
+            
+            <div class="realtime-clock" id="liveClock"><span class="live-dot"></span>00:00:00</div>
+            <button class="confirm-btn" onclick="staffConfirm()">NHÂN VIÊN XÁC NHẬN</button>
+            <div class="close-voucher" onclick="closeVoucher()">Đóng (Để nghe nhạc tiếp)</div>
+        </div>
     </div>
 
     <div class="screen-hero">
@@ -185,7 +150,7 @@
         </div>
 
         <div class="center-content">
-            <div class="vinyl-container" onclick="handleInteraction()">
+            <div class="vinyl-container" id="vinylContainer" onclick="handleInteraction()">
                 <div class="vinyl-record" id="record"></div>
                 <div class="vinyl-label" id="label"><div class="spindle"></div></div>
             </div>
@@ -199,33 +164,19 @@
         <div class="player-wrapper">
             <div class="player-controls">
                 <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
-                <div class="time-display">
-                    <span id="currentTime">0:00</span>
-                    <span id="totalTime">--:--</span>
-                </div>
+                <div class="time-display"><span id="currentTime">0:00</span><span id="totalTime">--:--</span></div>
             </div>
-            
-            <div class="visitor-counter">
-                <span>TOTAL PLAYS:</span>
-                <span id="busuanzi_container_site_pv">
-                    <span id="busuanzi_value_site_pv">...</span>
-                </span>
-            </div>
+            <div class="visitor-counter"><span>TOTAL PLAYS:</span><span id="busuanzi_container_site_pv"><span id="busuanzi_value_site_pv">...</span></span></div>
         </div>
 
-        <div class="scroll-hint" id="scrollHint" onclick="scrollToNext()">
-            ↓ SCROLL TO VIEW
-        </div>
+        <div class="scroll-hint" id="scrollHint" onclick="scrollToNext()">↓ SCROLL TO VIEW</div>
     </div>
 
     <div class="screen-analysis" id="analysisSection">
         <div class="analysis-box">
-            <div class="analysis-label">
-                <span>FREQUENCY REPORT</span>
-            </div>
+            <div class="analysis-label"><span>FREQUENCY REPORT</span></div>
             <div class="analysis-title" id="analysisTitle">Why this track?</div>
             <div class="analysis-content" id="analysisContent"></div>
-            
             <button class="share-btn" onclick="shareResult()">
                 <svg class="share-icon" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
                 SHARE YOUR VIBE
@@ -263,12 +214,20 @@
         const countdownEl = document.getElementById('countdown');
         const mainTitle = document.getElementById('mainTitle');
         const preloader = document.getElementById('preloader');
+        const voucherOverlay = document.getElementById('voucher-overlay');
+        const liveClockEl = document.getElementById('liveClock');
+        const securityCodeEl = document.getElementById('securityCode');
 
-        // --- PRELOADER & INIT ---
+        const STORAGE_KEY = '_ga_playlist_idx';
+        const SPIN_COUNT_KEY = '_ga_session_ck';
+        const VOUCHER_USED_KEY = '_ga_promo_status';
+
+        let isPlaying = false;
+        let userTrack = null;
+
         window.onload = function() {
             preloader.style.opacity = '0';
             setTimeout(() => { preloader.style.display = 'none'; }, 500);
-
             const savedIndex = localStorage.getItem(STORAGE_KEY);
             if (savedIndex !== null) {
                 userTrack = tracks[parseInt(savedIndex)];
@@ -276,7 +235,6 @@
             }
         };
 
-        // --- COUNTDOWN LOGIC ---
         const targetDate = new Date('January 1, 2026 00:00:00').getTime();
         function updateCountdown() {
             const now = new Date().getTime();
@@ -296,7 +254,12 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // --- DATA TRACKS (15 BÀI) ---
+        function updateLiveClock() {
+            const now = new Date();
+            liveClockEl.innerHTML = '<span class="live-dot"></span>' + now.toLocaleTimeString();
+        }
+        setInterval(updateLiveClock, 1000);
+
         const tracks = [
             { id: 1, wish: "TRACK 01: KHỞI ĐẦU RỰC RỠ & ĐẦY KIÊU HÃNH.", song: "Sunroof - Nicky Youre", file: "track1.mp3", color: "#FFD700", analysis: "Vũ trụ gửi tín hiệu này vì bạn đã sẵn sàng để 'mở nóc' tâm hồn mình. Năm 2026 không phải lúc để trốn trong bóng tối. Sự lạc quan và năng lượng của bạn sẽ là nam châm thu hút những cơ hội bất ngờ." },
             { id: 2, wish: "TRACK 02: SỐNG TRỌN TỪNG KHOẢNH KHẮC ĐIỆN ẢNH.", song: "Golden Hour - JVKE", file: "track2.mp3", color: "#FFA500", analysis: "Có vẻ như bạn đang tìm kiếm vẻ đẹp trong những điều bình dị. Bản nhạc này chọn bạn để nhắc nhở: Bạn chính là nhân vật chính (Main Character) trong thước phim đời mình. Hãy tỏa sáng, ngay cả khi không có ánh đèn sân khấu." },
@@ -304,7 +267,7 @@
             { id: 4, wish: "TRACK 04: DÁM LÀM NHỮNG ĐIỀU CHƯA TỪNG DÁM.", song: "The Nights - Avicii", file: "track4.mp3", color: "#4B0082", analysis: "Có những giấc mơ bạn đã ấp ủ quá lâu. Đây là tín hiệu: 'Bây giờ hoặc không bao giờ'. Năm 2026, hãy đi con đường bạn sợ hãi, vì đó là nơi kho báu đang chờ đợi." },
             { id: 5, wish: "TRACK 05: TỎA SÁNG THEO CÁCH RIÊNG CỦA BẠN.", song: "Diamonds - Rihanna", file: "track5.mp3", color: "#C0C0C0", analysis: "Áp lực tạo nên kim cương. Những thử thách vừa qua chỉ đang mài giũa bạn sáng hơn mà thôi. Đừng ngại khác biệt, vì sự độc bản của bạn chính là thứ đắt giá nhất." },
             { id: 6, wish: "TRACK 06: TÌM THẤY KẾT NỐI CHÂN THẬT NHẤT.", song: "Until I Found You", file: "track6.mp3", color: "#DC143C", analysis: "Bạn đang ở tần số của tình yêu và sự kết nối sâu sắc. Có thể là một tri kỷ, một người bạn tâm giao, hoặc đơn giản là tìm lại sự kết nối với chính bản thân mình. Hãy mở lòng." },
-            { id: 7, wish: "BONUS TRACK: VOUCHER GIẢM 20K (CHỤP MÀN HÌNH NGAY!)", song: "Money - Lisa", file: "track7.mp3", color: "#006400", analysis: "Thần tài gõ cửa! Sự may mắn về tài chính và công việc đang hướng về phía bạn. Đừng quên nắm bắt cơ hội (và cả chiếc voucher này nữa) nhé!" },
+            { id: 7, wish: "CHÚC MỪNG! BẠN ĐÃ TRÚNG VOUCHER 20K", song: "Money - Lisa", file: "track7.mp3", color: "#006400", analysis: "Thần tài gõ cửa! Sự may mắn về tài chính và công việc đang hướng về phía bạn. Đưa màn hình này cho nhân viên để nhận ưu đãi nhé!" },
             { id: 8, wish: "TRACK 08: BẢN NHẠC HAY NHẤT ĐỜI BẠN.", song: "Best Day Of My Life", file: "track8.mp3", color: "#87CEEB", analysis: "Năng lượng tích cực cực đại! Bạn đang thu hút những ngày tuyệt vời phía trước. Hãy thức dậy mỗi ngày với suy nghĩ rằng điều kỳ diệu sắp xảy ra, và nó sẽ đến." },
             { id: 9, wish: "TRACK 09: YÊU BẢN THÂN NHIỀU HƠN MỘT CHÚT.", song: "Flowers - Miley Cyrus", file: "track9.mp3", color: "#960018", analysis: "Độc lập, tự do và kiêu hãnh. Tần số này nhắc bạn rằng không ai có thể yêu thương bạn tốt hơn chính bạn. Hãy tự mua hoa cho mình, tự tạo niềm vui cho mình." },
             { id: 10, wish: "TRACK 10: CHỮA LÀNH NHỮNG TỔN THƯƠNG.", song: "Heal The World - MJ", file: "track10.mp3", color: "#2E8B57", analysis: "Một trái tim ấm áp là liều thuốc tốt nhất. Năm 2026, hãy dành thời gian chăm sóc sức khỏe tinh thần của mình và lan tỏa sự tử tế. Thế giới của bạn sẽ trở nên dịu dàng hơn bao giờ hết." },
@@ -315,14 +278,7 @@
             { id: 15, wish: "TRACK 15: GHI TÊN MÌNH LÊN BẢNG VÀNG.", song: "Hall of Fame - The Script", file: "track15.mp3", color: "#B8860B", analysis: "Vinh quang đang chờ đợi ở phía cuối con đường. Mọi nỗ lực bền bỉ của bạn sẽ được đền đáp xứng đáng. Hãy kiên trì, vì bạn sinh ra là để trở thành một nhà vô địch trong lĩnh vực của mình." }
         ];
 
-        const STORAGE_KEY = 'photonoir_tracklist_v15';
-        const SPIN_COUNT_KEY = 'photonoir_spin_count';
-        let isPlaying = false;
-        let userTrack = null;
-
-        function handleInteraction() {
-            if (isPlaying) { pauseMusic(); } else { playMusic(); }
-        }
+        function handleInteraction() { if (isPlaying) { pauseMusic(); } else { playMusic(); } }
 
         function playMusic() {
             record.classList.add('spinning-anim');
@@ -332,6 +288,9 @@
                 audio.src = userTrack.file;
                 audio.play();
                 document.querySelector('.player-controls').parentElement.classList.add('has-played');
+                if(userTrack.id === 7 && !localStorage.getItem(VOUCHER_USED_KEY)) {
+                    voucherOverlay.style.display = 'flex';
+                }
             } else {
                 startShuffle();
             }
@@ -348,10 +307,8 @@
             displayText.classList.remove('breathing');
             metaText.innerText = "SCANNING FREQUENCY...";
             label.style.backgroundColor = '#f0f0f0'; 
-            
             let count = 0; let speed = 50; let maxCount = 40;
             const randomPool = tracks.filter(t => t.id !== 7);
-
             function step() {
                 const randomItem = randomPool[Math.floor(Math.random() * randomPool.length)];
                 displayText.innerText = randomItem.wish;
@@ -407,52 +364,48 @@
             analysisContent.innerText = track.analysis;
             scrollHint.classList.add('show-scroll');
 
-            // HIỆU ỨNG PHÁO GIẤY KHI TRÚNG VOUCHER (ID 7)
+            // NẾU LÀ VOUCHER
             if (track.id === 7) {
-                var duration = 3 * 1000;
-                var animationEnd = Date.now() + duration;
-                var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-                var interval = setInterval(function() {
-                    var timeLeft = animationEnd - Date.now();
-                    if (timeLeft <= 0) { return clearInterval(interval); }
-                    var particleCount = 50 * (timeLeft / duration);
-                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
-                }, 250);
+                if (!localStorage.getItem(VOUCHER_USED_KEY)) {
+                    voucherOverlay.style.display = 'flex';
+                    
+                    // TẠO MÃ XÁC THỰC NGẪU NHIÊN 4 KÝ TỰ (VD: #A8B2)
+                    const randomCode = '#' + Math.random().toString(36).substr(2, 4).toUpperCase();
+                    securityCodeEl.innerText = randomCode;
+
+                    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 3000 };
+                    if (window.confettiInterval) clearInterval(window.confettiInterval);
+                    window.confettiInterval = setInterval(function() {
+                        confetti(Object.assign({}, defaults, { particleCount: 30, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+                    }, 400);
+                }
             }
         }
 
-        function setTrackInfo(track) {
-            displayText.innerText = track.wish;
-            metaText.innerText = "NOW PLAYING: " + track.song;
+        function staffConfirm() {
+            if (confirm("Xác nhận mã bảo mật hợp lệ và đánh dấu đã sử dụng?")) {
+                localStorage.setItem(VOUCHER_USED_KEY, 'true');
+                voucherOverlay.style.display = 'none';
+                if (window.confettiInterval) clearInterval(window.confettiInterval);
+                alert("Voucher đã hủy thành công. Cảm ơn quý khách!");
+            }
         }
 
-        function scrollToNext() {
-            analysisSection.scrollIntoView({ behavior: 'smooth' });
-        }
-
+        function closeVoucher() { voucherOverlay.style.display = 'none'; }
+        function setTrackInfo(track) { displayText.innerText = track.wish; metaText.innerText = "NOW PLAYING: " + track.song; }
+        function scrollToNext() { analysisSection.scrollIntoView({ behavior: 'smooth' }); }
         function shareResult() {
             if (!userTrack) return;
             const text = `Tần số 2026 của tôi: "${userTrack.song}" - ${userTrack.wish}. Xem thông điệp vũ trụ của bạn tại: ${window.location.href}`;
-            if (navigator.share) {
-                navigator.share({ title: 'PHOTONOIR - 2026', text: text, url: window.location.href, }).catch(console.error);
-            } else {
-                navigator.clipboard.writeText(text).then(() => {
-                    var x = document.getElementById("toast");
-                    x.className = "show";
-                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-                });
-            }
+            if (navigator.share) { navigator.share({ title: 'PHOTONOIR - 2026', text: text, url: window.location.href, }).catch(console.error); } 
+            else { navigator.clipboard.writeText(text).then(() => { var x = document.getElementById("toast"); x.className = "show"; setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000); }); }
         }
 
         window.addEventListener('scroll', () => {
             if (!isPlaying) return;
             const letterTop = document.querySelector('.screen-letter').getBoundingClientRect().top;
             const windowHeight = window.innerHeight;
-            if (letterTop < windowHeight * 0.8) {
-                if (audio.volume > 0.2) audio.volume -= 0.05;
-            } else {
-                if (audio.volume < 1.0) audio.volume += 0.05;
-            }
+            if (letterTop < windowHeight * 0.8) { if (audio.volume > 0.2) audio.volume -= 0.05; } else { if (audio.volume < 1.0) audio.volume += 0.05; }
         });
 
         audio.ontimeupdate = function() {
