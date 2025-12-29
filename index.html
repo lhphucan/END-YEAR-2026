@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PHOTONOIR - 2026</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Manrope:wght@300;400;600;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -23,16 +24,15 @@
             display: block; min-height: 100vh; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth;
         }
 
-        /* --- PRELOADER & TOAST --- */
+        /* UTILS */
         #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #E0E0E0; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
         .loader-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 4px; color: var(--ink-color); animation: breathe 1s infinite; }
-        
         #toast { visibility: hidden; min-width: 250px; background-color: #111; color: #fff; text-align: center; border-radius: 4px; padding: 12px 20px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 13px; font-family: 'Manrope', sans-serif; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
-        /* --- VOUCHER TICKET UI --- */
+        /* VOUCHER UI */
         #voucher-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); z-index: 2000;
@@ -47,7 +47,6 @@
             font-family: 'Manrope', sans-serif; 
             box-shadow: 0 15px 35px rgba(0,0,0,0.3);
             position: relative; 
-            /* Răng cưa bằng Gradient */
             background-image: radial-gradient(circle at bottom, transparent 6px, #F8F8F8 6.5px);
             background-size: 20px 20px; background-position: bottom center; background-repeat: repeat-x;
             padding-bottom: 20px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
@@ -60,10 +59,18 @@
         .ticket-body { padding: 30px 25px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .ticket-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #555; font-weight: 600; }
         .ticket-value { font-size: 56px; font-weight: 800; color: var(--accent-color); line-height: 1; letter-spacing: -2px; }
-        /* Trạng thái đã dùng */
         .ticket-value.used { color: #aaa; font-size: 32px; letter-spacing: 0; text-decoration: line-through; border: 2px solid #aaa; padding: 5px 15px; transform: rotate(-5deg); }
-
         .barcode { width: 80%; height: 35px; margin: 15px auto; background: repeating-linear-gradient(90deg, #222 0px, #222 2px, transparent 2px, transparent 5px, #222 5px, #222 8px, transparent 8px, transparent 10px); }
+
+        /* SIGNATURE AREA */
+        .signature-group { width: 100%; margin-top: 5px; text-align: center; }
+        .sign-label { display: block; font-size: 9px; text-transform: uppercase; color: #888; letter-spacing: 1px; margin-bottom: 5px; }
+        .sign-input { 
+            width: 100%; border: none; border-bottom: 1px solid #aaa; background: transparent; 
+            text-align: center; font-family: 'Dancing Script', cursive; font-size: 24px; color: #000;
+            outline: none; padding-bottom: 5px; 
+        }
+        .sign-input::placeholder { color: #ccc; font-family: 'Manrope', sans-serif; font-size: 12px; letter-spacing: 1px; }
 
         .ticket-meta { width: 100%; margin-top: 15px; border-top: 1px solid #ddd; padding-top: 15px; display: flex; justify-content: space-between; align-items: center; }
         .meta-item { text-align: left; }
@@ -81,30 +88,40 @@
         .btn-staff.disabled { background: #444; color: #888; pointer-events: none; box-shadow: none; }
         .close-text { margin-top: 10px; color: rgba(255,255,255,0.6); font-size: 11px; cursor: pointer; text-decoration: underline; text-align: center; }
 
-        /* --- HIDDEN SHARE CARD (FOR IMAGE GENERATION) --- */
+        /* SHARE CARD (HIDDEN) - UPDATED DESIGN */
         #share-capture-area {
-            position: fixed; left: -9999px; top: 0; width: 350px; height: auto; min-height: 550px;
+            position: fixed; left: -9999px; top: 0; width: 350px; height: auto; min-height: 600px;
             background: #F4F4F4; padding: 40px 30px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; font-family: 'Manrope', sans-serif; color: #111; z-index: 100; border: 10px solid #fff; box-sizing: border-box;
+            text-align: center; font-family: 'Manrope', sans-serif; color: #111; z-index: 100; border: 12px solid #fff; box-sizing: border-box;
         }
-        .share-brand { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 16px; letter-spacing: 3px; margin-bottom: 30px; opacity: 0.7; }
-        .share-vinyl { width: 180px; height: 180px; border-radius: 50%; background: #111; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin-bottom: 30px; display: flex; justify-content: center; align-items: center; background: repeating-radial-gradient(#111 0, #111 2px, #222 3px, #111 4px); }
-        .share-label { width: 35%; height: 35%; border-radius: 50%; background: #ccc; border: 2px solid rgba(255,255,255,0.2); }
-        .share-song { font-size: 18px; font-weight: 800; text-transform: uppercase; line-height: 1.3; margin-bottom: 15px; color: var(--accent-color); }
-        .share-wish { font-family: 'Playfair Display', serif; font-size: 16px; font-style: italic; line-height: 1.6; color: #444; margin-bottom: 30px; }
-        .share-footer { border-top: 1px solid #ddd; padding-top: 15px; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        .share-brand { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 18px; letter-spacing: 4px; margin-bottom: 30px; opacity: 0.8; }
+        
+        /* Đĩa than đầy đủ */
+        .share-vinyl { 
+            width: 180px; height: 180px; border-radius: 50%; 
+            background: #101010; /* Màu đen đĩa than */
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3); margin-bottom: 30px; 
+            display: flex; justify-content: center; align-items: center; 
+            background: repeating-radial-gradient(#050505 0, #050505 2px, #333 3px, #050505 4px); /* Vân đĩa */
+            position: relative;
+        }
+        /* Lỗ giữa đĩa than */
+        .share-vinyl::before { content: ""; position: absolute; width: 12px; height: 12px; background: #000; border-radius: 50%; z-index: 10; }
+        .share-label { width: 38%; height: 38%; border-radius: 50%; background: #ccc; border: 2px solid rgba(255,255,255,0.2); z-index: 5; }
+        
+        .share-song { font-size: 20px; font-weight: 800; text-transform: uppercase; line-height: 1.3; margin-bottom: 15px; color: var(--accent-color); }
+        /* Lời chúc chi tiết */
+        .share-wish-detail { font-family: 'Manrope', sans-serif; font-size: 12px; line-height: 1.6; color: #555; margin-bottom: 25px; padding: 0 15px; }
+        .share-wish { font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; line-height: 1.4; color: #222; margin-bottom: 30px; font-weight: 700; }
+        .share-signature { font-family: 'Dancing Script', cursive; font-size: 32px; color: #000; margin-bottom: 20px; border-bottom: 1px solid #ccc; padding: 0 20px 5px 20px; display: inline-block; min-width: 120px; }
+        .share-footer { border-top: 1px solid #ddd; padding-top: 20px; width: 100%; display: flex; justify-content: space-between; align-items: center; }
         .share-year { font-weight: 800; font-size: 14px; }
-        .share-link { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        .share-link { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* --- HAPPY NEW YEAR TEXT --- */
-        .hny-text {
-            display: none; font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 42px; color: var(--accent-color);
-            text-align: center; line-height: 1.1; letter-spacing: 2px; margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(150, 0, 24, 0.5); animation: zoomIn 1s ease-out infinite alternate;
-        }
+        /* HNY & MAIN UI */
+        .hny-text { display: none; font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 42px; color: var(--accent-color); text-align: center; line-height: 1.1; letter-spacing: 2px; margin-bottom: 10px; text-shadow: 0 0 20px rgba(150, 0, 24, 0.5); animation: zoomIn 1s ease-out infinite alternate; }
         @keyframes zoomIn { from { transform: scale(1); } to { transform: scale(1.05); } }
 
-        /* --- GENERAL UI --- */
         .film-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; overflow: hidden; opacity: 0.5; }
         .grain { position: absolute; width: 100%; height: 100%; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.2'/%3E%3C/svg%3E"); animation: grainFlicker 0.2s steps(2) infinite; }
         .scratches { position: absolute; width: 200%; height: 200%; top: -50%; left: -50%; background: repeating-linear-gradient(90deg, transparent 0, transparent 2px, rgba(0,0,0,0.05) 3px, transparent 4px); animation: scratchJump 0.3s steps(1) infinite; opacity: 0.3; }
@@ -113,7 +130,9 @@
 
         .screen-hero { width: 100%; max-width: 480px; min-height: 100dvh; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; z-index: 2; padding: 20px; }
         .header-group { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 25px; z-index: 10; }
-        .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 10px; }
+        .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 10px; cursor: pointer; }
+        .logo-img:active { transform: scale(0.95); }
+        
         .countdown-timer { font-family: 'Manrope', sans-serif; font-size: 32px; font-weight: 800; color: var(--accent-color); letter-spacing: 2px; margin-bottom: 5px; line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 rgba(255,255,255,0.5); }
         .sub-logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); transition: all 0.5s ease; }
         
@@ -125,8 +144,15 @@
         .spinning-anim { animation: spin 8s linear infinite !important; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .vinyl-label { position: absolute; top: 34%; left: 34%; width: 32%; height: 32%; background-color: #f0f0f0; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 1px solid #aaa; z-index: 5; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); transition: background-color 0.5s ease; }
-        .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
         
+        /* RAINBOW MODE (SECRET) */
+        @keyframes rainbow { 
+            0% { background-color: #ff0000; } 20% { background-color: #ffff00; } 40% { background-color: #00ff00; } 
+            60% { background-color: #00ffff; } 80% { background-color: #0000ff; } 100% { background-color: #ff00ff; } 
+        }
+        .rainbow-mode { animation: rainbow 2s linear infinite; border: none; }
+        
+        .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
         .message-area { width: 100%; text-align: center; padding: 0 10px; display: flex; flex-direction: column; gap: 5px; height: 80px; justify-content: center; flex-shrink: 0; }
         .wishes-text { font-size: 15px; font-weight: 800; line-height: 1.35; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0px; transition: opacity 0.3s; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 1px rgba(255,255,255,0.2); }
         .meta-text { font-size: 10px; color: #555; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
@@ -158,7 +184,12 @@
         .share-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,0.2); }
         .share-icon { width: 14px; height: 14px; fill: white; }
         
-        .screen-letter { width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 80px 30px 120px; background: linear-gradient(180deg, rgba(224,224,224,0) 0%, rgba(245,245,245,0.95) 15%, #F5F5F5 100%); }
+        /* LETTER SECTION (Ẩn mặc định) */
+        .screen-letter {
+            display: none; /* ẨN MẶC ĐỊNH */
+            width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 80px 30px 120px;
+            background: linear-gradient(180deg, rgba(224,224,224,0) 0%, rgba(245,245,245,0.95) 15%, #F5F5F5 100%);
+        }
         .letter-container { border-left: 2px solid var(--accent-color); padding-left: 25px; }
         .letter-header { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; color: var(--accent-color); opacity: 0.8; }
         .letter-body { font-family: 'Playfair Display', serif; font-size: 18px; line-height: 1.8; color: #111; font-weight: 400; font-style: normal; }
@@ -184,6 +215,11 @@
                 <div class="ticket-label">Voucher Gift</div>
                 <div class="ticket-value" id="voucherValue">-20K</div>
                 <div class="barcode"></div>
+                <div class="signature-group">
+                    <span class="sign-label">Passenger Name:</span>
+                    <input type="text" id="userSignature" placeholder="Ký tên bạn..." class="sign-input" maxlength="20">
+                </div>
+                
                 <div class="ticket-meta">
                     <div class="meta-item">
                         <div class="meta-label">Code Verify</div>
@@ -214,7 +250,9 @@
             <div class="share-label" id="shareLabel"></div>
         </div>
         <div class="share-song" id="shareSong">SONG NAME</div>
+        <div class="share-wish-detail" id="shareWishDetail">Detailed analysis...</div>
         <div class="share-wish" id="shareWish">Message...</div>
+        <div class="share-signature" id="shareSignature">Guest</div>
         <div class="share-footer">
             <div class="share-year">2026</div>
             <div class="share-link">My Frequency</div>
@@ -223,7 +261,7 @@
 
     <div class="screen-hero">
         <div class="header-group">
-            <img src="logo.png" alt="PHOTONOIR" class="logo-img">
+            <img src="logo.png" alt="PHOTONOIR" class="logo-img" id="logoClick">
             <div id="countdown" class="countdown-timer">00:00:00:00</div>
             <div id="hny-text" class="hny-text">HAPPY<br>NEW YEAR</div>
             <h2 class="sub-logo-text" id="mainTitle">Album OF The YEAR</h2>
@@ -373,6 +411,51 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
+        // --- EASTER EGG (GHOST TRACK) ---
+        let logoClicks = 0;
+        let secretMode = false;
+        const logoImg = document.getElementById('logoClick');
+        
+        logoImg.onclick = function() {
+            logoClicks++;
+            if (logoClicks === 5) {
+                activateSecretMode();
+            }
+            // Reset nếu không bấm liên tiếp trong 2 giây
+            if (window.clickTimer) clearTimeout(window.clickTimer);
+            window.clickTimer = setTimeout(() => { logoClicks = 0; }, 2000);
+        };
+
+        function activateSecretMode() {
+            secretMode = true;
+            logoClicks = 0;
+            showToast("🔓 SECRET MODE UNLOCKED!");
+            
+            // Thay đổi giao diện
+            label.classList.add('rainbow-mode'); // Đĩa than đổi màu
+            
+            // Set track ảo
+            const secretTrack = { 
+                id: 999, 
+                wish: "SECRET TRACK: BẠN ĐÃ TÌM THẤY KHO BÁU BÍ MẬT!", 
+                song: "Mystery Track - PhotoNoir", 
+                file: "secret.mp3", 
+                color: "#000", 
+                analysis: "Chúc mừng! Bạn là một trong số ít những người tò mò tìm ra tần số bí mật này. Hãy tận hưởng giai điệu dành riêng cho những tâm hồn thích khám phá." 
+            };
+            
+            userTrack = secretTrack;
+            finalizeUI(userTrack);
+            
+            // Phát nhạc ngay
+            if(!isPlaying) playMusic();
+            else {
+                audio.src = userTrack.file;
+                audio.play();
+                setTrackInfo(userTrack);
+            }
+        }
+
         // --- PLAYER LOGIC ---
         function handleInteraction() { if (isPlaying) { pauseMusic(); } else { playMusic(); } }
 
@@ -401,6 +484,11 @@
         }
 
         function startShuffle() {
+            // Tắt chế độ secret nếu đang bật
+            if(secretMode) {
+                secretMode = false;
+                label.classList.remove('rainbow-mode');
+            }
             displayText.classList.remove('breathing');
             metaText.innerText = "SCANNING FREQUENCY...";
             label.style.backgroundColor = '#f0f0f0'; 
@@ -461,6 +549,9 @@
             analysisTitle.innerText = "Why this track?";
             analysisContent.innerText = track.analysis;
             
+            // HIỆN LỜI CẢM ƠN (Thêm dòng này)
+            document.querySelector('.screen-letter').style.display = 'block';
+
             // Show Voucher
             if (track.id === 7) {
                 updateVoucherUI();
@@ -523,6 +614,17 @@
             const ticketElement = document.getElementById("voucher-ticket");
             const originalTime = liveClockEl.innerHTML;
             liveClockEl.innerHTML = originalTime.replace('<span class="live-dot"></span>', '');
+            
+            // Xử lý Input trước khi chụp (Thay input bằng text tĩnh để chụp đẹp hơn)
+            const input = document.getElementById('userSignature');
+            const parent = input.parentElement;
+            const tempSpan = document.createElement('div');
+            tempSpan.style.fontFamily = "'Dancing Script', cursive";
+            tempSpan.style.fontSize = "24px";
+            tempSpan.style.textAlign = "center";
+            tempSpan.innerText = input.value || "Guest";
+            input.style.display = 'none';
+            parent.appendChild(tempSpan);
 
             html2canvas(ticketElement, { backgroundColor: null, scale: 2, useCORS: true }).then(canvas => {
                 const link = document.createElement('a');
@@ -531,18 +633,35 @@
                 link.click();
                 
                 liveClockEl.innerHTML = originalTime;
+                
+                // Trả lại Input
+                tempSpan.remove();
+                input.style.display = 'block';
+                
                 showToast("Đã lưu vé vào thư viện ảnh!");
             });
         }
 
-        // --- SHARE LOGIC ---
+        // --- SHARE LOGIC (UPDATED) ---
         function shareResult() {
             if (!userTrack) return;
+            
+            // Lấy tên người ký từ Voucher (nếu có) hoặc prompt
+            let signName = document.getElementById('userSignature').value;
+            if(!signName) {
+                signName = prompt("Nhập tên bạn để ký tên lên thẻ Vibe:", "Guest");
+                if(signName) document.getElementById('userSignature').value = signName; // Lưu lại vào voucher luôn
+            }
+            if(!signName) signName = "Guest";
 
             // Fill Data
             document.getElementById('shareSong').innerText = userTrack.song;
+            // Lấy câu quote ngắn
             document.getElementById('shareWish').innerText = '"' + userTrack.wish.split(':')[1].trim() + '"';
+            // Điền lời chúc chi tiết
+            document.getElementById('shareWishDetail').innerText = userTrack.analysis;
             document.getElementById('shareLabel').style.backgroundColor = userTrack.color;
+            document.getElementById('shareSignature').innerText = signName; // Điền chữ ký
 
             // Capture
             const captureArea = document.getElementById('share-capture-area');
