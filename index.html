@@ -65,14 +65,13 @@
         .meta-label { font-size: 8px; text-transform: uppercase; color: #999; letter-spacing: 1px; margin-bottom: 2px;}
         .meta-value { font-size: 14px; font-weight: 700; font-family: monospace; color: #000; letter-spacing: 1px; }
 
-        /* SIGNATURE AREA (UPDATED FONT WEIGHT) */
+        /* SIGNATURE AREA */
         .signature-group { width: 100%; margin-top: 5px; text-align: center; }
         .sign-label { display: block; font-size: 9px; text-transform: uppercase; color: #888; letter-spacing: 1px; margin-bottom: 5px; }
         .sign-input { 
             width: 100%; border: none; border-bottom: 1px solid #aaa; background: transparent; 
             text-align: center; font-family: 'Dancing Script', cursive; 
-            font-weight: 400; /* Ký nhạt hơn */
-            font-size: 26px; color: #000; outline: none; padding-bottom: 5px; 
+            font-weight: 400; font-size: 26px; color: #000; outline: none; padding-bottom: 5px; 
         }
         .sign-input::placeholder { color: #ccc; font-family: 'Manrope', sans-serif; font-weight: 400; font-size: 12px; letter-spacing: 1px; }
 
@@ -96,7 +95,7 @@
         .real-label { width: 40%; height: 40%; border-radius: 50%; background-color: #eee; border: 1px solid rgba(255,255,255,0.2); position: relative; z-index: 2; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
         .real-label::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; background: #f4f4f4; border-radius: 50%; }
 
-        /* ZODIAC DISPLAY (NEW CLEAN SVG STYLE) */
+        /* ZODIAC DISPLAY (MINIMAL SVG) */
         .share-zodiac-display {
             display: flex; justify-content: center; align-items: center; gap: 12px;
             margin-bottom: 20px; min-height: 50px; width: 100%;
@@ -108,18 +107,16 @@
         }
         .zodiac-svg-icon svg {
             width: 100%; height: 100%;
-            stroke: #111; stroke-width: 1.2; /* Nét mảnh hơn */
+            stroke: #111; stroke-width: 1.2; 
             fill: none; stroke-linecap: round; stroke-linejoin: round;
         }
 
         .share-quote { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; text-transform: uppercase; color: #222; margin-bottom: 10px; border-top: 1px solid #ddd; padding-top: 20px; width: 100%; letter-spacing: 1px; }
         .share-analysis { font-size: 11px; line-height: 1.6; color: #555; margin-bottom: 20px; padding: 0 10px; font-weight: 500; min-height: 50px; display: flex; align-items: center; justify-content: center; font-style: italic; }
         
-        /* SIGNATURE ON CARD (UPDATED FONT WEIGHT) */
         .share-signature-display { 
             font-family: 'Dancing Script', cursive; 
-            font-weight: 400; /* Ký nhạt hơn */
-            font-size: 34px; color: #000; margin-bottom: 10px; min-height: 40px; 
+            font-weight: 400; font-size: 34px; color: #000; margin-bottom: 10px; min-height: 40px; 
         }
         .share-footer { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; border-top: 1px solid #ddd; padding-top: 15px; opacity: 0.6; }
         .share-year { font-weight: 800; font-size: 12px; }
@@ -137,10 +134,7 @@
             cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; 
         }
         .zodiac-btn:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
-        .zodiac-btn.active { 
-            background: #fff; color: #000; border-color: #fff; 
-            box-shadow: 0 0 10px rgba(255,255,255,0.5); transform: scale(1.1);
-        }
+        .zodiac-btn.active { background: #fff; color: #000; border-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.5); transform: scale(1.1); }
 
         .btn-action { border: none; padding: 14px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; border-radius: 4px; }
         .btn-save { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(5px); }
@@ -156,23 +150,29 @@
         .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 10px; cursor: pointer; }
         .logo-img:active { transform: scale(0.95); }
         
-        /* HNY TEXT (UPDATED: One line, no glow) */
+        /* HNY TEXT - UPDATED: BIGGER, ONE LINE, NO GLOW */
         .hny-text { 
             display: none; 
             font-family: 'Manrope', sans-serif; 
             font-weight: 800; 
-            font-size: 32px; /* Kích thước vừa phải cho 1 dòng */
+            font-size: 13vw; /* Dùng vw để chữ to hết cỡ theo chiều ngang */
             color: var(--accent-color); 
             text-align: center; 
             line-height: 1; 
-            letter-spacing: 3px; 
-            margin-bottom: 15px;
-            white-space: nowrap; /* Bắt buộc 1 dòng */
-            /* Đã bỏ text-shadow và animation zoom */
+            letter-spacing: -2px; /* Dồn chữ lại cho ngầu */
+            margin-bottom: 10px;
+            white-space: nowrap; 
+            text-transform: uppercase;
         }
+        @media (min-width: 480px) { .hny-text { font-size: 64px; } } /* Max size on desktop */
 
         .countdown-timer { font-family: 'Manrope', sans-serif; font-size: 32px; font-weight: 800; color: var(--accent-color); letter-spacing: 2px; margin-bottom: 5px; line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 rgba(255,255,255,0.5); }
-        .sub-logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); transition: all 0.5s ease; }
+        .sub-logo-text { 
+            font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; 
+            color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; 
+            text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); 
+            transition: color 1s ease; /* Hiệu ứng chuyển màu mượt */
+        }
         .center-content { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; position: relative; z-index: 5; margin-bottom: 20px; }
         .vinyl-container { position: relative; width: 60vmin; height: 60vmin; max-width: 300px; max-height: 300px; display: flex; justify-content: center; align-items: center; transition: transform 0.1s; margin-bottom: 20px; }
         .vinyl-container:active { transform: scale(0.97); }
@@ -181,11 +181,8 @@
         .spinning-anim { animation: spin 8s linear infinite !important; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .vinyl-label { position: absolute; top: 34%; left: 34%; width: 32%; height: 32%; background-color: #f0f0f0; border-radius: 50%; display: flex; justify-content: center; align-items: center; border: 1px solid #aaa; z-index: 5; box-shadow: inset 0 0 10px rgba(0,0,0,0.1); transition: background-color 0.5s ease; }
-        
-        /* RAINBOW MODE */
         @keyframes rainbow { 0% { background-color: #ff0000; } 20% { background-color: #ffff00; } 40% { background-color: #00ff00; } 60% { background-color: #00ffff; } 80% { background-color: #0000ff; } 100% { background-color: #ff00ff; } }
         .rainbow-mode { animation: rainbow 2s linear infinite; border: none; }
-        
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
         .message-area { width: 100%; text-align: center; padding: 0 10px; display: flex; flex-direction: column; gap: 5px; height: 80px; justify-content: center; flex-shrink: 0; }
         .wishes-text { font-size: 15px; font-weight: 800; line-height: 1.35; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0px; transition: opacity 0.3s; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 1px rgba(255,255,255,0.2); }
@@ -200,11 +197,9 @@
         .progress-bar-fill { width: 0%; height: 100%; background: var(--accent-color); transition: width 0.1s linear; }
         .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #000; font-family: monospace; }
         .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 12px; display: flex; gap: 5px; justify-content: center; align-items: center; }
-        
         .scroll-hint { position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0; animation: float 2s infinite; cursor: pointer; z-index: 20; transition: opacity 1s; }
         .show-scroll { opacity: 0.6 !important; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
-        
         .screen-analysis { display: none; width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 60px 30px; background: #EAEAEA; animation: fadeIn 1s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .analysis-box { border: 2px solid #000; padding: 30px 20px; background: #F2F2F2; box-shadow: 8px 8px 0px rgba(0,0,0,0.1); text-align: center; }
@@ -223,7 +218,7 @@
         .letter-sign { margin-top: 50px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-top: 1px solid #ccc; display: inline-block; padding-top: 10px; }
         @media (max-width: 380px) or (max-height: 700px) { .logo-img { width: 80%; } .sub-logo-text { font-size: 32px; } .countdown-timer { font-size: 26px; } .vinyl-container { width: 55vmin; height: 55vmin; } .wishes-text { font-size: 14px; } }
 
-        /* --- ADMIN PANEL & TRIGGER (NEW MINIMAL DESIGN) --- */
+        /* --- ADMIN PANEL (MINIMAL) --- */
         #admin-trigger {
             position: fixed; bottom: 15px; right: 15px; 
             width: 24px; height: 24px; opacity: 0.4; cursor: pointer; z-index: 9000;
@@ -235,9 +230,9 @@
         #admin-panel {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 280px; 
-            background: rgba(10, 10, 10, 0.95); /* Nền tối mờ */
+            background: rgba(10, 10, 10, 0.95);
             color: #eee; padding: 25px 20px; 
-            border: 1px solid rgba(255,255,255,0.15); /* Viền mỏng */
+            border: 1px solid rgba(255,255,255,0.15);
             z-index: 10000; box-shadow: 0 15px 40px rgba(0,0,0,0.5); 
             text-align: center; border-radius: 12px;
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
@@ -249,7 +244,7 @@
         .admin-btn { 
             width: 100%; padding: 12px; margin-bottom: 10px; 
             background: transparent; color: #ccc; 
-            border: 1px solid rgba(255,255,255,0.25); /* Nút dạng outline */
+            border: 1px solid rgba(255,255,255,0.25);
             cursor: pointer; font-family: 'Manrope'; font-size: 12px; font-weight: 600;
             border-radius: 6px; transition: all 0.2s;
             display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -257,7 +252,6 @@
         .admin-btn:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: #fff; }
         .admin-btn.danger { border-color: #960018; color: #ff8888; }
         .admin-btn.danger:hover { background: #960018; color: #fff; }
-        
         .admin-close { margin-top: 15px; font-size: 11px; text-decoration: none; cursor: pointer; color: #777; transition: color 0.2s; letter-spacing: 1px; }
         .admin-close:hover { color: #bbb; }
 
@@ -368,21 +362,20 @@
     <audio id="bgMusic"></audio>
 
     <script>
-        // --- ZODIAC DATA (NEW CLEAN LINE ART SVG) ---
-        // Bộ icon mới: Nét mảnh, liền mạch, không thừa thiếu.
+        // --- ZODIAC DATA (CLEAN LINE ART SVG) ---
         const zodiacPaths = {
-            "♈": "M2,7 C2,7 5,15 12,15 C19,15 22,7 22,7 M12,15 L12,21 M7,7 C7,4 9,2 12,2 C15,2 17,4 17,7", // Aries (Sừng cừu thanh thoát)
-            "♉": "M2,8 C2,4 6,1 12,1 C18,1 22,4 22,8 M12,23 C7,23 3,19 3,14 C3,9 7,5 12,5 C17,5 21,9 21,14 C21,19 17,23 12,23 Z", // Taurus (Đầu bò tròn trịa)
-            "♊": "M8,2 L8,22 M16,2 L16,22 M4,4 C8,2 16,2 20,4 M4,20 C8,22 16,22 20,20", // Gemini (Hai cột trụ song song)
-            "♋": "M6,12 A6,6 0 1,1 12,6 M18,12 A6,6 0 1,0 12,18", // Cancer (Hai vòng tròn âm dương)
-            "♌": "M5,16 A3,3 0 1,1 8,13 C8,13 11,3 19,3 C22,3 22,7 22,7 L22,11", // Leo (Bờm sư tử uốn lượn)
-            "♍": "M5,4 C7,3 9,4 9,7 L9,20 M9,7 C11,5 13,6 13,9 L13,20 M13,9 C15,7 17,8 17,11 L17,18 C17,21 14,22 12,21", // Virgo (Ký tự 'm' với nét móc)
-            "♎": "M2,18 L22,18 M4,13 L20,13 M12,13 C12,9 15,7 18,7 M12,13 C12,9 9,7 6,7", // Libra (Cái cân cách điệu)
-            "♏": "M5,4 C7,3 9,4 9,7 L9,20 M9,7 C11,5 13,6 13,9 L13,20 M13,9 C15,7 17,8 17,11 L17,18 L20,21", // Scorpio (Ký tự 'm' với đuôi nhọn)
-            "♐": "M2,22 L22,2 M22,2 L14,2 M22,2 L22,10 M8,16 L12,12", // Sagittarius (Mũi tên bắn lên)
-            "♑": "M4,5 L9,12 L14,18 C17,20 21,17 20,13 C19,10 16,10 14,13", // Capricorn (Dê biển đuôi cá)
-            "♒": "M2,8 L5,5 L8,8 L11,5 L14,8 L17,5 L20,8 L23,5 M2,16 L5,13 L8,16 L11,13 L14,16 L17,13 L20,16 L23,13", // Aquarius (Hai dòng sóng nước)
-            "♓": "M9,3 C3,7 3,17 9,21 M15,3 C21,7 21,17 15,21 M4,12 L20,12" // Pisces (Hai con cá ngược chiều)
+            "♈": "M2,7 C2,7 5,15 12,15 C19,15 22,7 22,7 M12,15 L12,21 M7,7 C7,4 9,2 12,2 C15,2 17,4 17,7",
+            "♉": "M2,8 C2,4 6,1 12,1 C18,1 22,4 22,8 M12,23 C7,23 3,19 3,14 C3,9 7,5 12,5 C17,5 21,9 21,14 C21,19 17,23 12,23 Z",
+            "♊": "M8,2 L8,22 M16,2 L16,22 M4,4 C8,2 16,2 20,4 M4,20 C8,22 16,22 20,20",
+            "♋": "M6,12 A6,6 0 1,1 12,6 M18,12 A6,6 0 1,0 12,18",
+            "♌": "M5,16 A3,3 0 1,1 8,13 C8,13 11,3 19,3 C22,3 22,7 22,7 L22,11",
+            "♍": "M5,4 C7,3 9,4 9,7 L9,20 M9,7 C11,5 13,6 13,9 L13,20 M13,9 C15,7 17,8 17,11 L17,18 C17,21 14,22 12,21",
+            "♎": "M2,18 L22,18 M4,13 L20,13 M12,13 C12,9 15,7 18,7 M12,13 C12,9 9,7 6,7",
+            "♏": "M5,4 C7,3 9,4 9,7 L9,20 M9,7 C11,5 13,6 13,9 L13,20 M13,9 C15,7 17,8 17,11 L17,18 L20,21",
+            "♐": "M2,22 L22,2 M22,2 L14,2 M22,2 L22,10 M8,16 L12,12",
+            "♑": "M4,5 L9,12 L14,18 C17,20 21,17 20,13 C19,10 16,10 14,13",
+            "♒": "M2,8 L5,5 L8,8 L11,5 L14,8 L17,5 L20,8 L23,5 M2,16 L5,13 L8,16 L11,13 L14,16 L17,13 L20,16 L23,13",
+            "♓": "M9,3 C3,7 3,17 9,21 M15,3 C21,7 21,17 15,21 M4,12 L20,12"
         };
         const zodiacs = Object.keys(zodiacPaths);
         let selectedZodiacs = []; 
@@ -452,7 +445,7 @@
             zodiacs.forEach(z => {
                 const btn = document.createElement('button');
                 btn.className = 'zodiac-btn';
-                btn.innerText = z;
+                btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="${zodiacPaths[z]}" /></svg>`;
                 btn.onclick = () => toggleZodiac(z, btn);
                 zodiacSelector.appendChild(btn);
             });
@@ -489,13 +482,17 @@
                     clearInterval(t);
                     document.getElementById('countdown').style.display = 'none';
                     document.getElementById('hny-text').style.display = 'block';
-                    // Kích hoạt pháo hoa khi chữ hiện lên
-                     if (!window.hnyFireworks) {
+                    
+                    // LÀM TỐI CHỮ ALBUM OF THE YEAR
+                    document.getElementById('mainTitle').style.color = '#1a1a1a'; // Gần như đen
+
+                    // Kích hoạt pháo hoa (Vĩnh viễn)
+                    if (!window.hnyFireworks) {
                         window.hnyFireworks = true;
-                        var duration = 15 * 1000; var animationEnd = Date.now() + duration; var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-                        var interval = setInterval(function() {
-                            var timeLeft = animationEnd - Date.now(); if (timeLeft <= 0) { return clearInterval(interval); }
-                            var particleCount = 50 * (timeLeft / duration); confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+                        // Bắn không có duration limit
+                        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+                        setInterval(function() {
+                            confetti(Object.assign({}, defaults, { particleCount: 50, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
                         }, 250);
                     }
                 } else {
@@ -531,7 +528,6 @@
                 selectedZodiacs.forEach(z => {
                     const div = document.createElement('div');
                     div.className = 'zodiac-svg-icon';
-                    // Sử dụng viewbox 24x24 cho bộ icon mới
                     div.innerHTML = `<svg viewBox="0 0 24 24"><path d="${zodiacPaths[z]}" /></svg>`;
                     zodiacDisplay.appendChild(div);
                 });
@@ -551,12 +547,15 @@
             if (gap < 0) {
                 document.getElementById('countdown').style.display = 'none';
                 document.getElementById('hny-text').style.display = 'block';
+                // Làm tối chữ khi đến giờ
+                document.getElementById('mainTitle').style.color = '#1a1a1a';
+
                 if (!window.hnyFireworks) {
                     window.hnyFireworks = true;
-                    var duration = 15 * 1000; var animationEnd = Date.now() + duration; var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-                    var interval = setInterval(function() {
-                        var timeLeft = animationEnd - Date.now(); if (timeLeft <= 0) { return clearInterval(interval); }
-                        var particleCount = 50 * (timeLeft / duration); confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+                    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+                    // Loop Forever
+                    setInterval(function() {
+                        confetti(Object.assign({}, defaults, { particleCount: 50, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
                     }, 250);
                 }
             } else {
