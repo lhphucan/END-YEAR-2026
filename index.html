@@ -155,25 +155,11 @@
         .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 10px; cursor: pointer; }
         .logo-img:active { transform: scale(0.95); }
         
-        /* FIX: Font size HNY nhỏ lại một chút cho cân đối trên mobile */
-        .hny-text { 
-            display: none; font-family: 'Manrope', sans-serif; font-weight: 800; 
-            font-size: 8vw; /* Giảm từ 10vw -> 8vw */
-            color: var(--accent-color); text-align: center; line-height: 1; letter-spacing: -1px; margin-bottom: 10px; white-space: nowrap; text-transform: uppercase; 
-        }
+        .hny-text { display: none; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 8vw; color: var(--accent-color); text-align: center; line-height: 1; letter-spacing: -2px; margin-bottom: 10px; white-space: nowrap; text-transform: uppercase; }
         @media (min-width: 480px) { .hny-text { font-size: 52px; } }
 
         .countdown-timer { font-family: 'Manrope', sans-serif; font-size: 32px; font-weight: 800; color: var(--accent-color); letter-spacing: 2px; margin-bottom: 5px; line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 rgba(255,255,255,0.5); }
-        
-        /* FIX: Giữ nguyên size chữ bên dưới khi HNY hiện */
-        .sub-logo-text { 
-            font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; 
-            color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; 
-            text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); 
-            transition: color 1s ease;
-            flex-shrink: 0; /* Quan trọng: Không bị co lại */
-        }
-        
+        .sub-logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); transition: color 1s ease; flex-shrink: 0; }
         .center-content { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; position: relative; z-index: 5; margin-bottom: 20px; }
         .vinyl-container { position: relative; width: 60vmin; height: 60vmin; max-width: 300px; max-height: 300px; display: flex; justify-content: center; align-items: center; transition: transform 0.1s; margin-bottom: 20px; }
         .vinyl-container:active { transform: scale(0.97); }
@@ -198,6 +184,7 @@
         .progress-bar-fill { width: 0%; height: 100%; background: var(--accent-color); transition: width 0.1s linear; }
         .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #000; font-family: monospace; }
         .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 12px; display: flex; gap: 5px; justify-content: center; align-items: center; }
+        #busuanzi_container_site_pv { display: inline-block !important; }
         
         .scroll-hint { position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0; animation: float 2s infinite; cursor: pointer; z-index: 20; transition: opacity 1s; }
         .show-scroll { opacity: 0.6 !important; }
@@ -212,6 +199,8 @@
         .share-btn { background-color: var(--accent-color); color: white; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1px; padding: 12px 25px; border: none; cursor: pointer; text-transform: uppercase; box-shadow: 4px 4px 0px rgba(0,0,0,0.2); transition: transform 0.1s, box-shadow 0.1s; display: inline-flex; align-items: center; gap: 8px; }
         .share-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,0.2); }
         .share-icon { width: 14px; height: 14px; fill: white; }
+        
+        /* LETTER (Ẩn mặc định) */
         .screen-letter { display: none; width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 80px 30px 120px; background: linear-gradient(180deg, rgba(224,224,224,0) 0%, rgba(245,245,245,0.95) 15%, #F5F5F5 100%); }
         .letter-container { border-left: 2px solid var(--accent-color); padding-left: 25px; }
         .letter-header { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; color: var(--accent-color); opacity: 0.8; }
@@ -219,6 +208,7 @@
         .letter-body p { margin-bottom: 25px; }
         .letter-body p:first-child::first-letter { font-size: 3.5em; float: left; line-height: 0.8; margin-right: 10px; font-weight: 600; color: var(--accent-color); }
         .letter-sign { margin-top: 50px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-top: 1px solid #ccc; display: inline-block; padding-top: 10px; }
+        
         @media (max-width: 380px) or (max-height: 700px) { .logo-img { width: 80%; } .sub-logo-text { font-size: 32px; } .countdown-timer { font-size: 26px; } .vinyl-container { width: 55vmin; height: 55vmin; } .wishes-text { font-size: 14px; } }
 
         /* --- ADMIN PANEL --- */
@@ -263,7 +253,6 @@
         <button class="admin-btn" onclick="triggerTestVoucher()">🎁 Test Voucher (25th)</button>
         <button class="admin-btn" onclick="triggerTestSecret()">👻 Secret Mode</button>
         <button class="admin-btn" onclick="triggerTestHNY()">🎆 Test Giao Thừa (5s)</button>
-        <button class="admin-btn" onclick="setTotalPlays()">🔢 Set Total Plays</button>
         <button class="admin-btn danger" onclick="resetData()">🗑️ Reset Data</button>
         <div class="admin-close" onclick="closeAdminPanel()">Đóng Panel</div>
     </div>
@@ -314,23 +303,23 @@
             <h2 class="sub-logo-text" id="mainTitle">Album OF The YEAR</h2>
         </div>
         <div class="center-content">
-            <div class="vinyl-container" id="vinylContainer" onclick="handleInteraction()">
+            <div class="vinyl-container reveal-on-scroll" id="vinylContainer" onclick="handleInteraction()">
                 <div class="vinyl-record" id="record"></div>
                 <div class="vinyl-label" id="label"><div class="spindle"></div></div>
             </div>
-            <div class="message-area"><div class="wishes-text breathing" id="display-text">CHẠM ĐỂ TÌM TẦN SỐ CỦA BẠN</div><div class="meta-text" id="meta-text">2026 COLLECTION</div></div>
+            <div class="message-area reveal-on-scroll delay-100"><div class="wishes-text breathing" id="display-text">CHẠM ĐỂ TÌM TẦN SỐ CỦA BẠN</div><div class="meta-text" id="meta-text">2026 COLLECTION</div></div>
         </div>
-        <div class="player-wrapper">
+        <div class="player-wrapper reveal-on-scroll delay-200">
             <div class="player-controls">
                 <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
                 <div class="time-display"><span id="currentTime">0:00</span><span id="totalTime">--:--</span></div>
             </div>
             <div class="visitor-counter">
                 <span>TOTAL PLAYS:</span>
-                <span id="totalPlayCounter">0</span>
+                <span id="busuanzi_container_site_pv"><span id="busuanzi_value_site_pv">...</span></span>
             </div>
         </div>
-        <div class="scroll-hint" id="scrollHint" onclick="scrollToNext()">↓ SCROLL TO VIEW</div>
+        <div class="scroll-hint reveal-on-scroll delay-300" id="scrollHint" onclick="scrollToNext()">↓ SCROLL TO VIEW</div>
     </div>
 
     <div class="screen-analysis reveal-on-scroll" id="analysisSection">
@@ -362,8 +351,7 @@
             "♈": { name: "Bạch Dương", path: "M12 21L12 11M12 11C12 11 17 5 21 5C21 5 18 2 12 2C6 2 3 5 3 5C7 5 12 11 12 11" },
             "♉": { name: "Kim Ngưu", path: "M12 22C8 22 5 19 5 15C5 11 8 8 12 8C16 8 19 11 19 15C19 19 16 22 12 22ZM2 9C2 5 7 2 12 2C17 2 22 5 22 9" },
             "♊": { name: "Song Tử", path: "M6 4L18 4M6 20L18 20M8 4L8 20M16 4L16 20" },
-            // FIX CỰ GIẢI: Path vẽ số 69 nằm ngang, 2 vòng tròn xoắn
-            "♋": { name: "Cự Giải", path: "M6 13.5 C6 13.5 6 7.5 10.5 7.5 C15 7.5 15 13.5 15 13.5 M15 13.5 C15 16.5 12.5 19.5 9 19.5 C5.5 19.5 3 16.5 3 13.5 M18 10.5 C18 10.5 18 16.5 13.5 16.5 C9 16.5 9 10.5 9 10.5 M9 10.5 C9 7.5 11.5 4.5 15 4.5 C18.5 4.5 21 7.5 21 10.5" },
+            "♋": { name: "Cự Giải", path: "M9,5 A4,4 0 1,1 9,13 A4,4 0 1,1 9,5 M15,11 A4,4 0 1,1 15,19 A4,4 0 1,1 15,11" }, // Updated Path
             "♌": { name: "Sư Tử", path: "M6 19A3 3 0 1 1 9 16C9 16 12 5 18 5C21 5 22 8 22 8L22 11" },
             "♍": { name: "Xử Nữ", path: "M5 6C7 5 9 6 9 9L9 20M9 9C11 7 13 8 13 11L13 20M13 11C15 9 17 10 17 13L17 19C17 21 15 22 13 22" },
             "♎": { name: "Thiên Bình", path: "M4 19L20 19M6 14L18 14M12 14C12 10 15 8 18 8M12 14C12 10 9 8 6 8" },
@@ -432,21 +420,22 @@
             preloader.style.opacity = '0';
             setTimeout(() => { preloader.style.display = 'none'; }, 500);
             
+            // Hero Animation Load
+            setTimeout(() => {
+                document.querySelectorAll('.reveal-on-scroll').forEach(el => el.classList.add('is-visible'));
+            }, 500);
+
             const savedIndex = localStorage.getItem(STORAGE_KEY);
             if (savedIndex !== null) {
                 userTrack = tracks[parseInt(savedIndex)];
                 finalizeUI(userTrack);
             }
             
-            // Custom Local Counter Init
-            let localPlays = localStorage.getItem('site_total_plays') || 1205;
-            document.getElementById('totalPlayCounter').innerText = parseInt(localPlays).toLocaleString();
-
             // Init Multi Select Zodiac (TEXT BUTTONS)
             zodiacs.forEach(z => {
                 const btn = document.createElement('button');
                 btn.className = 'zodiac-btn';
-                btn.innerText = zodiacData[z].name; // Hiển thị tên tiếng Việt
+                btn.innerText = zodiacData[z].name; 
                 btn.onclick = () => toggleZodiac(z, btn);
                 zodiacSelector.appendChild(btn);
             });
@@ -489,16 +478,6 @@
         }
         function closeAdminPanel() { document.getElementById('admin-panel').style.display = 'none'; }
         
-        function setTotalPlays() {
-            let num = prompt("Nhập số lượt chơi mong muốn:", localStorage.getItem('site_total_plays') || 0);
-            if (num !== null && !isNaN(num)) {
-                localStorage.setItem('site_total_plays', num);
-                document.getElementById('totalPlayCounter').innerText = parseInt(num).toLocaleString();
-                showToast("Đã cập nhật Total Plays!");
-                closeAdminPanel();
-            }
-        }
-
         function triggerTestVoucher() {
             localStorage.setItem(SPIN_COUNT_KEY, 25);
             showToast("🎁 Đã set lượt 25. Quay ngay để trúng!");
@@ -558,7 +537,6 @@
                 selectedZodiacs.forEach(z => {
                     const div = document.createElement('div');
                     div.className = 'zodiac-svg-icon';
-                    // Sử dụng path từ zodiacData
                     div.innerHTML = `<svg viewBox="0 0 24 24"><path d="${zodiacData[z].path}" /></svg>`;
                     zodiacDisplay.appendChild(div);
                 });
@@ -649,12 +627,6 @@
         function finalizeResult() {
             let spinCount = parseInt(localStorage.getItem(SPIN_COUNT_KEY)) || 0; spinCount++; localStorage.setItem(SPIN_COUNT_KEY, spinCount);
             
-            // Custom Counter Increment
-            let currentTotal = parseInt(localStorage.getItem('site_total_plays')) || 1205;
-            currentTotal++;
-            localStorage.setItem('site_total_plays', currentTotal);
-            document.getElementById('totalPlayCounter').innerText = currentTotal.toLocaleString();
-
             let selectedTrack;
             if (spinCount > 0 && spinCount % 26 === 0) { selectedTrack = tracks.find(t => t.id === 7); } 
             else { const normalTracks = tracks.filter(t => t.id !== 7); selectedTrack = normalTracks[Math.floor(Math.random() * normalTracks.length)]; }
@@ -708,7 +680,6 @@
 
         // --- SHARE LOGIC ---
         function openShareOverlay() {
-            // FIX: Cho phép mở kể cả là voucher, miễn là có track
             if (!userTrack) return;
             document.getElementById('realShareQuote').innerText = '"' + userTrack.wish.split(':')[1].trim() + '"';
             document.getElementById('realShareAnalysis').innerText = userTrack.analysis;
