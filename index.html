@@ -23,6 +23,7 @@
             transition: filter 0.5s ease;
         }
 
+        /* SECRET MODE */
         body.invert-mode { filter: invert(1) hue-rotate(180deg); background-color: #1f1f1f; }
 
         /* UTILS */
@@ -33,13 +34,13 @@
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
-        /* OVERLAY */
+        /* OVERLAY MODAL */
         .overlay-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); z-index: 2000;
+            background: rgba(0,0,0,0.85); z-index: 2000;
             flex-direction: column; justify-content: center; align-items: center;
             backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            animation: fadeIn 0.5s ease; overflow-y: auto; padding: 20px 0;
+            animation: fadeIn 0.3s ease; overflow-y: auto; padding: 20px 0;
         }
         @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
 
@@ -90,16 +91,22 @@
         .real-label { width: 40%; height: 40%; border-radius: 50%; background-color: #eee; border: 1px solid rgba(255,255,255,0.2); position: relative; z-index: 2; box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
         .real-label::after { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; background: #f4f4f4; border-radius: 50%; }
 
-        /* ZODIAC DISPLAY (Multi + Minimal) */
+        /* ZODIAC DISPLAY (MINIMAL SVG STYLE) */
         .share-zodiac-display {
             display: flex; justify-content: center; align-items: center; gap: 15px;
             margin-bottom: 20px; min-height: 50px; width: 100%;
         }
-        .zodiac-glyph {
-            width: 45px; height: 45px; border: 1px solid #111; border-radius: 50%;
+        /* SVG Icon Container */
+        .zodiac-svg-icon {
+            width: 50px; height: 50px;
             display: flex; justify-content: center; align-items: center;
-            font-size: 22px; color: #111; font-family: 'Playfair Display', serif;
-            background-color: transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .zodiac-svg-icon svg {
+            width: 100%; height: 100%;
+            stroke: #222; /* Màu nét vẽ */
+            stroke-width: 1.5; /* Độ mảnh của nét vẽ */
+            fill: none;
+            stroke-linecap: round; stroke-linejoin: round;
         }
 
         .share-quote { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; text-transform: uppercase; color: #222; margin-bottom: 10px; border-top: 1px solid #ddd; padding-top: 20px; width: 100%; letter-spacing: 1px; }
@@ -115,15 +122,13 @@
         .input-group { width: 100%; margin-bottom: 5px; }
         .nice-input { width: 100%; padding: 12px; background: rgba(255,255,255,0.9); border: 1px solid #ccc; border-radius: 4px; font-family: 'Manrope', sans-serif; font-size: 14px; text-align: center; }
         
-        .zodiac-selector { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 15px; padding: 10px; background: rgba(255,255,255,0.15); border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); }
+        .zodiac-selector { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 15px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); }
         .zodiac-btn { 
-            width: 32px; height: 32px; 
-            border: 1px solid rgba(255,255,255,0.4); 
-            background: transparent; color: #fff; 
-            font-size: 14px; border-radius: 50%; cursor: pointer; 
-            transition: all 0.2s; display: flex; justify-content: center; align-items: center; 
+            width: 35px; height: 35px; border: 1px solid rgba(255,255,255,0.4); 
+            background: transparent; color: #fff; font-size: 14px; border-radius: 50%; 
+            cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; 
         }
-        .zodiac-btn:hover { border-color: #fff; }
+        .zodiac-btn:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
         .zodiac-btn.active { 
             background: #fff; color: #000; border-color: #fff; 
             box-shadow: 0 0 10px rgba(255,255,255,0.5); transform: scale(1.1);
@@ -172,7 +177,6 @@
         .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #000; font-family: monospace; }
         .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 12px; display: flex; gap: 5px; justify-content: center; align-items: center; }
         
-        /* SCROLL HINT (FIXED) */
         .scroll-hint { position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0; animation: float 2s infinite; cursor: pointer; z-index: 20; transition: opacity 1s; }
         .show-scroll { opacity: 0.6 !important; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
@@ -196,6 +200,24 @@
         .hny-text { display: none; font-family: 'Manrope', sans-serif; font-weight: 900; font-size: 42px; color: var(--accent-color); text-align: center; line-height: 1.1; letter-spacing: 2px; margin-bottom: 10px; text-shadow: 0 0 20px rgba(150, 0, 24, 0.5); animation: zoomIn 1s ease-out infinite alternate; }
         @keyframes zoomIn { from { transform: scale(1); } to { transform: scale(1.05); } }
         @media (max-width: 380px) or (max-height: 700px) { .logo-img { width: 80%; } .sub-logo-text { font-size: 32px; } .countdown-timer { font-size: 26px; } .vinyl-container { width: 55vmin; height: 55vmin; } .wishes-text { font-size: 14px; } }
+
+        /* --- ADMIN PANEL & TRIGGER --- */
+        #admin-trigger {
+            position: fixed; bottom: 10px; right: 10px; font-size: 14px; opacity: 0.3; cursor: pointer; z-index: 9000;
+            transition: opacity 0.3s;
+        }
+        #admin-trigger:hover { opacity: 1; }
+        
+        #admin-panel {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 300px; background: #111; color: #fff; padding: 20px; border: 2px solid var(--accent-color);
+            z-index: 10000; box-shadow: 0 10px 50px rgba(0,0,0,0.8); text-align: center; border-radius: 8px;
+        }
+        .admin-title { font-weight: 800; font-size: 16px; margin-bottom: 15px; color: var(--accent-color); letter-spacing: 2px; }
+        .admin-btn { width: 100%; padding: 10px; margin-bottom: 8px; background: #333; color: #fff; border: 1px solid #555; cursor: pointer; font-family: 'Manrope'; font-size: 12px; }
+        .admin-btn:hover { background: #555; }
+        .admin-close { margin-top: 10px; font-size: 11px; text-decoration: underline; cursor: pointer; color: #888; }
+
     </style>
 </head>
 <body>
@@ -203,6 +225,16 @@
     <div id="preloader"><div class="loader-text">LOADING...</div></div>
     <div id="toast">Thông báo</div>
     <div class="film-layer"><div class="grain"></div><div class="scratches"></div></div>
+
+    <div id="admin-trigger" onclick="toggleAdminLogin()" title="Admin Login">🔒</div>
+    <div id="admin-panel">
+        <div class="admin-title">ADMIN CONTROL</div>
+        <button class="admin-btn" onclick="triggerTestVoucher()">🎁 Test Trúng Voucher</button>
+        <button class="admin-btn" onclick="triggerTestSecret()">👻 Bật Secret Mode</button>
+        <button class="admin-btn" onclick="triggerTestHNY()">🎆 Test Giao Thừa (5s)</button>
+        <button class="admin-btn" onclick="resetData()">🗑️ Reset Dữ Liệu</button>
+        <div class="admin-close" onclick="closeAdminPanel()">Đóng Panel</div>
+    </div>
 
     <div id="voucher-overlay" class="overlay-modal">
         <div id="voucher-ticket">
@@ -291,9 +323,24 @@
     <audio id="bgMusic"></audio>
 
     <script>
-        // --- ZODIAC DATA (Multi Select) ---
-        const zodiacs = ["♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓"];
-        let selectedZodiacs = []; // Mảng chứa các cung đã chọn
+        // --- ZODIAC DATA (LINE ART SVG) ---
+        // Mỗi key là tên cung, value là chuỗi path SVG d vẽ tay tối giản
+        const zodiacPaths = {
+            "♈": "M12,18 C12,18 2,12 2,6 C2,2 8,2 10,6 L12,10 L14,6 C16,2 22,2 22,6 C22,12 12,18 12,18", /* Aries */
+            "♉": "M12,24 A8,8 0 1,0 12,8 A8,8 0 1,0 12,24 M4,8 C4,0 10,4 12,8 C14,4 20,0 20,8", /* Taurus */
+            "♊": "M6,4 L18,4 M6,20 L18,20 M9,4 L9,20 M15,4 L15,20", /* Gemini */
+            "♋": "M6,12 A6,6 0 1,1 12,6 M18,12 A6,6 0 1,0 12,18", /* Cancer - Simple loops */
+            "♌": "M6,18 A3,3 0 1,1 9,15 C9,15 12,4 18,4 C22,4 22,10 22,10 L22,14", /* Leo */
+            "♍": "M6,6 C6,6 8,4 10,6 L10,18 M10,6 C10,6 12,4 14,6 L14,18 M14,6 C14,6 16,4 18,6 L18,16 C18,16 18,20 12,20", /* Virgo */
+            "♎": "M4,18 L20,18 M6,12 L18,12 M12,12 A4,4 0 1,1 12,12", /* Libra (Simplified) */
+            "♏": "M6,6 L6,18 M6,6 C6,6 8,4 10,6 L10,18 M10,6 C10,6 12,4 14,6 L14,18 L16,16 L18,18", /* Scorpio */
+            "♐": "M4,20 L20,4 M20,4 L12,4 M20,4 L20,12 M8,16 L12,12", /* Sagittarius */
+            "♑": "M6,6 L6,12 L12,18 C12,18 18,18 18,12 C18,6 12,6 12,12", /* Capricorn */
+            "♒": "M4,8 L6,6 L8,8 L10,6 L12,8 L14,6 L16,8 L18,6 L20,8 M4,16 L6,14 L8,16 L10,14 L12,16 L14,14 L16,16 L18,14 L20,16", /* Aquarius */
+            "♓": "M8,4 C2,8 2,16 8,20 M16,4 C22,8 22,16 16,20 M4,12 L20,12" /* Pisces */
+        };
+        const zodiacs = Object.keys(zodiacPaths);
+        let selectedZodiacs = []; 
 
         // --- CONFIG & DATA ---
         const tracks = [
@@ -328,7 +375,7 @@
         const analysisContent = document.getElementById('analysisContent');
         const preloader = document.getElementById('preloader');
         
-        // UI Elements
+        // Elements
         const voucherOverlay = document.getElementById('voucher-overlay');
         const shareOverlay = document.getElementById('share-overlay');
         const liveClockEl = document.getElementById('liveClock');
@@ -356,7 +403,7 @@
                 userTrack = tracks[parseInt(savedIndex)];
                 finalizeUI(userTrack);
             }
-            // Init Zodiac Buttons (Multi Select)
+            // Init Multi Select Zodiac
             zodiacs.forEach(z => {
                 const btn = document.createElement('button');
                 btn.className = 'zodiac-btn';
@@ -366,6 +413,52 @@
             });
         };
 
+        // --- ADMIN FEATURES ---
+        function toggleAdminLogin() {
+            let pass = prompt("Nhập mật khẩu Admin:");
+            if (pass === "photonoir@") {
+                document.getElementById('admin-panel').style.display = 'block';
+                showToast("🔓 Đã đăng nhập Admin!");
+            } else if(pass !== null) {
+                alert("Sai mật khẩu!");
+            }
+        }
+        function closeAdminPanel() { document.getElementById('admin-panel').style.display = 'none'; }
+        
+        function triggerTestVoucher() {
+            localStorage.setItem(SPIN_COUNT_KEY, 25);
+            showToast("🎁 Đã set lượt 25. Quay ngay để trúng!");
+            closeAdminPanel();
+        }
+        function triggerTestSecret() {
+            activateSecretMode();
+            closeAdminPanel();
+        }
+        function triggerTestHNY() {
+            // Đếm ngược 5 giây
+            for (var i = 1; i < 99999; i++) window.clearInterval(i);
+            var testDate = new Date().getTime() + 5000;
+            var t = setInterval(function() {
+                var now = new Date().getTime(); var gap = testDate - now;
+                if (gap < 0) {
+                    clearInterval(t);
+                    document.getElementById('countdown').style.display = 'none';
+                    document.getElementById('hny-text').style.display = 'block';
+                } else {
+                    document.getElementById('countdown').innerText = Math.floor(gap/1000);
+                }
+            }, 1000);
+            showToast("🎆 Đang đếm ngược 5s đến Giao thừa...");
+            closeAdminPanel();
+        }
+        function resetData() {
+            if(confirm("Xóa toàn bộ dữ liệu máy này?")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        // --- ZODIAC LOGIC ---
         function toggleZodiac(symbol, btn) {
             if (selectedZodiacs.includes(symbol)) {
                 selectedZodiacs = selectedZodiacs.filter(s => s !== symbol);
@@ -382,16 +475,17 @@
             zodiacDisplay.innerHTML = ''; 
             if (selectedZodiacs.length > 0) {
                 selectedZodiacs.forEach(z => {
-                    const glyph = document.createElement('div');
-                    glyph.className = 'zodiac-glyph';
-                    glyph.innerText = z;
-                    zodiacDisplay.appendChild(glyph);
+                    const div = document.createElement('div');
+                    div.className = 'zodiac-svg-icon';
+                    div.innerHTML = `<svg viewBox="0 0 24 24"><path d="${zodiacPaths[z]}" /></svg>`;
+                    zodiacDisplay.appendChild(div);
                 });
             } else {
-                const glyph = document.createElement('div');
-                glyph.className = 'zodiac-glyph';
-                glyph.innerText = '★';
-                zodiacDisplay.appendChild(glyph);
+                // Default Star
+                const div = document.createElement('div');
+                div.className = 'zodiac-svg-icon';
+                div.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12,2 L15,8 L22,9 L17,14 L18,21 L12,18 L6,21 L7,14 L2,9 L9,8 Z" /></svg>`;
+                zodiacDisplay.appendChild(div);
             }
         }
 
@@ -404,14 +498,10 @@
                 document.getElementById('hny-text').style.display = 'block';
                 if (!window.hnyFireworks) {
                     window.hnyFireworks = true;
-                    var duration = 15 * 1000;
-                    var animationEnd = Date.now() + duration;
-                    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+                    var duration = 15 * 1000; var animationEnd = Date.now() + duration; var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
                     var interval = setInterval(function() {
-                        var timeLeft = animationEnd - Date.now();
-                        if (timeLeft <= 0) { return clearInterval(interval); }
-                        var particleCount = 50 * (timeLeft / duration);
-                        confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+                        var timeLeft = animationEnd - Date.now(); if (timeLeft <= 0) { return clearInterval(interval); }
+                        var particleCount = 50 * (timeLeft / duration); confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
                     }, 250);
                 }
             } else {
@@ -423,7 +513,7 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // --- EASTER EGG (SECRET TREASURE + INVERT) ---
+        // --- EASTER EGG ---
         let logoClicks = 0; let secretMode = false;
         document.getElementById('logoClick').onclick = function() {
             logoClicks++;
@@ -436,17 +526,12 @@
             secretMode = true; logoClicks = 0;
             document.body.classList.add('invert-mode'); 
             showToast("🔓 SECRET MODE: YOU ARE A TREASURE!");
-            
             const secretTrack = { 
-                id: 999, 
-                wish: "SECRET TRACK: BẠN LÀ KHO BÁU VÔ GIÁ!", 
-                song: "Treasure - Bruno Mars", 
-                file: "secret.mp3", 
-                color: "#FFD700", 
+                id: 999, wish: "SECRET TRACK: BẠN LÀ KHO BÁU VÔ GIÁ!", 
+                song: "Treasure - Bruno Mars", file: "secret.mp3", color: "#FFD700", 
                 analysis: "Giai điệu này nhắc nhở rằng: Đừng bao giờ nghi ngờ giá trị của bản thân. Trong mắt vũ trụ (và PhotoNoir), bạn chính là một kho báu lấp lánh cần được nâng niu. Hãy tỏa sáng nhé!" 
             };
-            userTrack = secretTrack;
-            finalizeUI(userTrack);
+            userTrack = secretTrack; finalizeUI(userTrack);
             if(!isPlaying) playMusic(); else { audio.src = userTrack.file; audio.play(); setTrackInfo(userTrack); }
         }
 
@@ -490,9 +575,7 @@
             analysisTitle.innerText = "Why this track?"; analysisContent.innerText = track.analysis;
             document.querySelector('.screen-letter').style.display = 'block';
             
-            // SHOW SCROLL HINT (FIXED)
-            scrollHint.classList.add('show-scroll');
-
+            document.getElementById('scrollHint').classList.add('show-scroll'); // Fixed
             if (track.id === 7) { updateVoucherUI(); voucherOverlay.style.display = 'flex'; }
         }
 
@@ -529,8 +612,7 @@
             document.getElementById('realShareQuote').innerText = '"' + userTrack.wish.split(':')[1].trim() + '"';
             document.getElementById('realShareAnalysis').innerText = userTrack.analysis;
             document.getElementById('realShareLabel').style.backgroundColor = userTrack.color;
-            updateZodiacUI(); 
-            shareOverlay.style.display = 'flex';
+            updateZodiacUI(); shareOverlay.style.display = 'flex';
         }
         function updateSignature(val) { document.getElementById('signatureDisplay').innerText = val ? val : "Guest"; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
@@ -544,7 +626,6 @@
                 tempSpan = document.createElement('div'); tempSpan.style.fontFamily = "'Dancing Script', cursive"; tempSpan.style.fontSize = "24px"; tempSpan.style.textAlign = "center"; tempSpan.innerText = input.value || "Guest";
                 input.style.display = 'none'; input.parentElement.appendChild(tempSpan);
             }
-
             html2canvas(element, { backgroundColor: null, scale: 2, useCORS: true }).then(canvas => {
                 const link = document.createElement('a'); link.download = fileName + '.png'; link.href = canvas.toDataURL("image/png"); link.click();
                 if(elementId === 'voucher-ticket') { liveClockEl.innerHTML = originalTime; tempSpan.remove(); input.style.display = 'block'; }
