@@ -23,29 +23,53 @@
             display: block; min-height: 100vh; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth;
             transition: filter 0.5s ease;
             color: var(--ink-color);
-            background-color: #111; /* Màu nền dự phòng */
+            background-color: #111; /* Màu đen dự phòng nếu chưa load được ảnh */
         }
 
-        /* --- FIXED BACKGROUND (SỬA LỖI MOBILE) --- */
+        /* --- HỆ THỐNG ẢNH NỀN (CHỈ 1 FILE bg.jpg) --- */
         #fixed-background {
             position: fixed;
             top: 0; left: 0;
-            width: 100%; height: 100%;
             z-index: -2; /* Nằm dưới cùng */
-            background-image: url('bg.jpg'); /* ĐƯỜNG DẪN ẢNH */
+            
+            /* DÙNG 1 FILE DUY NHẤT */
+            background-image: url('bg.jpg'); 
+            
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
-            /* Không dùng background-attachment: fixed ở đây để tránh lỗi mobile */
+            
+            /* Kích thước mặc định cho Máy tính */
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease; /* Hiệu ứng xoay mượt nếu resize */
         }
 
-        /* LỚP PHỦ TỐI (OVERLAY) */
+        /* --- XỬ LÝ ĐIỆN THOẠI: XOAY ẢNH 90 ĐỘ --- */
+        @media (max-width: 768px) {
+            #fixed-background {
+                /* Đảo chiều rộng/cao để xoay không bị hụt */
+                width: 100vh; 
+                height: 100vw;
+                
+                /* Căn giữa tâm và xoay */
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) rotate(90deg);
+                
+                /* Đảm bảo ảnh phủ kín */
+                background-size: cover; 
+                background-position: center;
+            }
+        }
+
+        /* LỚP PHỦ TỐI (Để chữ trắng dễ đọc) */
         #fixed-overlay {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            z-index: -1; /* Nằm trên ảnh, dưới nội dung */
-            background: rgba(0, 0, 0, 0.5); /* Độ tối 50% */
+            z-index: -1; 
+            background: rgba(0, 0, 0, 0.4); 
             pointer-events: none;
         }
 
@@ -214,7 +238,7 @@
         .rainbow-mode { animation: rainbow 2s linear infinite; border: none; }
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
         .message-area { width: 100%; text-align: center; padding: 0 10px; display: flex; flex-direction: column; gap: 5px; height: 80px; justify-content: center; flex-shrink: 0; }
-        .wishes-text { font-size: 15px; font-weight: 800; line-height: 1.35; color: #fff; text-transform: uppercase; letter-spacing: 0px; transition: opacity 0.3s; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 1px rgba(0,0,0,0.5); }
+        .wishes-text { font-size: 15px; font-weight: 800; line-height: 1.35; color: #fff; text-transform: uppercase; letter-spacing: 0px; transition: opacity 0.3s; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 1px rgba(255,255,255,0.2); }
         .meta-text { font-size: 10px; color: #ddd; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
         .breathing { animation: breathe 3s ease-in-out infinite; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
@@ -252,16 +276,6 @@
         .letter-sign { margin-top: 50px; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-top: 1px solid #ccc; display: inline-block; padding-top: 10px; }
         
         @media (max-width: 380px) or (max-height: 700px) { .logo-img { width: 80%; } .sub-logo-text { font-size: 32px; } .countdown-timer { font-size: 26px; } .vinyl-container { width: 55vmin; height: 55vmin; } .wishes-text { font-size: 14px; } }
-
-        /* --- FIXED BACKGROUND & OVERLAY --- */
-        #fixed-background {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
-            background-image: url('bg.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;
-        }
-        #fixed-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: rgba(0, 0, 0, 0.5); pointer-events: none;
-        }
 
         /* --- ADMIN PANEL --- */
         #admin-trigger {
