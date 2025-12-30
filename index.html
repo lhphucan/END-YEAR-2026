@@ -25,12 +25,11 @@
 
         body.invert-mode { filter: invert(1) hue-rotate(180deg); background-color: #1f1f1f; }
 
-        /* --- 1. CẤU HÌNH FONT CHỮ KÝ MỚI --- */
+        /* --- CẤU HÌNH FONT CHỮ KÝ --- */
         @font-face {
             font-family: 'SignatureFont';
             src: url('SVN-Snell Roundhand Script.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
+            font-weight: normal; font-style: normal;
         }
 
         /* --- ANIMATIONS --- */
@@ -87,15 +86,14 @@
         .meta-label { font-size: 8px; text-transform: uppercase; color: #999; letter-spacing: 1px; margin-bottom: 2px;}
         .meta-value { font-size: 14px; font-weight: 700; font-family: monospace; color: #000; letter-spacing: 1px; }
 
-        /* SIGNATURE AREA (VOUCHER) - DÙNG FONT MỚI */
+        /* SIGNATURE AREA (VOUCHER) */
         .signature-group { width: 100%; margin-top: 5px; text-align: center; }
         .sign-label { display: block; font-size: 9px; text-transform: uppercase; color: #888; letter-spacing: 1px; margin-bottom: 5px; }
         .sign-input { 
             width: 100%; border: none; border-bottom: 1px solid #aaa; background: transparent; 
             text-align: center; 
-            font-family: 'SignatureFont', cursive; /* Font SVN-Snell */
-            font-size: 32px; /* Tăng size vì font này nét mảnh */
-            color: #000; outline: none; padding-bottom: 5px; letter-spacing: 0px;
+            font-family: 'SignatureFont', cursive; font-size: 32px; 
+            color: #000; outline: none; padding-bottom: 5px; 
         }
         .sign-input::placeholder { color: #ccc; font-family: 'Manrope', sans-serif; font-size: 12px; letter-spacing: 1px; }
 
@@ -135,11 +133,9 @@
         .share-quote { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; text-transform: uppercase; color: #222; margin-bottom: 10px; border-top: 1px solid #ddd; padding-top: 20px; width: 100%; letter-spacing: 1px; }
         .share-analysis { font-size: 11px; line-height: 1.6; color: #555; margin-bottom: 20px; padding: 0 10px; font-weight: 500; min-height: 50px; display: flex; align-items: center; justify-content: center; font-style: italic; }
         
-        /* SIGNATURE ON CARD - DÙNG FONT MỚI */
+        /* SIGNATURE ON CARD */
         .share-signature-display { 
-            font-family: 'SignatureFont', cursive; /* Font SVN-Snell */
-            font-size: 40px; /* Tăng size cho nổi bật */
-            color: #000; margin-bottom: 10px; min-height: 40px; 
+            font-family: 'SignatureFont', cursive; font-size: 40px; color: #000; margin-bottom: 10px; min-height: 40px; 
         }
         .share-footer { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; border-top: 1px solid #ddd; padding-top: 15px; opacity: 0.6; }
         .share-year { font-weight: 800; font-size: 12px; }
@@ -176,8 +172,13 @@
         .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 10px; cursor: pointer; }
         .logo-img:active { transform: scale(0.95); }
         
-        .hny-text { display: none; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 10vw; color: var(--accent-color); text-align: center; line-height: 1; letter-spacing: -2px; margin-bottom: 10px; white-space: nowrap; text-transform: uppercase; }
-        @media (min-width: 480px) { .hny-text { font-size: 64px; } }
+        /* HNY TEXT (Fixed Size) */
+        .hny-text { 
+            display: none; font-family: 'Manrope', sans-serif; font-weight: 800; 
+            font-size: 9vw; /* Giảm còn 9vw */
+            color: var(--accent-color); text-align: center; line-height: 1; letter-spacing: -2px; margin-bottom: 10px; white-space: nowrap; text-transform: uppercase; 
+        }
+        @media (min-width: 480px) { .hny-text { font-size: 52px; } }
 
         .countdown-timer { font-family: 'Manrope', sans-serif; font-size: 32px; font-weight: 800; color: var(--accent-color); letter-spacing: 2px; margin-bottom: 5px; line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 rgba(255,255,255,0.5); }
         .sub-logo-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 36px; line-height: 1; color: var(--accent-color); text-transform: none; letter-spacing: -1px; margin: 0; text-align: center; text-shadow: 0 1px 0 rgba(255,255,255,0.5); transition: color 1s ease; flex-shrink: 0; }
@@ -367,12 +368,13 @@
     <audio id="bgMusic"></audio>
 
     <script>
-        // --- ZODIAC DATA (FIXED CANCER PATH - 69 STYLE) ---
+        // --- ZODIAC DATA (FIXED CANCER ICON - 69 SIDEWAYS) ---
         const zodiacData = {
             "♈": { name: "Bạch Dương", path: "M12 21L12 11M12 11C12 11 17 5 21 5C21 5 18 2 12 2C6 2 3 5 3 5C7 5 12 11 12 11" },
             "♉": { name: "Kim Ngưu", path: "M12 22C8 22 5 19 5 15C5 11 8 8 12 8C16 8 19 11 19 15C19 19 16 22 12 22ZM2 9C2 5 7 2 12 2C17 2 22 5 22 9" },
             "♊": { name: "Song Tử", path: "M6 4L18 4M6 20L18 20M8 4L8 20M16 4L16 20" },
-            "♋": { name: "Cự Giải", path: "M6 12A6 6 0 1 1 12 6M18 12A6 6 0 1 0 12 18" }, // Updated Path
+            // CỰ GIẢI FIX: Hai vòng tròn xoắn vào nhau (69 nằm ngang)
+            "♋": { name: "Cự Giải", path: "M15.5 6 A 4 4 0 1 0 15.5 14 H 6.5 M 8.5 18 A 4 4 0 1 0 8.5 10 H 17.5" },
             "♌": { name: "Sư Tử", path: "M6 19A3 3 0 1 1 9 16C9 16 12 5 18 5C21 5 22 8 22 8L22 11" },
             "♍": { name: "Xử Nữ", path: "M5 6C7 5 9 6 9 9L9 20M9 9C11 7 13 8 13 11L13 20M13 11C15 9 17 10 17 13L17 19C17 21 15 22 13 22" },
             "♎": { name: "Thiên Bình", path: "M4 19L20 19M6 14L18 14M12 14C12 10 15 8 18 8M12 14C12 10 9 8 6 8" },
