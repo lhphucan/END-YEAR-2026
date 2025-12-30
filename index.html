@@ -14,16 +14,35 @@
     <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     
     <style>
-        :root { --bg-color: #E0E0E0; --ink-color: #000; --accent-color: #960018; }
+        :root { --ink-color: #fff; --accent-color: #d4af37; /* Đổi màu chữ sang trắng/vàng kim để nổi trên nền ảnh */ }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         html, body {
-            margin: 0; padding: 0; background-color: var(--bg-color); color: var(--ink-color);
-            font-family: 'Manrope', sans-serif; display: block; min-height: 100vh; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth;
+            margin: 0; padding: 0; 
+            font-family: 'Manrope', sans-serif; 
+            display: block; min-height: 100vh; overflow-x: hidden; overflow-y: auto; scroll-behavior: smooth;
             transition: filter 0.5s ease;
+            
+            /* --- CẤU HÌNH ẢNH NỀN --- */
+            background-color: #111; /* Màu nền dự phòng */
+            background-image: url('bg.jpg'); /* ĐƯỜNG DẪN ẢNH NỀN */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: var(--ink-color);
         }
 
-        body.invert-mode { filter: invert(1) hue-rotate(180deg); background-color: #1f1f1f; }
+        /* LỚP PHỦ TỐI (Để chữ dễ đọc hơn trên nền ảnh) */
+        body::before {
+            content: "";
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Độ tối 50% */
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        body.invert-mode { filter: invert(1) hue-rotate(180deg); }
 
         /* --- CẤU HÌNH FONT CHỮ KÝ --- */
         @font-face {
@@ -48,9 +67,9 @@
         .glitch { animation: glitch-anim 0.3s both; color: var(--accent-color) !important; } 
 
         /* UTILS */
-        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #E0E0E0; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
-        .loader-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 4px; color: var(--ink-color); animation: breathe 1s infinite; }
-        #toast { visibility: hidden; min-width: 250px; background-color: #111; color: #fff; text-align: center; border-radius: 4px; padding: 12px 20px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 13px; font-family: 'Manrope', sans-serif; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
+        .loader-text { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 4px; color: #fff; animation: breathe 1s infinite; }
+        #toast { visibility: hidden; min-width: 250px; background-color: #fff; color: #000; text-align: center; border-radius: 4px; padding: 12px 20px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 13px; font-family: 'Manrope', sans-serif; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
@@ -78,7 +97,7 @@
         .ticket-sub { font-size: 10px; text-transform: uppercase; letter-spacing: 4px; margin-top: 5px; color: #666; }
         .ticket-body { padding: 30px 25px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .ticket-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #555; font-weight: 600; }
-        .ticket-value { font-size: 56px; font-weight: 800; color: var(--accent-color); line-height: 1; letter-spacing: -2px; }
+        .ticket-value { font-size: 56px; font-weight: 800; color: #960018; line-height: 1; letter-spacing: -2px; } /* Giữ đỏ cho voucher */
         .ticket-value.used { color: #aaa; font-size: 32px; letter-spacing: 0; text-decoration: line-through; border: 2px solid #aaa; padding: 5px 15px; transform: rotate(-5deg); }
         .barcode { width: 80%; height: 35px; margin: 15px auto; background: repeating-linear-gradient(90deg, #222 0px, #222 2px, transparent 2px, transparent 5px, #222 5px, #222 8px, transparent 8px, transparent 10px); }
         .ticket-meta { width: 100%; margin-top: 15px; border-top: 1px solid #ddd; padding-top: 15px; display: flex; justify-content: space-between; align-items: center; }
@@ -172,12 +191,7 @@
         .logo-img { width: 60%; max-width: 280px; height: auto; object-fit: contain; filter: contrast(1.3) drop-shadow(0 5px 10px rgba(0,0,0,0.15)); margin-bottom: 10px; cursor: pointer; }
         .logo-img:active { transform: scale(0.95); }
         
-        /* HNY TEXT (Fixed Size) */
-        .hny-text { 
-            display: none; font-family: 'Manrope', sans-serif; font-weight: 800; 
-            font-size: 9vw; /* Giảm còn 9vw */
-            color: var(--accent-color); text-align: center; line-height: 1; letter-spacing: -2px; margin-bottom: 10px; white-space: nowrap; text-transform: uppercase; 
-        }
+        .hny-text { display: none; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 9vw; color: var(--accent-color); text-align: center; line-height: 1; letter-spacing: -2px; margin-bottom: 10px; white-space: nowrap; text-transform: uppercase; }
         @media (min-width: 480px) { .hny-text { font-size: 52px; } }
 
         .countdown-timer { font-family: 'Manrope', sans-serif; font-size: 32px; font-weight: 800; color: var(--accent-color); letter-spacing: 2px; margin-bottom: 5px; line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 2px 0 rgba(255,255,255,0.5); }
@@ -194,27 +208,27 @@
         .rainbow-mode { animation: rainbow 2s linear infinite; border: none; }
         .spindle { width: 8px; height: 8px; background: #000; border-radius: 50%; position: absolute; z-index: 10; }
         .message-area { width: 100%; text-align: center; padding: 0 10px; display: flex; flex-direction: column; gap: 5px; height: 80px; justify-content: center; flex-shrink: 0; }
-        .wishes-text { font-size: 15px; font-weight: 800; line-height: 1.35; color: var(--accent-color); text-transform: uppercase; letter-spacing: 0px; transition: opacity 0.3s; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 1px rgba(255,255,255,0.2); }
-        .meta-text { font-size: 10px; color: #555; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
+        .wishes-text { font-size: 15px; font-weight: 800; line-height: 1.35; color: #fff; text-transform: uppercase; letter-spacing: 0px; transition: opacity 0.3s; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 1px rgba(0,0,0,0.5); }
+        .meta-text { font-size: 10px; color: #ddd; letter-spacing: 2px; font-weight: 700; text-transform: uppercase; opacity: 0.7; }
         .breathing { animation: breathe 3s ease-in-out infinite; }
         @keyframes breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         .glitch { animation: glitch-anim 0.3s both; color: var(--accent-color) !important; } 
         .player-wrapper { width: 100%; padding: 0 20px; flex-shrink: 0; margin-bottom: 30px; }
         .player-controls { width: 100%; opacity: 0; transition: opacity 0.5s; padding-bottom: 5px; }
         .has-played .player-controls { opacity: 1; }
-        .progress-bar-bg { width: 100%; height: 6px; background: rgba(0,0,0,0.1); border-radius: 3px; overflow: hidden; }
+        .progress-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; overflow: hidden; }
         .progress-bar-fill { width: 0%; height: 100%; background: var(--accent-color); transition: width 0.1s linear; }
-        .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #000; font-family: monospace; }
-        .visitor-counter { font-size: 10px; color: #666; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 12px; display: flex; gap: 5px; justify-content: center; align-items: center; }
+        .time-display { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; font-weight: 700; color: #ddd; font-family: monospace; }
+        .visitor-counter { font-size: 10px; color: #aaa; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; margin-top: 12px; display: flex; gap: 5px; justify-content: center; align-items: center; }
         #busuanzi_container_site_pv { display: inline-block !important; }
         
-        .scroll-hint { position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0; animation: float 2s infinite; cursor: pointer; z-index: 20; transition: opacity 1s; }
+        .scroll-hint { position: absolute; bottom: 20px; left: 0; width: 100%; text-align: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: 0; animation: float 2s infinite; cursor: pointer; z-index: 20; transition: opacity 1s; color: #fff; }
         .show-scroll { opacity: 0.6 !important; }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
         
         /* SCROLL REVEAL SECTION */
-        .screen-analysis { display: none; width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 60px 30px; background: #EAEAEA; }
-        .analysis-box { border: 2px solid #000; padding: 30px 20px; background: #F2F2F2; box-shadow: 8px 8px 0px rgba(0,0,0,0.1); text-align: center; }
+        .screen-analysis { display: none; width: 100%; max-width: 480px; margin: 0 auto; position: relative; z-index: 2; padding: 60px 30px; background: rgba(240, 240, 240, 0.95); } /* Nền trắng đục */
+        .analysis-box { border: 2px solid #000; padding: 30px 20px; background: #fff; box-shadow: 8px 8px 0px rgba(0,0,0,0.2); text-align: center; }
         .analysis-label { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #555; margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px; text-align: left; }
         .analysis-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 22px; font-style: normal; color: var(--accent-color); margin-bottom: 20px; line-height: 1.3; text-align: left; }
         .analysis-content { font-family: 'Manrope', sans-serif; font-size: 15px; line-height: 1.7; color: #333; text-align: justify; margin-bottom: 25px; }
@@ -239,7 +253,7 @@
             width: 24px; height: 24px; opacity: 0.4; cursor: pointer; z-index: 9000;
             transition: all 0.3s ease; display: flex; justify-content: center; align-items: center;
         }
-        #admin-trigger svg { width: 18px; height: 18px; stroke: var(--ink-color); fill: none; stroke-width: 1.5; }
+        #admin-trigger svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 1.5; }
         #admin-trigger:hover { opacity: 1; transform: scale(1.1); }
         
         #admin-panel {
@@ -368,13 +382,12 @@
     <audio id="bgMusic"></audio>
 
     <script>
-        // --- ZODIAC DATA (FIXED CANCER ICON - 69 SIDEWAYS) ---
+        // --- ZODIAC DATA (FIXED CANCER PATH - 69 STYLE) ---
         const zodiacData = {
             "♈": { name: "Bạch Dương", path: "M12 21L12 11M12 11C12 11 17 5 21 5C21 5 18 2 12 2C6 2 3 5 3 5C7 5 12 11 12 11" },
             "♉": { name: "Kim Ngưu", path: "M12 22C8 22 5 19 5 15C5 11 8 8 12 8C16 8 19 11 19 15C19 19 16 22 12 22ZM2 9C2 5 7 2 12 2C17 2 22 5 22 9" },
             "♊": { name: "Song Tử", path: "M6 4L18 4M6 20L18 20M8 4L8 20M16 4L16 20" },
-            // CỰ GIẢI FIX: Hai vòng tròn xoắn vào nhau (69 nằm ngang)
-            "♋": { name: "Cự Giải", path: "M15.5 6 A 4 4 0 1 0 15.5 14 H 6.5 M 8.5 18 A 4 4 0 1 0 8.5 10 H 17.5" },
+            "♋": { name: "Cự Giải", path: "M9,5 A4,4 0 1,1 9,13 A4,4 0 1,1 9,5 M15,11 A4,4 0 1,1 15,19 A4,4 0 1,1 15,11" }, // Updated Path
             "♌": { name: "Sư Tử", path: "M6 19A3 3 0 1 1 9 16C9 16 12 5 18 5C21 5 22 8 22 8L22 11" },
             "♍": { name: "Xử Nữ", path: "M5 6C7 5 9 6 9 9L9 20M9 9C11 7 13 8 13 11L13 20M13 11C15 9 17 10 17 13L17 19C17 21 15 22 13 22" },
             "♎": { name: "Thiên Bình", path: "M4 19L20 19M6 14L18 14M12 14C12 10 15 8 18 8M12 14C12 10 9 8 6 8" },
